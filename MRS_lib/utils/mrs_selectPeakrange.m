@@ -18,7 +18,7 @@ function peak_range = mrs_selectPeakrange( spectra )
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
 
-    figure 
+    h=figure; 
     plot(real(spectra))
     title('Press [ENTRE] to start selection of peak range')
     zoom on;  
@@ -27,6 +27,7 @@ function peak_range = mrs_selectPeakrange( spectra )
 
     [xs,~] = ginput(2);
     peak_range = round(xs);
-
+    
+    close(h);
 end
 
