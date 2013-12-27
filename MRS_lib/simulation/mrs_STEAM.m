@@ -14,7 +14,11 @@ function S = mrs_STEAM (S0, T1, T2, TR, TE, TM)
 %
 % RETURNS:
 % S = acquired signal  
-%
+% 
+% REFERENCE: 
+% S.K. KANG, B.Y. Choe, T.S. Suh and H.K. Lee, Journal of the Korean
+% Physical Society. 40, 516-519(2000).
+% 
 %
 % AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
