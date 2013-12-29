@@ -52,5 +52,6 @@ Data files & header files are required to be added to MATLAB path.
   * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic voxel in the axial MR images
   * **mri_dispSVOI.m**       : displays the spectroscopic voxel on top of the axial MR images
 
-
+**NMR_lib:** contains functions for NMR simulation 
+  * **nmr_bloch.m** : defines Bloch equation
 
