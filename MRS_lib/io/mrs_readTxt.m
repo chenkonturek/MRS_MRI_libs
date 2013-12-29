@@ -1,7 +1,7 @@
-function [fids spects] = mrs_readTxt( fileName )
+function [fids spects] = mrs_readTXT( fileName )
 % MRS_READSTXT reads jMRUI output MRS data file in .txt format 
 %
-% [fids spects] = mrs_readTxt( fileName )
+% [fids spects] = mrs_readTXT( fileName )
 %
 % ARGS :
 % fileName = name of data file 
@@ -11,7 +11,10 @@ function [fids spects] = mrs_readTxt( fileName )
 % spects = spectra 
 %
 % EXAMPLE: 
-% >> [fids spects] = mrs_readTxt('sub1.txt');
+% >> [fids spects] = mrs_readTXT('sub1.txt');
+%
+% REFERENCE: 
+% jMRUI software : http://www.mrui.uab.es/mrui/mrui_Overview.shtml
 %
 % AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
