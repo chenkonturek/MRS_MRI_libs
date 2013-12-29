@@ -1,6 +1,5 @@
 function Mz = mri_IRcurve(M0, T1, TIs)
-% MRI_IRCURVE simulates the absolute value of inversion recovery (IR)
-% curve.   
+% MRI_IRCURVE simulates inversion recovery (IR) curve.   
 % 
 % Mz = mri_IRcurve(M0, T1, TIs)
 % 
