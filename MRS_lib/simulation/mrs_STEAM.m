@@ -13,7 +13,7 @@ function S = mrs_STEAM (S0, T1, T2, TR, TE, TM)
 % TM = mixing time (ms)
 %
 % RETURNS:
-% S = acquired signal  
+% S = intial signal intensity of the acquired half-echo     
 % 
 % REFERENCE: 
 % S.K. KANG, B.Y. Choe, T.S. Suh and H.K. Lee, Journal of the Korean

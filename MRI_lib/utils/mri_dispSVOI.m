@@ -14,10 +14,11 @@ function  mri_dispSVOI( svoi_mask, mri_data )
 % >> mri_data = mri_readIMG('sub1_MPRAGE.hdr');
 % >> mri_dispSVOI( svoi_mask, mri_data );
 %
-% AUTHOR : Dr. Emma Hall, Chen Chen
+% AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
+
 	mri_view=mri_data;
 	mri_view(svoi_mask==1)=mri_data(svoi_mask==1)*3;
     
