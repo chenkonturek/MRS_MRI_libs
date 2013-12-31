@@ -35,7 +35,9 @@ function  mrs_plotSpectra( spectra, unit, BW, transmit_freq)
     end
 
     for d=1:dyns
-        figure
+        if dyns> 1
+            figure
+        end
         plot(x_ticks,real(spectra(:,:,d)))
         set(gca,'XDir','reverse');
         

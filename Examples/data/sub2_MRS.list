@@ -1,0 +1,757 @@
+# === DATA DESCRIPTION FILE ======================================================
+#
+# CAUTION - Investigational device.
+# Limited by Federal Law to investigational use.
+#
+# Scan name   : sub2
+# Dataset name: RAW
+#
+# Gyroscan SW release            : 3.2-1
+# Reconstruction Host SW Version :  10
+# Reconstruction   AP SW Version :  26
+#
+# === GENERAL INFORMATION ========================================================
+#
+# n.a. n.a. n.a.  number of ...                        value
+# ---- ---- ----  ----------------------------------   -----
+.    0    0    0  number_of_mixes                    :     2
+#
+# mix  n.a. n.a.  number of ...                        value
+# ---- ---- ----  ----------------------------------   -----
+.    0    0    0  number_of_encoding_dimensions      :     3
+.    0    0    0  number_of_dynamic_scans            :     1
+.    0    0    0  number_of_cardiac_phases           :     1
+.    0    0    0  number_of_echoes                   :     1
+.    0    0    0  number_of_locations                :     1
+.    0    0    0  number_of_extra_attribute_1_values :     2
+.    0    0    0  number_of_extra_attribute_2_values :     1
+.    0    0    0  number_of_signal_averages          :   272
+#
+.    1    0    0  number_of_encoding_dimensions      :     3
+.    1    0    0  number_of_dynamic_scans            :     1
+.    1    0    0  number_of_cardiac_phases           :     1
+.    1    0    0  number_of_echoes                   :     1
+.    1    0    0  number_of_locations                :     1
+.    1    0    0  number_of_extra_attribute_1_values :     2
+.    1    0    0  number_of_extra_attribute_2_values :     1
+.    1    0    0  number_of_signal_averages          :     2
+#
+# mix  echo n.a.  k-space coordinate ranges            start  end
+# ---- ---- ----  ----------------------------------   -----  -----
+.    0    0    0  t_range                            :     0   4095
+.    0    0    0  kx_range                           :     0      0
+.    0    0    0  ky_range                           :     0      0
+#
+.    1    0    0  t_range                            :     0   4095
+.    1    0    0  kx_range                           :     0      0
+.    1    0    0  ky_range                           :     0      0
+#
+# mix  echo n.a.  k-space oversample factors           value
+# ---- ---- ----  ----------------------------------   ---------
+.    0    0    0  t_oversample_factor                :    1.0000
+.    0    0    0  kx_oversample_factor               :    1.0000
+.    0    0    0  ky_oversample_factor               :    1.0000
+#
+.    1    0    0  t_oversample_factor                :    1.0000
+.    1    0    0  kx_oversample_factor               :    1.0000
+.    1    0    0  ky_oversample_factor               :    1.0000
+#
+# mix  n.a. n.a.  reconstruction matrix                value
+# ---- ---- ----  ----------------------------------   -----
+.    0    0    0  F-resolution                       :  4096
+.    0    0    0  X-resolution                       :     1
+.    0    0    0  Y-resolution                       :     1
+#
+.    1    0    0  F-resolution                       :  4096
+.    1    0    0  X-resolution                       :     1
+.    1    0    0  Y-resolution                       :     1
+#
+# mix  echo loca  imaging space coordinate ranges      start  end
+# ---- ---- ----  ----------------------------------   -----  -----
+.    0    0    0  F_range                            : -2048   2047
+.    0    0    0  X_range                            :     0      0
+.    0    0    0  Y_range                            :     0      0
+#
+.    1    0    0  F_range                            : -2048   2047
+.    1    0    0  X_range                            :     0      0
+.    1    0    0  Y_range                            :     0      0
+#
+# Complex data vector types:
+# --------------------------
+# STD = Standard data vector (image data or spectroscopy data)
+# REJ = Rejected standard data vector
+#       (only for scans with arrhythmia rejection)
+# PHX = Correction data vector for EPI/GraSE phase correction
+# FRX = Correction data vector for frequency spectrum correction
+# NOI = Preparation phase data vector for noise determination
+# NAV = Phase navigator data vector
+#
+# Other attributes of complex data vectors:
+# -----------------------------------------
+# mix      = mixed sequence number
+# dyn      = dynamic scan number
+# card     = cardiac phase number
+# echo     = echo number
+# loca     = location number
+# chan     = synco channel number
+# extr1    = extra attribute 1 (semantics depend on type of scan)
+# extr2    = extra attribute 2 (   ''       ''   ''  ''  ''  '' )
+# ky,kz    = k-space coordinates in 1st and 2nd preparation direction (image data)
+# kx,ky,kz = k-space coordinates in 1st, 2nd and 3rd preparation direction (spectroscopy data)
+# aver     = sequence number of this signal average
+# sign     = sign of measurement gradient used for this data vector (1 = positive, -1 = negative)
+# rf       = sequence number of this rf echo (only for TSE, TFE, GraSE)
+# grad     = sequence number of this gradient echo (only for EPI/GraSE)
+# enc      = encoding time (only for EPI/GraSE)
+# rtop     = R-top offset in ms
+# rr       = RR-interval length in ms
+# size   = data vector size   in number of bytes (1 complex element = 2 floats = 8 bytes)
+# offset = data vector offset in number of bytes (first data vector starts at offset 0)
+#
+# The complex data vectors are represented as binary data in little endian single precision IEEE float format.
+#
+# Please note that complex data vector attributes which are not relevant for a certain type of vector
+# may have arbitrary values!
+#
+# Fourier transformations:
+# ------------------------
+# The Fourier transformation lengths for STD, NAV and REJ data are (by definition) equal to
+# to reconstruction matrix length * k-space oversample sample factor
+# in each applicable direction.
+#
+# The centre point of the k-space must be positioned in the middle of the interval with this length,
+# (or just right from the middle if the Fourier transformation length is even), according to the
+# specified k-space coordinate ranges. Apply a cyclic wrap-around to data that extends outside the
+# interval, and zerofill missing data before Fourier transformation.
+# After Fourier transformation, the imaging space coordinate ranges specify the position, length 
+# and direction of the relevant part of the frequency spectrum. Apply a cyclic wrap-around if
+# needed. If start value > end value, read the spectrum part between these positions in reverse order.
+#
+# Corrections:
+# ------------
+# Depending on the type of scan, one or more of the following corrections may have to be applied:
+# - frequency spectrum correction (using FRX data)
+# - EPI/GraSE phase correction    (using PHX data)
+# - rf echo amplitude correction  (using PHX data, only for GraSE scans)
+# 
+# These corrections can be applied to STD, NAV and REJ data vectors after forward Fourier transformation
+# in the measurement direction, by multiplying the selected part of the frequency spectrum of
+# these data vectors with the PHX and FRX correction data vector that has corresponding identifying
+# complex data vector attributes.
+# 
+# Remarks:
+# - In GraSE scans you may get a PHX correction data vector for each rf echo. These correction vectors
+#   differ only a scale factor from each other, and can be used for rf echo amplitude correction.
+#   If you don't want this correction, use the correction data vectors with rf echo = 0 only.
+# - Depending on the type of scan, several of the FRX correction data vectors may be identical.
+#
+# Identifying attributes of complex data vectors:
+# -----------------------------------------------
+# The next table specifies the identifying attributes for each type of complex data vector:
+#
+# typ mix   dyn   card  echo  loca  chan  extr1 extr2 kx    ky    kz    aver  sign  rf    grad  enc   rtop  rr    size   offset
+# --- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ------ ------
+#
+# STD   *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# REJ   *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+# PHX   *                 *     *     *                                         *     *     *
+# FRX   *                 *     *     *                                         *            
+# NOI                           *     *                                                      
+# NAV   *     *     *     *     *     *     *     *     *     *     *     *     *     *     *
+#
+# === START OF DATA VECTOR INDEX =================================================
+#
+# typ mix   dyn   card  echo  loca  chan  extr1 extr2 kx    ky    kz    aver  sign  rf    grad  enc   rtop  rr    size   offset
+# --- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ------ ------
+#
+  NOI     0     0     0     0     0     0     0     0     0     0     0     0     1     0     0     0     0     0  32768 0
+  NOI     0     0     0     0     0     1     0     0     0     0     0     0     1     0     0     0     0     0  32768 32768
+  NOI     0     0     0     0     0     2     0     0     0     0     0     0     1     0     0     0     0     0  32768 65536
+  NOI     0     0     0     0     0     3     0     0     0     0     0     0     1     0     0     0     0     0  32768 98304
+  NOI     0     0     0     0     0     4     0     0     0     0     0     0     1     0     0     0     0     0  32768 131072
+  NOI     0     0     0     0     0     5     0     0     0     0     0     0     1     0     0     0     0     0  32768 163840
+  NOI     0     0     0     0     0     6     0     0     0     0     0     0     1     0     0     0     0     0  32768 196608
+  NOI     0     0     0     0     0     7     0     0     0     0     0     0     1     0     0     0     0     0  32768 229376
+  NOI     0     0     0     0     0     8     0     0     0     0     0     0     1     0     0     0     0     0  32768 262144
+  NOI     0     0     0     0     0     9     0     0     0     0     0     0     1     0     0     0     0     0  32768 294912
+  NOI     0     0     0     0     0    10     0     0     0     0     0     0     1     0     0     0     0     0  32768 327680
+  NOI     0     0     0     0     0    11     0     0     0     0     0     0     1     0     0     0     0     0  32768 360448
+  NOI     0     0     0     0     0    12     0     0     0     0     0     0     1     0     0     0     0     0  32768 393216
+  NOI     0     0     0     0     0    13     0     0     0     0     0     0     1     0     0     0     0     0  32768 425984
+  NOI     0     0     0     0     0    14     0     0     0     0     0     0     1     0     0     0     0     0  32768 458752
+  NOI     0     0     0     0     0    15     0     0     0     0     0     0     1     0     0     0     0     0  32768 491520
+  NOI     0     0     0     0     0    16     0     0     0     0     0     0     1     0     0     0     0     0  32768 524288
+  NOI     0     0     0     0     0    17     0     0     0     0     0     0     1     0     0     0     0     0  32768 557056
+  NOI     0     0     0     0     0    18     0     0     0     0     0     0     1     0     0     0     0     0  32768 589824
+  NOI     0     0     0     0     0    19     0     0     0     0     0     0     1     0     0     0     0     0  32768 622592
+  NOI     0     0     0     0     0    20     0     0     0     0     0     0     1     0     0     0     0     0  32768 655360
+  NOI     0     0     0     0     0    21     0     0     0     0     0     0     1     0     0     0     0     0  32768 688128
+  NOI     0     0     0     0     0    22     0     0     0     0     0     0     1     0     0     0     0     0  32768 720896
+  NOI     0     0     0     0     0    23     0     0     0     0     0     0     1     0     0     0     0     0  32768 753664
+  NOI     0     0     0     0     0    24     0     0     0     0     0     0     1     0     0     0     0     0  32768 786432
+  NOI     0     0     0     0     0    25     0     0     0     0     0     0     1     0     0     0     0     0  32768 819200
+  NOI     0     0     0     0     0    26     0     0     0     0     0     0     1     0     0     0     0     0  32768 851968
+  NOI     0     0     0     0     0    27     0     0     0     0     0     0     1     0     0     0     0     0  32768 884736
+  NOI     0     0     0     0     0    28     0     0     0     0     0     0     1     0     0     0     0     0  32768 917504
+  NOI     0     0     0     0     0    29     0     0     0     0     0     0     1     0     0     0     0     0  32768 950272
+  NOI     0     0     0     0     0    30     0     0     0     0     0     0     1     0     0     0     0     0  32768 983040
+  NOI     0     0     0     0     0    31     0     0     0     0     0     0     1     0     0     0     0     0  32768 1015808
+  STD     1     0     0     0     0     0     0     0     0     0     0     0     1     0     0     0     0     0  32768 1048576
+  STD     1     0     0     0     0     0     0     0     0     0     0     1     1     0     0     0     0     0  32768 1081344
+  STD     0     0     0     0     0     0     0     0     0     0     0     0     1     0     0     0     0     0  32768 1114112
+  STD     0     0     0     0     0     0     0     0     0     0     0     1     1     0     0     0     0     0  32768 1146880
+  STD     0     0     0     0     0     0     0     0     0     0     0     2     1     0     0     0     0     0  32768 1179648
+  STD     0     0     0     0     0     0     0     0     0     0     0     3     1     0     0     0     0     0  32768 1212416
+  STD     0     0     0     0     0     0     0     0     0     0     0     4     1     0     0     0     0     0  32768 1245184
+  STD     0     0     0     0     0     0     0     0     0     0     0     5     1     0     0     0     0     0  32768 1277952
+  STD     0     0     0     0     0     0     0     0     0     0     0     6     1     0     0     0     0     0  32768 1310720
+  STD     0     0     0     0     0     0     0     0     0     0     0     7     1     0     0     0     0     0  32768 1343488
+  STD     0     0     0     0     0     0     0     0     0     0     0     8     1     0     0     0     0     0  32768 1376256
+  STD     0     0     0     0     0     0     0     0     0     0     0     9     1     0     0     0     0     0  32768 1409024
+  STD     0     0     0     0     0     0     0     0     0     0     0    10     1     0     0     0     0     0  32768 1441792
+  STD     0     0     0     0     0     0     0     0     0     0     0    11     1     0     0     0     0     0  32768 1474560
+  STD     0     0     0     0     0     0     0     0     0     0     0    12     1     0     0     0     0     0  32768 1507328
+  STD     0     0     0     0     0     0     0     0     0     0     0    13     1     0     0     0     0     0  32768 1540096
+  STD     0     0     0     0     0     0     0     0     0     0     0    14     1     0     0     0     0     0  32768 1572864
+  STD     0     0     0     0     0     0     0     0     0     0     0    15     1     0     0     0     0     0  32768 1605632
+  STD     0     0     0     0     0     0     0     0     0     0     0    16     1     0     0     0     0     0  32768 1638400
+  STD     0     0     0     0     0     0     0     0     0     0     0    17     1     0     0     0     0     0  32768 1671168
+  STD     0     0     0     0     0     0     0     0     0     0     0    18     1     0     0     0     0     0  32768 1703936
+  STD     0     0     0     0     0     0     0     0     0     0     0    19     1     0     0     0     0     0  32768 1736704
+  STD     0     0     0     0     0     0     0     0     0     0     0    20     1     0     0     0     0     0  32768 1769472
+  STD     0     0     0     0     0     0     0     0     0     0     0    21     1     0     0     0     0     0  32768 1802240
+  STD     0     0     0     0     0     0     0     0     0     0     0    22     1     0     0     0     0     0  32768 1835008
+  STD     0     0     0     0     0     0     0     0     0     0     0    23     1     0     0     0     0     0  32768 1867776
+  STD     0     0     0     0     0     0     0     0     0     0     0    24     1     0     0     0     0     0  32768 1900544
+  STD     0     0     0     0     0     0     0     0     0     0     0    25     1     0     0     0     0     0  32768 1933312
+  STD     0     0     0     0     0     0     0     0     0     0     0    26     1     0     0     0     0     0  32768 1966080
+  STD     0     0     0     0     0     0     0     0     0     0     0    27     1     0     0     0     0     0  32768 1998848
+  STD     0     0     0     0     0     0     0     0     0     0     0    28     1     0     0     0     0     0  32768 2031616
+  STD     0     0     0     0     0     0     0     0     0     0     0    29     1     0     0     0     0     0  32768 2064384
+  STD     0     0     0     0     0     0     0     0     0     0     0    30     1     0     0     0     0     0  32768 2097152
+  STD     0     0     0     0     0     0     0     0     0     0     0    31     1     0     0     0     0     0  32768 2129920
+  STD     0     0     0     0     0     0     0     0     0     0     0    32     1     0     0     0     0     0  32768 2162688
+  STD     0     0     0     0     0     0     0     0     0     0     0    33     1     0     0     0     0     0  32768 2195456
+  STD     0     0     0     0     0     0     0     0     0     0     0    34     1     0     0     0     0     0  32768 2228224
+  STD     0     0     0     0     0     0     0     0     0     0     0    35     1     0     0     0     0     0  32768 2260992
+  STD     0     0     0     0     0     0     0     0     0     0     0    36     1     0     0     0     0     0  32768 2293760
+  STD     0     0     0     0     0     0     0     0     0     0     0    37     1     0     0     0     0     0  32768 2326528
+  STD     0     0     0     0     0     0     0     0     0     0     0    38     1     0     0     0     0     0  32768 2359296
+  STD     0     0     0     0     0     0     0     0     0     0     0    39     1     0     0     0     0     0  32768 2392064
+  STD     0     0     0     0     0     0     0     0     0     0     0    40     1     0     0     0     0     0  32768 2424832
+  STD     0     0     0     0     0     0     0     0     0     0     0    41     1     0     0     0     0     0  32768 2457600
+  STD     0     0     0     0     0     0     0     0     0     0     0    42     1     0     0     0     0     0  32768 2490368
+  STD     0     0     0     0     0     0     0     0     0     0     0    43     1     0     0     0     0     0  32768 2523136
+  STD     0     0     0     0     0     0     0     0     0     0     0    44     1     0     0     0     0     0  32768 2555904
+  STD     0     0     0     0     0     0     0     0     0     0     0    45     1     0     0     0     0     0  32768 2588672
+  STD     0     0     0     0     0     0     0     0     0     0     0    46     1     0     0     0     0     0  32768 2621440
+  STD     0     0     0     0     0     0     0     0     0     0     0    47     1     0     0     0     0     0  32768 2654208
+  STD     0     0     0     0     0     0     0     0     0     0     0    48     1     0     0     0     0     0  32768 2686976
+  STD     0     0     0     0     0     0     0     0     0     0     0    49     1     0     0     0     0     0  32768 2719744
+  STD     0     0     0     0     0     0     0     0     0     0     0    50     1     0     0     0     0     0  32768 2752512
+  STD     0     0     0     0     0     0     0     0     0     0     0    51     1     0     0     0     0     0  32768 2785280
+  STD     0     0     0     0     0     0     0     0     0     0     0    52     1     0     0     0     0     0  32768 2818048
+  STD     0     0     0     0     0     0     0     0     0     0     0    53     1     0     0     0     0     0  32768 2850816
+  STD     0     0     0     0     0     0     0     0     0     0     0    54     1     0     0     0     0     0  32768 2883584
+  STD     0     0     0     0     0     0     0     0     0     0     0    55     1     0     0     0     0     0  32768 2916352
+  STD     0     0     0     0     0     0     0     0     0     0     0    56     1     0     0     0     0     0  32768 2949120
+  STD     0     0     0     0     0     0     0     0     0     0     0    57     1     0     0     0     0     0  32768 2981888
+  STD     0     0     0     0     0     0     0     0     0     0     0    58     1     0     0     0     0     0  32768 3014656
+  STD     0     0     0     0     0     0     0     0     0     0     0    59     1     0     0     0     0     0  32768 3047424
+  STD     0     0     0     0     0     0     0     0     0     0     0    60     1     0     0     0     0     0  32768 3080192
+  STD     0     0     0     0     0     0     0     0     0     0     0    61     1     0     0     0     0     0  32768 3112960
+  STD     0     0     0     0     0     0     0     0     0     0     0    62     1     0     0     0     0     0  32768 3145728
+  STD     0     0     0     0     0     0     0     0     0     0     0    63     1     0     0     0     0     0  32768 3178496
+  STD     0     0     0     0     0     0     0     0     0     0     0    64     1     0     0     0     0     0  32768 3211264
+  STD     0     0     0     0     0     0     0     0     0     0     0    65     1     0     0     0     0     0  32768 3244032
+  STD     0     0     0     0     0     0     0     0     0     0     0    66     1     0     0     0     0     0  32768 3276800
+  STD     0     0     0     0     0     0     0     0     0     0     0    67     1     0     0     0     0     0  32768 3309568
+  STD     0     0     0     0     0     0     0     0     0     0     0    68     1     0     0     0     0     0  32768 3342336
+  STD     0     0     0     0     0     0     0     0     0     0     0    69     1     0     0     0     0     0  32768 3375104
+  STD     0     0     0     0     0     0     0     0     0     0     0    70     1     0     0     0     0     0  32768 3407872
+  STD     0     0     0     0     0     0     0     0     0     0     0    71     1     0     0     0     0     0  32768 3440640
+  STD     0     0     0     0     0     0     0     0     0     0     0    72     1     0     0     0     0     0  32768 3473408
+  STD     0     0     0     0     0     0     0     0     0     0     0    73     1     0     0     0     0     0  32768 3506176
+  STD     0     0     0     0     0     0     0     0     0     0     0    74     1     0     0     0     0     0  32768 3538944
+  STD     0     0     0     0     0     0     0     0     0     0     0    75     1     0     0     0     0     0  32768 3571712
+  STD     0     0     0     0     0     0     0     0     0     0     0    76     1     0     0     0     0     0  32768 3604480
+  STD     0     0     0     0     0     0     0     0     0     0     0    77     1     0     0     0     0     0  32768 3637248
+  STD     0     0     0     0     0     0     0     0     0     0     0    78     1     0     0     0     0     0  32768 3670016
+  STD     0     0     0     0     0     0     0     0     0     0     0    79     1     0     0     0     0     0  32768 3702784
+  STD     0     0     0     0     0     0     0     0     0     0     0    80     1     0     0     0     0     0  32768 3735552
+  STD     0     0     0     0     0     0     0     0     0     0     0    81     1     0     0     0     0     0  32768 3768320
+  STD     0     0     0     0     0     0     0     0     0     0     0    82     1     0     0     0     0     0  32768 3801088
+  STD     0     0     0     0     0     0     0     0     0     0     0    83     1     0     0     0     0     0  32768 3833856
+  STD     0     0     0     0     0     0     0     0     0     0     0    84     1     0     0     0     0     0  32768 3866624
+  STD     0     0     0     0     0     0     0     0     0     0     0    85     1     0     0     0     0     0  32768 3899392
+  STD     0     0     0     0     0     0     0     0     0     0     0    86     1     0     0     0     0     0  32768 3932160
+  STD     0     0     0     0     0     0     0     0     0     0     0    87     1     0     0     0     0     0  32768 3964928
+  STD     0     0     0     0     0     0     0     0     0     0     0    88     1     0     0     0     0     0  32768 3997696
+  STD     0     0     0     0     0     0     0     0     0     0     0    89     1     0     0     0     0     0  32768 4030464
+  STD     0     0     0     0     0     0     0     0     0     0     0    90     1     0     0     0     0     0  32768 4063232
+  STD     0     0     0     0     0     0     0     0     0     0     0    91     1     0     0     0     0     0  32768 4096000
+  STD     0     0     0     0     0     0     0     0     0     0     0    92     1     0     0     0     0     0  32768 4128768
+  STD     0     0     0     0     0     0     0     0     0     0     0    93     1     0     0     0     0     0  32768 4161536
+  STD     0     0     0     0     0     0     0     0     0     0     0    94     1     0     0     0     0     0  32768 4194304
+  STD     0     0     0     0     0     0     0     0     0     0     0    95     1     0     0     0     0     0  32768 4227072
+  STD     0     0     0     0     0     0     0     0     0     0     0    96     1     0     0     0     0     0  32768 4259840
+  STD     0     0     0     0     0     0     0     0     0     0     0    97     1     0     0     0     0     0  32768 4292608
+  STD     0     0     0     0     0     0     0     0     0     0     0    98     1     0     0     0     0     0  32768 4325376
+  STD     0     0     0     0     0     0     0     0     0     0     0    99     1     0     0     0     0     0  32768 4358144
+  STD     0     0     0     0     0     0     0     0     0     0     0   100     1     0     0     0     0     0  32768 4390912
+  STD     0     0     0     0     0     0     0     0     0     0     0   101     1     0     0     0     0     0  32768 4423680
+  STD     0     0     0     0     0     0     0     0     0     0     0   102     1     0     0     0     0     0  32768 4456448
+  STD     0     0     0     0     0     0     0     0     0     0     0   103     1     0     0     0     0     0  32768 4489216
+  STD     0     0     0     0     0     0     0     0     0     0     0   104     1     0     0     0     0     0  32768 4521984
+  STD     0     0     0     0     0     0     0     0     0     0     0   105     1     0     0     0     0     0  32768 4554752
+  STD     0     0     0     0     0     0     0     0     0     0     0   106     1     0     0     0     0     0  32768 4587520
+  STD     0     0     0     0     0     0     0     0     0     0     0   107     1     0     0     0     0     0  32768 4620288
+  STD     0     0     0     0     0     0     0     0     0     0     0   108     1     0     0     0     0     0  32768 4653056
+  STD     0     0     0     0     0     0     0     0     0     0     0   109     1     0     0     0     0     0  32768 4685824
+  STD     0     0     0     0     0     0     0     0     0     0     0   110     1     0     0     0     0     0  32768 4718592
+  STD     0     0     0     0     0     0     0     0     0     0     0   111     1     0     0     0     0     0  32768 4751360
+  STD     0     0     0     0     0     0     0     0     0     0     0   112     1     0     0     0     0     0  32768 4784128
+  STD     0     0     0     0     0     0     0     0     0     0     0   113     1     0     0     0     0     0  32768 4816896
+  STD     0     0     0     0     0     0     0     0     0     0     0   114     1     0     0     0     0     0  32768 4849664
+  STD     0     0     0     0     0     0     0     0     0     0     0   115     1     0     0     0     0     0  32768 4882432
+  STD     0     0     0     0     0     0     0     0     0     0     0   116     1     0     0     0     0     0  32768 4915200
+  STD     0     0     0     0     0     0     0     0     0     0     0   117     1     0     0     0     0     0  32768 4947968
+  STD     0     0     0     0     0     0     0     0     0     0     0   118     1     0     0     0     0     0  32768 4980736
+  STD     0     0     0     0     0     0     0     0     0     0     0   119     1     0     0     0     0     0  32768 5013504
+  STD     0     0     0     0     0     0     0     0     0     0     0   120     1     0     0     0     0     0  32768 5046272
+  STD     0     0     0     0     0     0     0     0     0     0     0   121     1     0     0     0     0     0  32768 5079040
+  STD     0     0     0     0     0     0     0     0     0     0     0   122     1     0     0     0     0     0  32768 5111808
+  STD     0     0     0     0     0     0     0     0     0     0     0   123     1     0     0     0     0     0  32768 5144576
+  STD     0     0     0     0     0     0     0     0     0     0     0   124     1     0     0     0     0     0  32768 5177344
+  STD     0     0     0     0     0     0     0     0     0     0     0   125     1     0     0     0     0     0  32768 5210112
+  STD     0     0     0     0     0     0     0     0     0     0     0   126     1     0     0     0     0     0  32768 5242880
+  STD     0     0     0     0     0     0     0     0     0     0     0   127     1     0     0     0     0     0  32768 5275648
+  STD     0     0     0     0     0     0     0     0     0     0     0   128     1     0     0     0     0     0  32768 5308416
+  STD     0     0     0     0     0     0     0     0     0     0     0   129     1     0     0     0     0     0  32768 5341184
+  STD     0     0     0     0     0     0     0     0     0     0     0   130     1     0     0     0     0     0  32768 5373952
+  STD     0     0     0     0     0     0     0     0     0     0     0   131     1     0     0     0     0     0  32768 5406720
+  STD     0     0     0     0     0     0     0     0     0     0     0   132     1     0     0     0     0     0  32768 5439488
+  STD     0     0     0     0     0     0     0     0     0     0     0   133     1     0     0     0     0     0  32768 5472256
+  STD     0     0     0     0     0     0     0     0     0     0     0   134     1     0     0     0     0     0  32768 5505024
+  STD     0     0     0     0     0     0     0     0     0     0     0   135     1     0     0     0     0     0  32768 5537792
+  STD     0     0     0     0     0     0     0     0     0     0     0   136     1     0     0     0     0     0  32768 5570560
+  STD     0     0     0     0     0     0     0     0     0     0     0   137     1     0     0     0     0     0  32768 5603328
+  STD     0     0     0     0     0     0     0     0     0     0     0   138     1     0     0     0     0     0  32768 5636096
+  STD     0     0     0     0     0     0     0     0     0     0     0   139     1     0     0     0     0     0  32768 5668864
+  STD     0     0     0     0     0     0     0     0     0     0     0   140     1     0     0     0     0     0  32768 5701632
+  STD     0     0     0     0     0     0     0     0     0     0     0   141     1     0     0     0     0     0  32768 5734400
+  STD     0     0     0     0     0     0     0     0     0     0     0   142     1     0     0     0     0     0  32768 5767168
+  STD     0     0     0     0     0     0     0     0     0     0     0   143     1     0     0     0     0     0  32768 5799936
+  STD     0     0     0     0     0     0     0     0     0     0     0   144     1     0     0     0     0     0  32768 5832704
+  STD     0     0     0     0     0     0     0     0     0     0     0   145     1     0     0     0     0     0  32768 5865472
+  STD     0     0     0     0     0     0     0     0     0     0     0   146     1     0     0     0     0     0  32768 5898240
+  STD     0     0     0     0     0     0     0     0     0     0     0   147     1     0     0     0     0     0  32768 5931008
+  STD     0     0     0     0     0     0     0     0     0     0     0   148     1     0     0     0     0     0  32768 5963776
+  STD     0     0     0     0     0     0     0     0     0     0     0   149     1     0     0     0     0     0  32768 5996544
+  STD     0     0     0     0     0     0     0     0     0     0     0   150     1     0     0     0     0     0  32768 6029312
+  STD     0     0     0     0     0     0     0     0     0     0     0   151     1     0     0     0     0     0  32768 6062080
+  STD     0     0     0     0     0     0     0     0     0     0     0   152     1     0     0     0     0     0  32768 6094848
+  STD     0     0     0     0     0     0     0     0     0     0     0   153     1     0     0     0     0     0  32768 6127616
+  STD     0     0     0     0     0     0     0     0     0     0     0   154     1     0     0     0     0     0  32768 6160384
+  STD     0     0     0     0     0     0     0     0     0     0     0   155     1     0     0     0     0     0  32768 6193152
+  STD     0     0     0     0     0     0     0     0     0     0     0   156     1     0     0     0     0     0  32768 6225920
+  STD     0     0     0     0     0     0     0     0     0     0     0   157     1     0     0     0     0     0  32768 6258688
+  STD     0     0     0     0     0     0     0     0     0     0     0   158     1     0     0     0     0     0  32768 6291456
+  STD     0     0     0     0     0     0     0     0     0     0     0   159     1     0     0     0     0     0  32768 6324224
+  STD     0     0     0     0     0     0     0     0     0     0     0   160     1     0     0     0     0     0  32768 6356992
+  STD     0     0     0     0     0     0     0     0     0     0     0   161     1     0     0     0     0     0  32768 6389760
+  STD     0     0     0     0     0     0     0     0     0     0     0   162     1     0     0     0     0     0  32768 6422528
+  STD     0     0     0     0     0     0     0     0     0     0     0   163     1     0     0     0     0     0  32768 6455296
+  STD     0     0     0     0     0     0     0     0     0     0     0   164     1     0     0     0     0     0  32768 6488064
+  STD     0     0     0     0     0     0     0     0     0     0     0   165     1     0     0     0     0     0  32768 6520832
+  STD     0     0     0     0     0     0     0     0     0     0     0   166     1     0     0     0     0     0  32768 6553600
+  STD     0     0     0     0     0     0     0     0     0     0     0   167     1     0     0     0     0     0  32768 6586368
+  STD     0     0     0     0     0     0     0     0     0     0     0   168     1     0     0     0     0     0  32768 6619136
+  STD     0     0     0     0     0     0     0     0     0     0     0   169     1     0     0     0     0     0  32768 6651904
+  STD     0     0     0     0     0     0     0     0     0     0     0   170     1     0     0     0     0     0  32768 6684672
+  STD     0     0     0     0     0     0     0     0     0     0     0   171     1     0     0     0     0     0  32768 6717440
+  STD     0     0     0     0     0     0     0     0     0     0     0   172     1     0     0     0     0     0  32768 6750208
+  STD     0     0     0     0     0     0     0     0     0     0     0   173     1     0     0     0     0     0  32768 6782976
+  STD     0     0     0     0     0     0     0     0     0     0     0   174     1     0     0     0     0     0  32768 6815744
+  STD     0     0     0     0     0     0     0     0     0     0     0   175     1     0     0     0     0     0  32768 6848512
+  STD     0     0     0     0     0     0     0     0     0     0     0   176     1     0     0     0     0     0  32768 6881280
+  STD     0     0     0     0     0     0     0     0     0     0     0   177     1     0     0     0     0     0  32768 6914048
+  STD     0     0     0     0     0     0     0     0     0     0     0   178     1     0     0     0     0     0  32768 6946816
+  STD     0     0     0     0     0     0     0     0     0     0     0   179     1     0     0     0     0     0  32768 6979584
+  STD     0     0     0     0     0     0     0     0     0     0     0   180     1     0     0     0     0     0  32768 7012352
+  STD     0     0     0     0     0     0     0     0     0     0     0   181     1     0     0     0     0     0  32768 7045120
+  STD     0     0     0     0     0     0     0     0     0     0     0   182     1     0     0     0     0     0  32768 7077888
+  STD     0     0     0     0     0     0     0     0     0     0     0   183     1     0     0     0     0     0  32768 7110656
+  STD     0     0     0     0     0     0     0     0     0     0     0   184     1     0     0     0     0     0  32768 7143424
+  STD     0     0     0     0     0     0     0     0     0     0     0   185     1     0     0     0     0     0  32768 7176192
+  STD     0     0     0     0     0     0     0     0     0     0     0   186     1     0     0     0     0     0  32768 7208960
+  STD     0     0     0     0     0     0     0     0     0     0     0   187     1     0     0     0     0     0  32768 7241728
+  STD     0     0     0     0     0     0     0     0     0     0     0   188     1     0     0     0     0     0  32768 7274496
+  STD     0     0     0     0     0     0     0     0     0     0     0   189     1     0     0     0     0     0  32768 7307264
+  STD     0     0     0     0     0     0     0     0     0     0     0   190     1     0     0     0     0     0  32768 7340032
+  STD     0     0     0     0     0     0     0     0     0     0     0   191     1     0     0     0     0     0  32768 7372800
+  STD     0     0     0     0     0     0     0     0     0     0     0   192     1     0     0     0     0     0  32768 7405568
+  STD     0     0     0     0     0     0     0     0     0     0     0   193     1     0     0     0     0     0  32768 7438336
+  STD     0     0     0     0     0     0     0     0     0     0     0   194     1     0     0     0     0     0  32768 7471104
+  STD     0     0     0     0     0     0     0     0     0     0     0   195     1     0     0     0     0     0  32768 7503872
+  STD     0     0     0     0     0     0     0     0     0     0     0   196     1     0     0     0     0     0  32768 7536640
+  STD     0     0     0     0     0     0     0     0     0     0     0   197     1     0     0     0     0     0  32768 7569408
+  STD     0     0     0     0     0     0     0     0     0     0     0   198     1     0     0     0     0     0  32768 7602176
+  STD     0     0     0     0     0     0     0     0     0     0     0   199     1     0     0     0     0     0  32768 7634944
+  STD     0     0     0     0     0     0     0     0     0     0     0   200     1     0     0     0     0     0  32768 7667712
+  STD     0     0     0     0     0     0     0     0     0     0     0   201     1     0     0     0     0     0  32768 7700480
+  STD     0     0     0     0     0     0     0     0     0     0     0   202     1     0     0     0     0     0  32768 7733248
+  STD     0     0     0     0     0     0     0     0     0     0     0   203     1     0     0     0     0     0  32768 7766016
+  STD     0     0     0     0     0     0     0     0     0     0     0   204     1     0     0     0     0     0  32768 7798784
+  STD     0     0     0     0     0     0     0     0     0     0     0   205     1     0     0     0     0     0  32768 7831552
+  STD     0     0     0     0     0     0     0     0     0     0     0   206     1     0     0     0     0     0  32768 7864320
+  STD     0     0     0     0     0     0     0     0     0     0     0   207     1     0     0     0     0     0  32768 7897088
+  STD     0     0     0     0     0     0     0     0     0     0     0   208     1     0     0     0     0     0  32768 7929856
+  STD     0     0     0     0     0     0     0     0     0     0     0   209     1     0     0     0     0     0  32768 7962624
+  STD     0     0     0     0     0     0     0     0     0     0     0   210     1     0     0     0     0     0  32768 7995392
+  STD     0     0     0     0     0     0     0     0     0     0     0   211     1     0     0     0     0     0  32768 8028160
+  STD     0     0     0     0     0     0     0     0     0     0     0   212     1     0     0     0     0     0  32768 8060928
+  STD     0     0     0     0     0     0     0     0     0     0     0   213     1     0     0     0     0     0  32768 8093696
+  STD     0     0     0     0     0     0     0     0     0     0     0   214     1     0     0     0     0     0  32768 8126464
+  STD     0     0     0     0     0     0     0     0     0     0     0   215     1     0     0     0     0     0  32768 8159232
+  STD     0     0     0     0     0     0     0     0     0     0     0   216     1     0     0     0     0     0  32768 8192000
+  STD     0     0     0     0     0     0     0     0     0     0     0   217     1     0     0     0     0     0  32768 8224768
+  STD     0     0     0     0     0     0     0     0     0     0     0   218     1     0     0     0     0     0  32768 8257536
+  STD     0     0     0     0     0     0     0     0     0     0     0   219     1     0     0     0     0     0  32768 8290304
+  STD     0     0     0     0     0     0     0     0     0     0     0   220     1     0     0     0     0     0  32768 8323072
+  STD     0     0     0     0     0     0     0     0     0     0     0   221     1     0     0     0     0     0  32768 8355840
+  STD     0     0     0     0     0     0     0     0     0     0     0   222     1     0     0     0     0     0  32768 8388608
+  STD     0     0     0     0     0     0     0     0     0     0     0   223     1     0     0     0     0     0  32768 8421376
+  STD     0     0     0     0     0     0     0     0     0     0     0   224     1     0     0     0     0     0  32768 8454144
+  STD     0     0     0     0     0     0     0     0     0     0     0   225     1     0     0     0     0     0  32768 8486912
+  STD     0     0     0     0     0     0     0     0     0     0     0   226     1     0     0     0     0     0  32768 8519680
+  STD     0     0     0     0     0     0     0     0     0     0     0   227     1     0     0     0     0     0  32768 8552448
+  STD     0     0     0     0     0     0     0     0     0     0     0   228     1     0     0     0     0     0  32768 8585216
+  STD     0     0     0     0     0     0     0     0     0     0     0   229     1     0     0     0     0     0  32768 8617984
+  STD     0     0     0     0     0     0     0     0     0     0     0   230     1     0     0     0     0     0  32768 8650752
+  STD     0     0     0     0     0     0     0     0     0     0     0   231     1     0     0     0     0     0  32768 8683520
+  STD     0     0     0     0     0     0     0     0     0     0     0   232     1     0     0     0     0     0  32768 8716288
+  STD     0     0     0     0     0     0     0     0     0     0     0   233     1     0     0     0     0     0  32768 8749056
+  STD     0     0     0     0     0     0     0     0     0     0     0   234     1     0     0     0     0     0  32768 8781824
+  STD     0     0     0     0     0     0     0     0     0     0     0   235     1     0     0     0     0     0  32768 8814592
+  STD     0     0     0     0     0     0     0     0     0     0     0   236     1     0     0     0     0     0  32768 8847360
+  STD     0     0     0     0     0     0     0     0     0     0     0   237     1     0     0     0     0     0  32768 8880128
+  STD     0     0     0     0     0     0     0     0     0     0     0   238     1     0     0     0     0     0  32768 8912896
+  STD     0     0     0     0     0     0     0     0     0     0     0   239     1     0     0     0     0     0  32768 8945664
+  STD     0     0     0     0     0     0     0     0     0     0     0   240     1     0     0     0     0     0  32768 8978432
+  STD     0     0     0     0     0     0     0     0     0     0     0   241     1     0     0     0     0     0  32768 9011200
+  STD     0     0     0     0     0     0     0     0     0     0     0   242     1     0     0     0     0     0  32768 9043968
+  STD     0     0     0     0     0     0     0     0     0     0     0   243     1     0     0     0     0     0  32768 9076736
+  STD     0     0     0     0     0     0     0     0     0     0     0   244     1     0     0     0     0     0  32768 9109504
+  STD     0     0     0     0     0     0     0     0     0     0     0   245     1     0     0     0     0     0  32768 9142272
+  STD     0     0     0     0     0     0     0     0     0     0     0   246     1     0     0     0     0     0  32768 9175040
+  STD     0     0     0     0     0     0     0     0     0     0     0   247     1     0     0     0     0     0  32768 9207808
+  STD     0     0     0     0     0     0     0     0     0     0     0   248     1     0     0     0     0     0  32768 9240576
+  STD     0     0     0     0     0     0     0     0     0     0     0   249     1     0     0     0     0     0  32768 9273344
+  STD     0     0     0     0     0     0     0     0     0     0     0   250     1     0     0     0     0     0  32768 9306112
+  STD     0     0     0     0     0     0     0     0     0     0     0   251     1     0     0     0     0     0  32768 9338880
+  STD     0     0     0     0     0     0     0     0     0     0     0   252     1     0     0     0     0     0  32768 9371648
+  STD     0     0     0     0     0     0     0     0     0     0     0   253     1     0     0     0     0     0  32768 9404416
+  STD     0     0     0     0     0     0     0     0     0     0     0   254     1     0     0     0     0     0  32768 9437184
+  STD     0     0     0     0     0     0     0     0     0     0     0   255     1     0     0     0     0     0  32768 9469952
+  STD     0     0     0     0     0     0     0     0     0     0     0   256     1     0     0     0     0     0  32768 9502720
+  STD     0     0     0     0     0     0     0     0     0     0     0   257     1     0     0     0     0     0  32768 9535488
+  STD     0     0     0     0     0     0     0     0     0     0     0   258     1     0     0     0     0     0  32768 9568256
+  STD     0     0     0     0     0     0     0     0     0     0     0   259     1     0     0     0     0     0  32768 9601024
+  STD     0     0     0     0     0     0     0     0     0     0     0   260     1     0     0     0     0     0  32768 9633792
+  STD     0     0     0     0     0     0     0     0     0     0     0   261     1     0     0     0     0     0  32768 9666560
+  STD     0     0     0     0     0     0     0     0     0     0     0   262     1     0     0     0     0     0  32768 9699328
+  STD     0     0     0     0     0     0     0     0     0     0     0   263     1     0     0     0     0     0  32768 9732096
+  STD     0     0     0     0     0     0     0     0     0     0     0   264     1     0     0     0     0     0  32768 9764864
+  STD     0     0     0     0     0     0     0     0     0     0     0   265     1     0     0     0     0     0  32768 9797632
+  STD     0     0     0     0     0     0     0     0     0     0     0   266     1     0     0     0     0     0  32768 9830400
+  STD     0     0     0     0     0     0     0     0     0     0     0   267     1     0     0     0     0     0  32768 9863168
+  STD     0     0     0     0     0     0     0     0     0     0     0   268     1     0     0     0     0     0  32768 9895936
+  STD     0     0     0     0     0     0     0     0     0     0     0   269     1     0     0     0     0     0  32768 9928704
+  STD     0     0     0     0     0     0     0     0     0     0     0   270     1     0     0     0     0     0  32768 9961472
+  STD     0     0     0     0     0     0     0     0     0     0     0   271     1     0     0     0     0     0  32768 9994240
+  STD     1     0     0     0     0     0     1     0     0     0     0     0     1     0     0     0     0     0  32768 10027008
+  STD     1     0     0     0     0     0     1     0     0     0     0     1     1     0     0     0     0     0  32768 10059776
+  STD     0     0     0     0     0     0     1     0     0     0     0     0     1     0     0     0     0     0  32768 10092544
+  STD     0     0     0     0     0     0     1     0     0     0     0     1     1     0     0     0     0     0  32768 10125312
+  STD     0     0     0     0     0     0     1     0     0     0     0     2     1     0     0     0     0     0  32768 10158080
+  STD     0     0     0     0     0     0     1     0     0     0     0     3     1     0     0     0     0     0  32768 10190848
+  STD     0     0     0     0     0     0     1     0     0     0     0     4     1     0     0     0     0     0  32768 10223616
+  STD     0     0     0     0     0     0     1     0     0     0     0     5     1     0     0     0     0     0  32768 10256384
+  STD     0     0     0     0     0     0     1     0     0     0     0     6     1     0     0     0     0     0  32768 10289152
+  STD     0     0     0     0     0     0     1     0     0     0     0     7     1     0     0     0     0     0  32768 10321920
+  STD     0     0     0     0     0     0     1     0     0     0     0     8     1     0     0     0     0     0  32768 10354688
+  STD     0     0     0     0     0     0     1     0     0     0     0     9     1     0     0     0     0     0  32768 10387456
+  STD     0     0     0     0     0     0     1     0     0     0     0    10     1     0     0     0     0     0  32768 10420224
+  STD     0     0     0     0     0     0     1     0     0     0     0    11     1     0     0     0     0     0  32768 10452992
+  STD     0     0     0     0     0     0     1     0     0     0     0    12     1     0     0     0     0     0  32768 10485760
+  STD     0     0     0     0     0     0     1     0     0     0     0    13     1     0     0     0     0     0  32768 10518528
+  STD     0     0     0     0     0     0     1     0     0     0     0    14     1     0     0     0     0     0  32768 10551296
+  STD     0     0     0     0     0     0     1     0     0     0     0    15     1     0     0     0     0     0  32768 10584064
+  STD     0     0     0     0     0     0     1     0     0     0     0    16     1     0     0     0     0     0  32768 10616832
+  STD     0     0     0     0     0     0     1     0     0     0     0    17     1     0     0     0     0     0  32768 10649600
+  STD     0     0     0     0     0     0     1     0     0     0     0    18     1     0     0     0     0     0  32768 10682368
+  STD     0     0     0     0     0     0     1     0     0     0     0    19     1     0     0     0     0     0  32768 10715136
+  STD     0     0     0     0     0     0     1     0     0     0     0    20     1     0     0     0     0     0  32768 10747904
+  STD     0     0     0     0     0     0     1     0     0     0     0    21     1     0     0     0     0     0  32768 10780672
+  STD     0     0     0     0     0     0     1     0     0     0     0    22     1     0     0     0     0     0  32768 10813440
+  STD     0     0     0     0     0     0     1     0     0     0     0    23     1     0     0     0     0     0  32768 10846208
+  STD     0     0     0     0     0     0     1     0     0     0     0    24     1     0     0     0     0     0  32768 10878976
+  STD     0     0     0     0     0     0     1     0     0     0     0    25     1     0     0     0     0     0  32768 10911744
+  STD     0     0     0     0     0     0     1     0     0     0     0    26     1     0     0     0     0     0  32768 10944512
+  STD     0     0     0     0     0     0     1     0     0     0     0    27     1     0     0     0     0     0  32768 10977280
+  STD     0     0     0     0     0     0     1     0     0     0     0    28     1     0     0     0     0     0  32768 11010048
+  STD     0     0     0     0     0     0     1     0     0     0     0    29     1     0     0     0     0     0  32768 11042816
+  STD     0     0     0     0     0     0     1     0     0     0     0    30     1     0     0     0     0     0  32768 11075584
+  STD     0     0     0     0     0     0     1     0     0     0     0    31     1     0     0     0     0     0  32768 11108352
+  STD     0     0     0     0     0     0     1     0     0     0     0    32     1     0     0     0     0     0  32768 11141120
+  STD     0     0     0     0     0     0     1     0     0     0     0    33     1     0     0     0     0     0  32768 11173888
+  STD     0     0     0     0     0     0     1     0     0     0     0    34     1     0     0     0     0     0  32768 11206656
+  STD     0     0     0     0     0     0     1     0     0     0     0    35     1     0     0     0     0     0  32768 11239424
+  STD     0     0     0     0     0     0     1     0     0     0     0    36     1     0     0     0     0     0  32768 11272192
+  STD     0     0     0     0     0     0     1     0     0     0     0    37     1     0     0     0     0     0  32768 11304960
+  STD     0     0     0     0     0     0     1     0     0     0     0    38     1     0     0     0     0     0  32768 11337728
+  STD     0     0     0     0     0     0     1     0     0     0     0    39     1     0     0     0     0     0  32768 11370496
+  STD     0     0     0     0     0     0     1     0     0     0     0    40     1     0     0     0     0     0  32768 11403264
+  STD     0     0     0     0     0     0     1     0     0     0     0    41     1     0     0     0     0     0  32768 11436032
+  STD     0     0     0     0     0     0     1     0     0     0     0    42     1     0     0     0     0     0  32768 11468800
+  STD     0     0     0     0     0     0     1     0     0     0     0    43     1     0     0     0     0     0  32768 11501568
+  STD     0     0     0     0     0     0     1     0     0     0     0    44     1     0     0     0     0     0  32768 11534336
+  STD     0     0     0     0     0     0     1     0     0     0     0    45     1     0     0     0     0     0  32768 11567104
+  STD     0     0     0     0     0     0     1     0     0     0     0    46     1     0     0     0     0     0  32768 11599872
+  STD     0     0     0     0     0     0     1     0     0     0     0    47     1     0     0     0     0     0  32768 11632640
+  STD     0     0     0     0     0     0     1     0     0     0     0    48     1     0     0     0     0     0  32768 11665408
+  STD     0     0     0     0     0     0     1     0     0     0     0    49     1     0     0     0     0     0  32768 11698176
+  STD     0     0     0     0     0     0     1     0     0     0     0    50     1     0     0     0     0     0  32768 11730944
+  STD     0     0     0     0     0     0     1     0     0     0     0    51     1     0     0     0     0     0  32768 11763712
+  STD     0     0     0     0     0     0     1     0     0     0     0    52     1     0     0     0     0     0  32768 11796480
+  STD     0     0     0     0     0     0     1     0     0     0     0    53     1     0     0     0     0     0  32768 11829248
+  STD     0     0     0     0     0     0     1     0     0     0     0    54     1     0     0     0     0     0  32768 11862016
+  STD     0     0     0     0     0     0     1     0     0     0     0    55     1     0     0     0     0     0  32768 11894784
+  STD     0     0     0     0     0     0     1     0     0     0     0    56     1     0     0     0     0     0  32768 11927552
+  STD     0     0     0     0     0     0     1     0     0     0     0    57     1     0     0     0     0     0  32768 11960320
+  STD     0     0     0     0     0     0     1     0     0     0     0    58     1     0     0     0     0     0  32768 11993088
+  STD     0     0     0     0     0     0     1     0     0     0     0    59     1     0     0     0     0     0  32768 12025856
+  STD     0     0     0     0     0     0     1     0     0     0     0    60     1     0     0     0     0     0  32768 12058624
+  STD     0     0     0     0     0     0     1     0     0     0     0    61     1     0     0     0     0     0  32768 12091392
+  STD     0     0     0     0     0     0     1     0     0     0     0    62     1     0     0     0     0     0  32768 12124160
+  STD     0     0     0     0     0     0     1     0     0     0     0    63     1     0     0     0     0     0  32768 12156928
+  STD     0     0     0     0     0     0     1     0     0     0     0    64     1     0     0     0     0     0  32768 12189696
+  STD     0     0     0     0     0     0     1     0     0     0     0    65     1     0     0     0     0     0  32768 12222464
+  STD     0     0     0     0     0     0     1     0     0     0     0    66     1     0     0     0     0     0  32768 12255232
+  STD     0     0     0     0     0     0     1     0     0     0     0    67     1     0     0     0     0     0  32768 12288000
+  STD     0     0     0     0     0     0     1     0     0     0     0    68     1     0     0     0     0     0  32768 12320768
+  STD     0     0     0     0     0     0     1     0     0     0     0    69     1     0     0     0     0     0  32768 12353536
+  STD     0     0     0     0     0     0     1     0     0     0     0    70     1     0     0     0     0     0  32768 12386304
+  STD     0     0     0     0     0     0     1     0     0     0     0    71     1     0     0     0     0     0  32768 12419072
+  STD     0     0     0     0     0     0     1     0     0     0     0    72     1     0     0     0     0     0  32768 12451840
+  STD     0     0     0     0     0     0     1     0     0     0     0    73     1     0     0     0     0     0  32768 12484608
+  STD     0     0     0     0     0     0     1     0     0     0     0    74     1     0     0     0     0     0  32768 12517376
+  STD     0     0     0     0     0     0     1     0     0     0     0    75     1     0     0     0     0     0  32768 12550144
+  STD     0     0     0     0     0     0     1     0     0     0     0    76     1     0     0     0     0     0  32768 12582912
+  STD     0     0     0     0     0     0     1     0     0     0     0    77     1     0     0     0     0     0  32768 12615680
+  STD     0     0     0     0     0     0     1     0     0     0     0    78     1     0     0     0     0     0  32768 12648448
+  STD     0     0     0     0     0     0     1     0     0     0     0    79     1     0     0     0     0     0  32768 12681216
+  STD     0     0     0     0     0     0     1     0     0     0     0    80     1     0     0     0     0     0  32768 12713984
+  STD     0     0     0     0     0     0     1     0     0     0     0    81     1     0     0     0     0     0  32768 12746752
+  STD     0     0     0     0     0     0     1     0     0     0     0    82     1     0     0     0     0     0  32768 12779520
+  STD     0     0     0     0     0     0     1     0     0     0     0    83     1     0     0     0     0     0  32768 12812288
+  STD     0     0     0     0     0     0     1     0     0     0     0    84     1     0     0     0     0     0  32768 12845056
+  STD     0     0     0     0     0     0     1     0     0     0     0    85     1     0     0     0     0     0  32768 12877824
+  STD     0     0     0     0     0     0     1     0     0     0     0    86     1     0     0     0     0     0  32768 12910592
+  STD     0     0     0     0     0     0     1     0     0     0     0    87     1     0     0     0     0     0  32768 12943360
+  STD     0     0     0     0     0     0     1     0     0     0     0    88     1     0     0     0     0     0  32768 12976128
+  STD     0     0     0     0     0     0     1     0     0     0     0    89     1     0     0     0     0     0  32768 13008896
+  STD     0     0     0     0     0     0     1     0     0     0     0    90     1     0     0     0     0     0  32768 13041664
+  STD     0     0     0     0     0     0     1     0     0     0     0    91     1     0     0     0     0     0  32768 13074432
+  STD     0     0     0     0     0     0     1     0     0     0     0    92     1     0     0     0     0     0  32768 13107200
+  STD     0     0     0     0     0     0     1     0     0     0     0    93     1     0     0     0     0     0  32768 13139968
+  STD     0     0     0     0     0     0     1     0     0     0     0    94     1     0     0     0     0     0  32768 13172736
+  STD     0     0     0     0     0     0     1     0     0     0     0    95     1     0     0     0     0     0  32768 13205504
+  STD     0     0     0     0     0     0     1     0     0     0     0    96     1     0     0     0     0     0  32768 13238272
+  STD     0     0     0     0     0     0     1     0     0     0     0    97     1     0     0     0     0     0  32768 13271040
+  STD     0     0     0     0     0     0     1     0     0     0     0    98     1     0     0     0     0     0  32768 13303808
+  STD     0     0     0     0     0     0     1     0     0     0     0    99     1     0     0     0     0     0  32768 13336576
+  STD     0     0     0     0     0     0     1     0     0     0     0   100     1     0     0     0     0     0  32768 13369344
+  STD     0     0     0     0     0     0     1     0     0     0     0   101     1     0     0     0     0     0  32768 13402112
+  STD     0     0     0     0     0     0     1     0     0     0     0   102     1     0     0     0     0     0  32768 13434880
+  STD     0     0     0     0     0     0     1     0     0     0     0   103     1     0     0     0     0     0  32768 13467648
+  STD     0     0     0     0     0     0     1     0     0     0     0   104     1     0     0     0     0     0  32768 13500416
+  STD     0     0     0     0     0     0     1     0     0     0     0   105     1     0     0     0     0     0  32768 13533184
+  STD     0     0     0     0     0     0     1     0     0     0     0   106     1     0     0     0     0     0  32768 13565952
+  STD     0     0     0     0     0     0     1     0     0     0     0   107     1     0     0     0     0     0  32768 13598720
+  STD     0     0     0     0     0     0     1     0     0     0     0   108     1     0     0     0     0     0  32768 13631488
+  STD     0     0     0     0     0     0     1     0     0     0     0   109     1     0     0     0     0     0  32768 13664256
+  STD     0     0     0     0     0     0     1     0     0     0     0   110     1     0     0     0     0     0  32768 13697024
+  STD     0     0     0     0     0     0     1     0     0     0     0   111     1     0     0     0     0     0  32768 13729792
+  STD     0     0     0     0     0     0     1     0     0     0     0   112     1     0     0     0     0     0  32768 13762560
+  STD     0     0     0     0     0     0     1     0     0     0     0   113     1     0     0     0     0     0  32768 13795328
+  STD     0     0     0     0     0     0     1     0     0     0     0   114     1     0     0     0     0     0  32768 13828096
+  STD     0     0     0     0     0     0     1     0     0     0     0   115     1     0     0     0     0     0  32768 13860864
+  STD     0     0     0     0     0     0     1     0     0     0     0   116     1     0     0     0     0     0  32768 13893632
+  STD     0     0     0     0     0     0     1     0     0     0     0   117     1     0     0     0     0     0  32768 13926400
+  STD     0     0     0     0     0     0     1     0     0     0     0   118     1     0     0     0     0     0  32768 13959168
+  STD     0     0     0     0     0     0     1     0     0     0     0   119     1     0     0     0     0     0  32768 13991936
+  STD     0     0     0     0     0     0     1     0     0     0     0   120     1     0     0     0     0     0  32768 14024704
+  STD     0     0     0     0     0     0     1     0     0     0     0   121     1     0     0     0     0     0  32768 14057472
+  STD     0     0     0     0     0     0     1     0     0     0     0   122     1     0     0     0     0     0  32768 14090240
+  STD     0     0     0     0     0     0     1     0     0     0     0   123     1     0     0     0     0     0  32768 14123008
+  STD     0     0     0     0     0     0     1     0     0     0     0   124     1     0     0     0     0     0  32768 14155776
+  STD     0     0     0     0     0     0     1     0     0     0     0   125     1     0     0     0     0     0  32768 14188544
+  STD     0     0     0     0     0     0     1     0     0     0     0   126     1     0     0     0     0     0  32768 14221312
+  STD     0     0     0     0     0     0     1     0     0     0     0   127     1     0     0     0     0     0  32768 14254080
+  STD     0     0     0     0     0     0     1     0     0     0     0   128     1     0     0     0     0     0  32768 14286848
+  STD     0     0     0     0     0     0     1     0     0     0     0   129     1     0     0     0     0     0  32768 14319616
+  STD     0     0     0     0     0     0     1     0     0     0     0   130     1     0     0     0     0     0  32768 14352384
+  STD     0     0     0     0     0     0     1     0     0     0     0   131     1     0     0     0     0     0  32768 14385152
+  STD     0     0     0     0     0     0     1     0     0     0     0   132     1     0     0     0     0     0  32768 14417920
+  STD     0     0     0     0     0     0     1     0     0     0     0   133     1     0     0     0     0     0  32768 14450688
+  STD     0     0     0     0     0     0     1     0     0     0     0   134     1     0     0     0     0     0  32768 14483456
+  STD     0     0     0     0     0     0     1     0     0     0     0   135     1     0     0     0     0     0  32768 14516224
+  STD     0     0     0     0     0     0     1     0     0     0     0   136     1     0     0     0     0     0  32768 14548992
+  STD     0     0     0     0     0     0     1     0     0     0     0   137     1     0     0     0     0     0  32768 14581760
+  STD     0     0     0     0     0     0     1     0     0     0     0   138     1     0     0     0     0     0  32768 14614528
+  STD     0     0     0     0     0     0     1     0     0     0     0   139     1     0     0     0     0     0  32768 14647296
+  STD     0     0     0     0     0     0     1     0     0     0     0   140     1     0     0     0     0     0  32768 14680064
+  STD     0     0     0     0     0     0     1     0     0     0     0   141     1     0     0     0     0     0  32768 14712832
+  STD     0     0     0     0     0     0     1     0     0     0     0   142     1     0     0     0     0     0  32768 14745600
+  STD     0     0     0     0     0     0     1     0     0     0     0   143     1     0     0     0     0     0  32768 14778368
+  STD     0     0     0     0     0     0     1     0     0     0     0   144     1     0     0     0     0     0  32768 14811136
+  STD     0     0     0     0     0     0     1     0     0     0     0   145     1     0     0     0     0     0  32768 14843904
+  STD     0     0     0     0     0     0     1     0     0     0     0   146     1     0     0     0     0     0  32768 14876672
+  STD     0     0     0     0     0     0     1     0     0     0     0   147     1     0     0     0     0     0  32768 14909440
+  STD     0     0     0     0     0     0     1     0     0     0     0   148     1     0     0     0     0     0  32768 14942208
+  STD     0     0     0     0     0     0     1     0     0     0     0   149     1     0     0     0     0     0  32768 14974976
+  STD     0     0     0     0     0     0     1     0     0     0     0   150     1     0     0     0     0     0  32768 15007744
+  STD     0     0     0     0     0     0     1     0     0     0     0   151     1     0     0     0     0     0  32768 15040512
+  STD     0     0     0     0     0     0     1     0     0     0     0   152     1     0     0     0     0     0  32768 15073280
+  STD     0     0     0     0     0     0     1     0     0     0     0   153     1     0     0     0     0     0  32768 15106048
+  STD     0     0     0     0     0     0     1     0     0     0     0   154     1     0     0     0     0     0  32768 15138816
+  STD     0     0     0     0     0     0     1     0     0     0     0   155     1     0     0     0     0     0  32768 15171584
+  STD     0     0     0     0     0     0     1     0     0     0     0   156     1     0     0     0     0     0  32768 15204352
+  STD     0     0     0     0     0     0     1     0     0     0     0   157     1     0     0     0     0     0  32768 15237120
+  STD     0     0     0     0     0     0     1     0     0     0     0   158     1     0     0     0     0     0  32768 15269888
+  STD     0     0     0     0     0     0     1     0     0     0     0   159     1     0     0     0     0     0  32768 15302656
+  STD     0     0     0     0     0     0     1     0     0     0     0   160     1     0     0     0     0     0  32768 15335424
+  STD     0     0     0     0     0     0     1     0     0     0     0   161     1     0     0     0     0     0  32768 15368192
+  STD     0     0     0     0     0     0     1     0     0     0     0   162     1     0     0     0     0     0  32768 15400960
+  STD     0     0     0     0     0     0     1     0     0     0     0   163     1     0     0     0     0     0  32768 15433728
+  STD     0     0     0     0     0     0     1     0     0     0     0   164     1     0     0     0     0     0  32768 15466496
+  STD     0     0     0     0     0     0     1     0     0     0     0   165     1     0     0     0     0     0  32768 15499264
+  STD     0     0     0     0     0     0     1     0     0     0     0   166     1     0     0     0     0     0  32768 15532032
+  STD     0     0     0     0     0     0     1     0     0     0     0   167     1     0     0     0     0     0  32768 15564800
+  STD     0     0     0     0     0     0     1     0     0     0     0   168     1     0     0     0     0     0  32768 15597568
+  STD     0     0     0     0     0     0     1     0     0     0     0   169     1     0     0     0     0     0  32768 15630336
+  STD     0     0     0     0     0     0     1     0     0     0     0   170     1     0     0     0     0     0  32768 15663104
+  STD     0     0     0     0     0     0     1     0     0     0     0   171     1     0     0     0     0     0  32768 15695872
+  STD     0     0     0     0     0     0     1     0     0     0     0   172     1     0     0     0     0     0  32768 15728640
+  STD     0     0     0     0     0     0     1     0     0     0     0   173     1     0     0     0     0     0  32768 15761408
+  STD     0     0     0     0     0     0     1     0     0     0     0   174     1     0     0     0     0     0  32768 15794176
+  STD     0     0     0     0     0     0     1     0     0     0     0   175     1     0     0     0     0     0  32768 15826944
+  STD     0     0     0     0     0     0     1     0     0     0     0   176     1     0     0     0     0     0  32768 15859712
+  STD     0     0     0     0     0     0     1     0     0     0     0   177     1     0     0     0     0     0  32768 15892480
+  STD     0     0     0     0     0     0     1     0     0     0     0   178     1     0     0     0     0     0  32768 15925248
+  STD     0     0     0     0     0     0     1     0     0     0     0   179     1     0     0     0     0     0  32768 15958016
+  STD     0     0     0     0     0     0     1     0     0     0     0   180     1     0     0     0     0     0  32768 15990784
+  STD     0     0     0     0     0     0     1     0     0     0     0   181     1     0     0     0     0     0  32768 16023552
+  STD     0     0     0     0     0     0     1     0     0     0     0   182     1     0     0     0     0     0  32768 16056320
+  STD     0     0     0     0     0     0     1     0     0     0     0   183     1     0     0     0     0     0  32768 16089088
+  STD     0     0     0     0     0     0     1     0     0     0     0   184     1     0     0     0     0     0  32768 16121856
+  STD     0     0     0     0     0     0     1     0     0     0     0   185     1     0     0     0     0     0  32768 16154624
+  STD     0     0     0     0     0     0     1     0     0     0     0   186     1     0     0     0     0     0  32768 16187392
+  STD     0     0     0     0     0     0     1     0     0     0     0   187     1     0     0     0     0     0  32768 16220160
+  STD     0     0     0     0     0     0     1     0     0     0     0   188     1     0     0     0     0     0  32768 16252928
+  STD     0     0     0     0     0     0     1     0     0     0     0   189     1     0     0     0     0     0  32768 16285696
+  STD     0     0     0     0     0     0     1     0     0     0     0   190     1     0     0     0     0     0  32768 16318464
+  STD     0     0     0     0     0     0     1     0     0     0     0   191     1     0     0     0     0     0  32768 16351232
+  STD     0     0     0     0     0     0     1     0     0     0     0   192     1     0     0     0     0     0  32768 16384000
+  STD     0     0     0     0     0     0     1     0     0     0     0   193     1     0     0     0     0     0  32768 16416768
+  STD     0     0     0     0     0     0     1     0     0     0     0   194     1     0     0     0     0     0  32768 16449536
+  STD     0     0     0     0     0     0     1     0     0     0     0   195     1     0     0     0     0     0  32768 16482304
+  STD     0     0     0     0     0     0     1     0     0     0     0   196     1     0     0     0     0     0  32768 16515072
+  STD     0     0     0     0     0     0     1     0     0     0     0   197     1     0     0     0     0     0  32768 16547840
+  STD     0     0     0     0     0     0     1     0     0     0     0   198     1     0     0     0     0     0  32768 16580608
+  STD     0     0     0     0     0     0     1     0     0     0     0   199     1     0     0     0     0     0  32768 16613376
+  STD     0     0     0     0     0     0     1     0     0     0     0   200     1     0     0     0     0     0  32768 16646144
+  STD     0     0     0     0     0     0     1     0     0     0     0   201     1     0     0     0     0     0  32768 16678912
+  STD     0     0     0     0     0     0     1     0     0     0     0   202     1     0     0     0     0     0  32768 16711680
+  STD     0     0     0     0     0     0     1     0     0     0     0   203     1     0     0     0     0     0  32768 16744448
+  STD     0     0     0     0     0     0     1     0     0     0     0   204     1     0     0     0     0     0  32768 16777216
+  STD     0     0     0     0     0     0     1     0     0     0     0   205     1     0     0     0     0     0  32768 16809984
+  STD     0     0     0     0     0     0     1     0     0     0     0   206     1     0     0     0     0     0  32768 16842752
+  STD     0     0     0     0     0     0     1     0     0     0     0   207     1     0     0     0     0     0  32768 16875520
+  STD     0     0     0     0     0     0     1     0     0     0     0   208     1     0     0     0     0     0  32768 16908288
+  STD     0     0     0     0     0     0     1     0     0     0     0   209     1     0     0     0     0     0  32768 16941056
+  STD     0     0     0     0     0     0     1     0     0     0     0   210     1     0     0     0     0     0  32768 16973824
+  STD     0     0     0     0     0     0     1     0     0     0     0   211     1     0     0     0     0     0  32768 17006592
+  STD     0     0     0     0     0     0     1     0     0     0     0   212     1     0     0     0     0     0  32768 17039360
+  STD     0     0     0     0     0     0     1     0     0     0     0   213     1     0     0     0     0     0  32768 17072128
+  STD     0     0     0     0     0     0     1     0     0     0     0   214     1     0     0     0     0     0  32768 17104896
+  STD     0     0     0     0     0     0     1     0     0     0     0   215     1     0     0     0     0     0  32768 17137664
+  STD     0     0     0     0     0     0     1     0     0     0     0   216     1     0     0     0     0     0  32768 17170432
+  STD     0     0     0     0     0     0     1     0     0     0     0   217     1     0     0     0     0     0  32768 17203200
+  STD     0     0     0     0     0     0     1     0     0     0     0   218     1     0     0     0     0     0  32768 17235968
+  STD     0     0     0     0     0     0     1     0     0     0     0   219     1     0     0     0     0     0  32768 17268736
+  STD     0     0     0     0     0     0     1     0     0     0     0   220     1     0     0     0     0     0  32768 17301504
+  STD     0     0     0     0     0     0     1     0     0     0     0   221     1     0     0     0     0     0  32768 17334272
+  STD     0     0     0     0     0     0     1     0     0     0     0   222     1     0     0     0     0     0  32768 17367040
+  STD     0     0     0     0     0     0     1     0     0     0     0   223     1     0     0     0     0     0  32768 17399808
+  STD     0     0     0     0     0     0     1     0     0     0     0   224     1     0     0     0     0     0  32768 17432576
+  STD     0     0     0     0     0     0     1     0     0     0     0   225     1     0     0     0     0     0  32768 17465344
+  STD     0     0     0     0     0     0     1     0     0     0     0   226     1     0     0     0     0     0  32768 17498112
+  STD     0     0     0     0     0     0     1     0     0     0     0   227     1     0     0     0     0     0  32768 17530880
+  STD     0     0     0     0     0     0     1     0     0     0     0   228     1     0     0     0     0     0  32768 17563648
+  STD     0     0     0     0     0     0     1     0     0     0     0   229     1     0     0     0     0     0  32768 17596416
+  STD     0     0     0     0     0     0     1     0     0     0     0   230     1     0     0     0     0     0  32768 17629184
+  STD     0     0     0     0     0     0     1     0     0     0     0   231     1     0     0     0     0     0  32768 17661952
+  STD     0     0     0     0     0     0     1     0     0     0     0   232     1     0     0     0     0     0  32768 17694720
+  STD     0     0     0     0     0     0     1     0     0     0     0   233     1     0     0     0     0     0  32768 17727488
+  STD     0     0     0     0     0     0     1     0     0     0     0   234     1     0     0     0     0     0  32768 17760256
+  STD     0     0     0     0     0     0     1     0     0     0     0   235     1     0     0     0     0     0  32768 17793024
+  STD     0     0     0     0     0     0     1     0     0     0     0   236     1     0     0     0     0     0  32768 17825792
+  STD     0     0     0     0     0     0     1     0     0     0     0   237     1     0     0     0     0     0  32768 17858560
+  STD     0     0     0     0     0     0     1     0     0     0     0   238     1     0     0     0     0     0  32768 17891328
+  STD     0     0     0     0     0     0     1     0     0     0     0   239     1     0     0     0     0     0  32768 17924096
+  STD     0     0     0     0     0     0     1     0     0     0     0   240     1     0     0     0     0     0  32768 17956864
+  STD     0     0     0     0     0     0     1     0     0     0     0   241     1     0     0     0     0     0  32768 17989632
+  STD     0     0     0     0     0     0     1     0     0     0     0   242     1     0     0     0     0     0  32768 18022400
+  STD     0     0     0     0     0     0     1     0     0     0     0   243     1     0     0     0     0     0  32768 18055168
+  STD     0     0     0     0     0     0     1     0     0     0     0   244     1     0     0     0     0     0  32768 18087936
+  STD     0     0     0     0     0     0     1     0     0     0     0   245     1     0     0     0     0     0  32768 18120704
+  STD     0     0     0     0     0     0     1     0     0     0     0   246     1     0     0     0     0     0  32768 18153472
+  STD     0     0     0     0     0     0     1     0     0     0     0   247     1     0     0     0     0     0  32768 18186240
+  STD     0     0     0     0     0     0     1     0     0     0     0   248     1     0     0     0     0     0  32768 18219008
+  STD     0     0     0     0     0     0     1     0     0     0     0   249     1     0     0     0     0     0  32768 18251776
+  STD     0     0     0     0     0     0     1     0     0     0     0   250     1     0     0     0     0     0  32768 18284544
+  STD     0     0     0     0     0     0     1     0     0     0     0   251     1     0     0     0     0     0  32768 18317312
+  STD     0     0     0     0     0     0     1     0     0     0     0   252     1     0     0     0     0     0  32768 18350080
+  STD     0     0     0     0     0     0     1     0     0     0     0   253     1     0     0     0     0     0  32768 18382848
+  STD     0     0     0     0     0     0     1     0     0     0     0   254     1     0     0     0     0     0  32768 18415616
+  STD     0     0     0     0     0     0     1     0     0     0     0   255     1     0     0     0     0     0  32768 18448384
+  STD     0     0     0     0     0     0     1     0     0     0     0   256     1     0     0     0     0     0  32768 18481152
+  STD     0     0     0     0     0     0     1     0     0     0     0   257     1     0     0     0     0     0  32768 18513920
+  STD     0     0     0     0     0     0     1     0     0     0     0   258     1     0     0     0     0     0  32768 18546688
+  STD     0     0     0     0     0     0     1     0     0     0     0   259     1     0     0     0     0     0  32768 18579456
+  STD     0     0     0     0     0     0     1     0     0     0     0   260     1     0     0     0     0     0  32768 18612224
+  STD     0     0     0     0     0     0     1     0     0     0     0   261     1     0     0     0     0     0  32768 18644992
+  STD     0     0     0     0     0     0     1     0     0     0     0   262     1     0     0     0     0     0  32768 18677760
+  STD     0     0     0     0     0     0     1     0     0     0     0   263     1     0     0     0     0     0  32768 18710528
+  STD     0     0     0     0     0     0     1     0     0     0     0   264     1     0     0     0     0     0  32768 18743296
+  STD     0     0     0     0     0     0     1     0     0     0     0   265     1     0     0     0     0     0  32768 18776064
+  STD     0     0     0     0     0     0     1     0     0     0     0   266     1     0     0     0     0     0  32768 18808832
+  STD     0     0     0     0     0     0     1     0     0     0     0   267     1     0     0     0     0     0  32768 18841600
+  STD     0     0     0     0     0     0     1     0     0     0     0   268     1     0     0     0     0     0  32768 18874368
+  STD     0     0     0     0     0     0     1     0     0     0     0   269     1     0     0     0     0     0  32768 18907136
+  STD     0     0     0     0     0     0     1     0     0     0     0   270     1     0     0     0     0     0  32768 18939904
+  STD     0     0     0     0     0     0     1     0     0     0     0   271     1     0     0     0     0     0  32768 18972672
+#
+# === END OF DATA VECTOR INDEX ===================================================
+#
+# mix  echo loca  linear phase errors                  value
+# ---- ---- ----  ----------------------------------   ---------
+.    0    0    0  0th_order_phase_error_F            :    0.0000
+.    0    0    0  1st_order_phase_error_F            :    0.0000
+.    1    0    0  0th_order_phase_error_F            :    0.0000
+.    1    0    0  1st_order_phase_error_F            :    0.0000
+#
+# === END OF DATA DESCRIPTION FILE ===============================================

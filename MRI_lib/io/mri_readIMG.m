@@ -26,7 +26,7 @@ function data = mri_readIMG( fileName )
     end
     
     info=mri_readHDR( [name,'.hdr'] );
-    
+    % read in
     if all(info.ByteOrder == 'ieee-be')
         m='b';
     else
@@ -38,5 +38,6 @@ function data = mri_readIMG( fileName )
 	fclose(fid);
         
     data=reshape(data,info.Dimensions(1),info.Dimensions(2),info.Dimensions(3),[]);
+    
 end
 

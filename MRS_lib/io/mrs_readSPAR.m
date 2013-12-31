@@ -37,6 +37,7 @@ function info = mrs_readSPAR( fileName )
         tf_ind = strfind(line,'synthesizer_frequency'); 
         bw_ind = strfind(line, 'sample_frequency');
         te_ind=strfind(line, 'echo_time');
+        tr_ind=strfind(line,'repetition_time');
         avg_ind = strfind(line, 'averages');
 
         ap_size_ind = strfind(line,'ap_size');
@@ -69,6 +70,10 @@ function info = mrs_readSPAR( fileName )
         elseif ~isempty(te_ind) % TE (echo time)
             str_temp = textscan(line, '%s', 'delimiter', ' ');
             info.TE = str2double(str_temp{1}{3});  
+            
+        elseif ~isempty(tr_ind) % TE (echo time)
+            str_temp = textscan(line, '%s', 'delimiter', ' ');
+            info.TR = str2double(str_temp{1}{3});  
             
         elseif ~isempty(avg_ind) % number of spectra averaged over  
             str_temp = textscan(line, '%s', 'delimiter', ' ');
