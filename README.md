@@ -55,3 +55,7 @@ Data files & header files are required to be added to MATLAB path.
 **NMR_lib:** contains functions for NMR simulation 
   * **nmr_bloch.m** : defines Bloch equation
 
+**Examples:** contains example scripts. (Please email me if you want the data files) 
+  * **example1.m** : demonstrates how to use MR_libs to post-process MRS data.
+  * **example2.m** : demonstrates how to locates spectroscopic voxel in MR images. 
+  
