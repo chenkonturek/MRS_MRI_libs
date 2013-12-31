@@ -30,6 +30,9 @@ Data files & header files are required to be added to MATLAB path.
 * simulation/  
   * **mrs_PRESS.m**      : simulates signal acquired using Position Resolved Spectroscopy (PRESS)
   * **mrs_STEAM.m**      : simulates signal acquired using Stimulated Echo Acquisition Mode (STEAM) 
+  
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/pulse_seq.jpg)  
+
   * **mrs_ISISscheme.m** : demonstrates how Image Selective in vivo Spectroscopy (ISIS) works
   * **mrs_simulateFID.m**: simulates a Free Induction Decay (FID) or Half-Echo. 
 * utils/
