@@ -48,9 +48,9 @@ function info = mri_readPAR( fileName )
         elseif ~isempty(dir_ind) %    
             str_temp = textscan(line, '%s', 'delimiter', ':');
             if str_temp{1}{2}(1)=='R'
-                info.dir = 'rl';
+                info.direction = 'rl';
             else
-                info.dir = 'ap';
+                info.direction = 'ap';
             end
         elseif ~isempty(angulation_ind) % 
             str_temp = textscan(line, '%s', 'delimiter', ':');

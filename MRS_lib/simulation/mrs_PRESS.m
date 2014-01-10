@@ -25,7 +25,7 @@ function S = mrs_PRESS (S0, T1, T2, TR, TE1, TE2)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
 
-    TE = T1+T2;
+    TE = TE1+TE2;
     S = S0*(1-exp(-TR/T1)-2*exp(-(TR-TE1-TE2/2)/T1)+2*exp(-(TR-TE1/2)/T1)).*exp(-TE/T2);
     
 end

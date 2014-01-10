@@ -11,13 +11,13 @@ Data files & header files are required to be added to MATLAB path.
 ### File List
 **MRS_lib:** contains functions for post-processing, analysing and simulating Magnetic Resonance Spectroscopy data
 * io/ 
-  * **mrs_readSPAR.m**  : reads .SPAR MRS header file
-  * **mrs_readSDAT.m**  : reads .SDAT MRS data file
-  * **mrs_readLIST.m**  : reads .list MRS header file
-  * **mrs_readDATA.m**  : reads .data raw MRS data file
+  * **mrs_readSPAR.m**  : reads .SPAR Philips MRS header file
+  * **mrs_readSDAT.m**  : reads .SDAT Philips MRS data file
+  * **mrs_readLIST.m**  : reads .list Philips MRS header file
+  * **mrs_readDATA.m**  : reads .data Philips raw MRS data file
   * **mrs_readTXT.m**   : reads .txt MRS data file from jMRUI
-  * **mrs_writeSDAT.m** : writes MRS data to .SDAT file
-  * **mrs_editSPAR.m**  : edits .SPAR file
+  * **mrs_writeSDAT.m** : writes MRS data to Philips .SDAT file
+  * **mrs_editSPAR.m**  : edits Philips .SPAR file
 * postprocess/
   * **mrs_truncate.m**  : truncates points from the end of spectra
   * **mrs_zerofill.m**  : fills zeros to the end of spectra
@@ -48,9 +48,13 @@ Data files & header files are required to be added to MATLAB path.
   * **mri_readHDR.m**  : reads .hdr MRI ANALYZE 7.5 header file 
   * **mri_readIMG.m**  : reads .img MRI ANALYZE 7.5 data file 
   * **mri_writeIMG.m** : writes data to .img file 
-  * **mri_readPAR.m**  : reads .PAR MRI PHILIPS header file
+  * **mri_readPAR.m**  : reads .PAR Philips MRI header file
+  * **mri_readREC.m**  : reads .REC Philips MRI data file
 * utils/
   * **mri_IRcurve.m**        : calculates the inversion recovery (IR) curve
+
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/IR.png)  
+
   * **mri_absIRcurveFit.m**  : fits the data to absolute inversion recovery curve 
   * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic voxel in the axial MR images
   * **mri_dispSVOI.m**       : displays the spectroscopic voxel on top of the axial MR images
@@ -60,5 +64,8 @@ Data files & header files are required to be added to MATLAB path.
 
 **Examples:** contains example scripts. (Please email me if you want the data files) 
   * **example1.m** : demonstrates how to use MR_libs to post-process MRS data.
-  * **example2.m** : demonstrates how to locates spectroscopic voxel in MR images. 
+  * **example2.m** : demonstrates how to use MR_libs to locate spectroscopic voxel in MR images. 
+  * **example3.m** : demonstrates how to use MR_libs to to simulate tye half-echo signal acquired using PRESS and STEAM sequences.respectively.
+  * **example4.m** : demonstrates how to use MR_libs to do Bloch Equation simulation & to simulate magnetisation profile produced by an RF pulse 
+  * **example5.m** : demonstrates how to use MR_libs to produce T1 maps.
   

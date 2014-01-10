@@ -1,4 +1,4 @@
-% EXAMPLE1 illustrates how to use MR_libs to post-process MRS data 
+% EXAMPLE2 illustrates how to use MR_libs to post-process MRS data 
 % & locates the spectroscopic voxel in the axial MR images.  
 %
 % AUTHOR : Chen Chen
