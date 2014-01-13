@@ -6,7 +6,7 @@ function shifts_Hz = mrs_points2Hz( shifts_point, samples, BW )
 % ARGS :
 % shifts_points = an array of chemical shifts in points 
 % samples = number of points sampled for each spetrum
-% BW = spectral bandwidth
+% BW = spectral bandwidth, Hz
 %
 % 
 % RETURNS:

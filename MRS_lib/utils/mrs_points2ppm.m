@@ -6,8 +6,8 @@ function shifts_ppm = mrs_points2ppm( shifts_points, samples, BW, transmit_freq)
 % ARGS :
 % shifts_points = an array of chemical shifts in points 
 % samples = number of points sampled for each spetrum
-% BW = spectral bandwidth
-% transmit_freq = synthesizer frequency
+% BW = spectral bandwidth, Hz
+% transmit_freq = synthesizer frequency, Hz
 % 
 % RETURNS:
 % shifts_ppm  = an array of chemical shifts in ppm 

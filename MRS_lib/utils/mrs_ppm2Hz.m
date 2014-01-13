@@ -5,7 +5,7 @@ function shift_Hz = mrs_ppm2Hz( shift_ppm , transmit_freq )
 % 
 % ARGS :
 % shift_ppm = the chemical shift between two peaks in ppm 
-% transmit_freq = synthesizer frequency
+% transmit_freq = synthesizer frequency, Hz
 % 
 % RETURNS:
 % shift_Hz  = the chemical shift between two peaks in Hz 

@@ -1,202 +1,101 @@
 % EXAMPLE4 illustrates how to use MR_libs to do Bloch Equation simulation 
-% & to simulate magnetisation profile produced by an RF pulse  
-%
+%  
+% 
 % AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
 
-
+%% 1) Bloch Equation Simulation : Relaxation 
 clear
 clc
 
+% 3 T
+T1 = 800/1000; % s
+T2 = 80/1000;  % s
 
-%% set parameters 
+n = 2000;
+ts = linspace(1,3000,n)/1000; % s, time line 
+M0 = [0 1 0]; % initial magnetisation
+
+w1 = zeros(1,n); % assume no RF pulse (B1_eff*gamma), rad/s
+w0 = 2.*pi.*30.*ones(1,n); % assume 30Hz off resonance (B0_eff*gamma), rad/s
+
+[Tt,Mt] = ode45(@(t,M) nmr_bloch(t, M, ts, w1, ts, w0, T1, T2, 1), ts, M0);
+
+Tt = Tt.*1000; % ms
+
+figure
+title('Magnetisation Relaxation after Excitation')
+subplot(3,1,1)
+plot(Tt, Mt(:,1));
+xlabel('t (ms)');
+ylabel('Mx(t)');
+subplot(3,1,2)
+plot(Tt, Mt(:,2));
+xlabel('t (ms)');
+ylabel('My(t)');
+subplot(3,1,3)
+plot(Tt, Mt(:,3))
+xlabel('t (ms)');
+ylabel('Mz(t)');
+
+
+figure 
+plot3(Mt(:,1),Mt(:,2),Mt(:,3),'-');
+xlabel('x')
+ylabel('y')
+zlabel('z')
+grid
+title('Magnetisation Relaxation after Excitation')
+
+%% 2) Bloch Equation Simulation : Excitation (Hard pulse)
+clear
+clc
+
 B0 = 3;
-gamma=nmr_getGamma(); %  kHz/T
+T1 = 800/1000; % s
+T2 = 80/1000;  % s
 
+n=2000;
+B1 = 2*10^(-6); % T
+rf_AM = B1.*ones(1,n); % T           
+gamma = nmr_getGamma(); % kHz/T 
+gamma = gamma.H1*1000*2*pi; % rad/s/T
+angle=90; % flip angle, degree
+rf_len = (angle/180*pi)/gamma/B1; % s
 
-% Hypobolic Secant RF pulse 
-HSrf_AM =     [390,    411,	   433,	   456,	   481,...
-			   506,	   534,	   562,	   593,	   624,...
-			   658,	   693,	   730,	   769,	   811,...
-			   854,	   900,	   948,	   998,	  1052,...
-			  1108,	  1167,	  1229,	  1294,	  1363,...
-			  1436,	  1512,	  1592,	  1677,	  1766,...
-			  1860,	  1958,	  2062,	  2171,	  2286,...
-			  2407,	  2534,	  2667,	  2808,	  2956,...
-			  3111,	  3275,	  3447,	  3628,	  3818,...
-			  4018,	  4228,	  4448,	  4680,	  4923,...
-			  5179,	  5447,	  5729,	  6025,	  6335,...
-			  6661,	  7002,	  7359,	  7734,	  8126,...
-			  8537,	  8967,	  9416,	  9885,	 10375,...
-			 10886,	 11419,	 11974,	 12551,	 13151,...
-			 13773,	 14418,	 15086,	 15775,	 16485,...
-			 17216,	 17967,	 18735,	 19520,	 20319,...
-			 21129,	 21948,	 22772,	 23598,	 24422,...
-			 25238,	 26042,	 26828,	 27591,	 28324,...
-			 29022,	 29678,	 30285,	 30839,	 31332,...
-			 31759,	 32116,	 32398,	 32602,	 32726,...
-			 32767,	 32726,	 32602,	 32398,	 32116,...
-			 31759,	 31332,	 30839,	 30285,	 29678,...
-			 29022,	 28324,	 27591,	 26828,	 26042,...
-			 25238,	 24422,	 23598,	 22772,	 21948,...
-			 21129,	 20319,	 19520,	 18735,	 17967,...
-			 17216,	 16485,	 15775,	 15086,	 14418,...
-			 13773,	 13151,	 12551,	 11974,	 11419,...
-			 10886,	 10375,	  9885,	  9416,	  8967,...
-			  8537,	  8126,	  7734,	  7359,	  7002,...
-			  6661,	  6335,	  6025,	  5729,	  5447,...
-			  5179,	  4923,	  4680,	  4448,	  4228,...
-			  4018,	  3818,	  3628,	  3447,	  3275,...
-			  3111,	  2956,	  2808,	  2667,	  2534,...
-			  2407,	  2286,	  2171,	  2062,	  1958,...
-			  1860,	  1766,	  1677,	  1592,	  1512,...
-			  1436,	  1363,	  1294,	  1229,	  1167,...
-			  1108,	  1052,	   998,	   948,	   900,...
-			   854,	   811,	   769,	   730,	   693,...
-			   658,	   624,	   593,	   562,	   534,...
-			   506,	   481,	   456,	   433,	   411,...
-			   390];
+ts = linspace(0,rf_len,n); % s, time line 
+M0 = [0 0 1]; % initial magnetisation
 
-HSrf_FM    =    [-8191, -8191,	 -8191,	 -8191,	 -8191,...
-                 -8191,	 -8191,	 -8190,	 -8190,	 -8190,...
-                 -8190,	 -8190,	 -8189,	 -8189,	 -8189,...
-                 -8189,	 -8188,	 -8188,	 -8187,	 -8187,...
-                 -8186,	 -8186,	 -8185,	 -8184,	 -8183,...
-                 -8183,	 -8182,	 -8181,	 -8179,	 -8178,...
-                 -8177,	 -8175,	 -8173,	 -8171,	 -8169,...
-                 -8167,	 -8164,	 -8161,	 -8158,	 -8154,...
-                 -8150,	 -8146,	 -8141,	 -8136,	 -8130,...
-                 -8123,	 -8116,	 -8108,	 -8100,	 -8090,...
-                 -8080,	 -8068,	 -8055,	 -8041,	 -8025,...
-                 -8008,	 -7989,	 -7968,	 -7945,	 -7919,...
-                 -7891,	 -7861,	 -7827,	 -7790,	 -7749,...
-                 -7704,	 -7654,	 -7600,	 -7540,	 -7475,...
-                 -7404,	 -7326,	 -7240,	 -7147,	 -7046,...
-                 -6935,	 -6814,	 -6683,	 -6542,	 -6388,...
-                 -6222,	 -6043,	 -5850,	 -5643,	 -5421,...
-                 -5185,	 -4933,	 -4665,	 -4382,	 -4083,...
-                 -3770,	 -3441,	 -3099,	 -2743,	 -2375,...
-                 -1997,	 -1609,	 -1214,	  -812,	  -407,...
-                     0,	   407,	   812,	  1214,	  1609,...
-                  1997,	  2375,	  2743,	  3099,	  3441,...
-                  3770,	  4083,	  4382,	  4665,	  4933,...
-                  5185,	  5422,	  5643,	  5850,	  6043,...
-                  6222,	  6388,	  6542,	  6683,	  6814,...
-                  6935,	  7046,	  7147,	  7240,	  7326,...
-                  7404,	  7475,	  7540,	  7600,	  7654,...
-                  7704,	  7749,	  7790,	  7827,	  7861,...
-                  7892,	  7919,	  7945,	  7968,	  7989,...
-                  8008,	  8025,	  8041,	  8055,	  8068,...
-                  8080,	  8090,	  8100,	  8108,	  8116,...
-                  8123,	  8130,	  8136,	  8141,	  8146,...
-                  8150,	  8154,	  8158,	  8161,	  8164,...
-                  8167,	  8169,	  8171,	  8173,	  8175,...
-                  8177,	  8178,	  8179,	  8181,	  8182,...
-                  8183,	  8183,	  8184,	  8185,	  8186,...
-                  8186,	  8187,	  8187,	  8188,	  8188,...
-                  8189,	  8189,	  8189,	  8189,	  8190,...
-                  8190,	  8190,	  8190,	  8190,	  8191,...
-                  8191,	  8191,	  8191,	  8191,	  8191,...
-                  8191];
+w1 = rf_AM.*gamma;% rf_AM.*gamma; % rad/s
+w0 = zeros(1,n); % on resonance (B0_eff*gamma), rad/s
 
+[Tt,Mt] = ode45(@(t,M) nmr_bloch(t, M, ts, w1, ts, w0, T1, T2, 1), ts, M0);
 
-angle = 720;    % degree
-window = 100;  % Hz
+Tt = Tt.*1000; % ms
 
-rf_len=16/window*1000; % rf pulse length (ms)
-b1max=angle/360/gamma.H1/(0.3082*rf_len)*10^6; % maximum B1 amplitude (uT)
-rf_AM=b1max.*HSrf_AM./max(HSrf_AM); % rescaled AM profile
-
-
-fm_scale=7.958/rf_len*1000;
-rf_FM=fm_scale.*HSrf_FM./max(abs(HSrf_FM)); % rescaled FM profile 
-
-ps=length(rf_AM);
-t_ms=linspace(0,rf_len,ps); % timeline (ms)
-ts=t_ms./1000;    % timeline (s)
-
-rf_PM = zeros(1,ps); % PM profile, rad
-for p=2:ps
-    rf_PM(p)=trapz(ts(1:p), rf_FM(1:p)*2*pi);
-end
-
-
-% plot 
 figure
 subplot(3,1,1)
-hold on
-plot(t_ms,rf_AM,'r');
-% plot(t_ms, rf_AM.*sin(rf_PM),'b');
-% plot(t_ms, rf_AM.*cos(rf_PM),'g'); 
-xrange=get(gca,'XLim');
-line(xrange,[0 0],'Color','black');
-xlabel('Time (ms)');
-ylabel('B1 (uT)');
-title(' AM profile ');
-
-
+plot(Tt, Mt(:,1));
+xlabel('t (ms)');
+ylabel('Mx(t)');
+title('Magnetisation Excitation (90_{x}^{\circ} degree hard pulse)')
 subplot(3,1,2)
-hold on
-plot(t_ms,rf_FM,'r');
-xrange=get(gca,'XLim');
-line(xrange,[0 0],'Color','black');
-xlabel('Time (ms)');
-ylabel('Amplitude (Hz)');
-title(' FM profile ');
-
-
+plot(Tt, Mt(:,2));
+xlabel('t (s)');
+ylabel('My(t)');
 subplot(3,1,3)
-hold on
-plot(t_ms,rf_PM,'r');
-xrange=get(gca,'XLim');
-line(xrange,[0 0],'Color','black');
-xlabel('Time (ms)');
-ylabel('Amplitude (rad)');
-title(' PM profile ');
-    
+plot(Tt, Mt(:,3))
+xlabel('t (ms)');
+ylabel('Mz(t)');
 
 
-%% Magnetisation Profile simulation 
-B0s = B0*ones(1,ps);    % B0(t), T
-B1s = rf_AM.*10^(-6);   % B1(t), T
-
-M0 = [0; 0; 1]; % initial magnetisation
-
-w1 = 2*pi*gamma.H1.*1000.*B1s; % rad/s
-
-offsets_ppm = -2:0.1:2;
-offsets=offsets_ppm.* gamma.H1*10^3*B0/10^6*2*pi; % resonance offset, rad/s
-
-phi = rf_PM; %zeros(1,ps); %rf_PM;
-
-for i=1:length(offsets)
-    offset=offsets(i)*ones(1,ps); % rad/s
-    
-    delta_w = offset - rf_FM*2*pi;  % rad/s
-    [Tt,Mt] = ode45(@(t,M) nmr_bloch(t, M, ts, w1, ts, delta_w, ts, phi),ts,M0);
-    
-    last=length(Tt);
-    Mx(i)=Mt(last,1);
-    My(i)=Mt(last,2);
-    Mz(i)=Mt(last,3);
-    disp(['** Done Bloch Equation simulation for offset = ',num2str(offsets_ppm(i)),' ppm']);
-end
-
-
-% plot 
-Mxy = abs(Mx+1i.*My);
-
-figure
-subplot(2,1,1)
-plot(offsets_ppm,Mxy,'r');
-ylabel('Mxy at the end of the RF pulse');
-xlabel('offset frequency (ppm)');
-subplot(2,1,2)
-plot(offsets_ppm,Mz,'r');
-ylabel('Mz at the end of the RF pulse');
-xlabel('offset frequency (ppm)');
-
-
+figure 
+plot3(Mt(:,1),Mt(:,2),Mt(:,3),'-');
+xlabel('x')
+ylabel('y')
+zlabel('z')
+grid
+title('Magnetisation Excitation (90_{x}^{\circ} degree hard pulse)')
 

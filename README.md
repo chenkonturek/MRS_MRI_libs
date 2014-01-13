@@ -60,12 +60,15 @@ Data files & header files are required to be added to MATLAB path.
   * **mri_dispSVOI.m**       : displays the spectroscopic voxel on top of the axial MR images
 
 **NMR_lib:** contains functions for NMR simulation 
-  * **nmr_bloch.m** : defines Bloch equation
+  * **nmr_bloch.m** : defines full Bloch equations in rotating frame
+
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/bloch_eq_rt.PNG)  
 
 **Examples:** contains example scripts. (Please email me if you want the data files) 
   * **example1.m** : demonstrates how to use MR_libs to post-process MRS data.
   * **example2.m** : demonstrates how to use MR_libs to locate spectroscopic voxel in MR images. 
   * **example3.m** : demonstrates how to use MR_libs to to simulate tye half-echo signal acquired using PRESS and STEAM sequences.respectively.
-  * **example4.m** : demonstrates how to use MR_libs to do Bloch Equation simulation & to simulate magnetisation profile produced by an RF pulse 
-  * **example5.m** : demonstrates how to use MR_libs to produce T1 maps.
+  * **example4.m** : demonstrates how to use MR_libs to do Bloch Equation simulation. 
+  * **example5.m** : demonstrates how to use MR_libs to simulate magnetisation profile produced by an RF pulse.
+  * **example6.m** : demonstrates how to use MR_libs to produce T1 maps.
   
