@@ -70,5 +70,5 @@ Data files & header files are required to be added to MATLAB path.
   * **example3.m** : demonstrates how to use MR_libs to to simulate tye half-echo signal acquired using PRESS and STEAM sequences.respectively.
   * **example4.m** : demonstrates how to use MR_libs to do Bloch Equation simulation. 
   * **example5.m** : demonstrates how to use MR_libs to simulate magnetisation profile produced by an RF pulse.
-  * **example6.m** : demonstrates how to use MR_libs to produce T1 maps.
+  * **example6.m** : demonstrates how to use MR_libs to estimate T1.
   

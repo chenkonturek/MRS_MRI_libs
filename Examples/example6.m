@@ -1,4 +1,4 @@
-% EXAMPLE6 illustrates how to use MR_libs to produce T1 maps.
+% EXAMPLE6 illustrates how to use MR_libs to estimate T1.
 %  
 %
 % AUTHOR : Chen Chen
