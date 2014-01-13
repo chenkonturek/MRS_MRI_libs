@@ -61,8 +61,8 @@ Data files & header files are required to be added to MATLAB path.
 
 **NMR_lib:** contains functions for NMR simulation 
   * **nmr_bloch.m** : defines full Bloch equations in rotating frame
-
-  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/bloch_eq_rt.PNG)  
+  * **nmr_calT2star.m** : calculates T2*
+  * **nmr_getGamma** : returns gyromagnetic ratio value for different nuclei
 
 **Examples:** contains example scripts. (Please email me if you want the data files) 
   * **example1.m** : demonstrates how to use MR_libs to post-process MRS data.
