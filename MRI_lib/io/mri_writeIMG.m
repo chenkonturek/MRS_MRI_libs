@@ -30,17 +30,27 @@ function status = mri_writeIMG( fileName, data )
     
     info=mri_readHDR( [name,'.hdr'] );
     
-    if all(info.ByteOrder == 'ieee-be')
-        m='b';
-    else
-        m='l';
+    switch info.ByteOrder
+        case 'ieee-be'
+            m='b';
+        case 'ieee-le'
+            m='l';
     end
     
-    if info.BitDepth==16
-        b = 'int16';
-    elseif info.BitDepth==32
-        b = 'float';
-    end
+    switch info.ImgDataType
+        case 'DT_BINARY'
+            b = 'ubit1';
+        case 'DT_UNSIGNED_CHAR'
+            b ='uint8';
+        case 'DT_SIGNED_SHORT'
+            b = 'int16';
+        case 'DT_SIGNED_INT'
+            b = 'int32';
+        case 'DT_FLOAT'
+            b = 'float32';
+        case 'DT_DOUBLE'
+            b = 'double';
+    end  
     
     fid = fopen(fileName,'w',m);
     fwrite(fid,reshape(data,1,[]),b);
