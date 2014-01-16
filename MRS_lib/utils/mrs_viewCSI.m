@@ -1,13 +1,15 @@
-function mrs_viewCSI( csi_fileName, mri_fileName )
+function mrs_viewCSI( csi_info, csi_data, mri_fileName )
 % MRS_VIEWCSI allows to view a spectrum from a selected voxel from MR image
 % 
 % mrs_viewCSI( csi_fileName, mri_fileName )
 % 
 % ARGS :
-% csi_fileName = chemical shift image data 
+% csi_info = chemical shift image .SPAR information 
+% csi_data = chemical shift image data to be displayed 
 % mri_fileName = MR image data
 % 
-% RETURNS:
+% PREREQUISITES:
+% CSI and MPRAGE has same angulation & offcentre parameters
 %
 % EXAMPLE: 
 % >> mrs_viewCSI('sub3_CSI_act','sub3_MRPAGE');
@@ -16,13 +18,10 @@ function mrs_viewCSI( csi_fileName, mri_fileName )
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
-
-    [~,csi_fileName,~]=fileparts(csi_fileName);  
+ 
     [~,mri_fileName,~]=fileparts(mri_fileName);
 
-    csi_info = mrs_readSPAR(csi_fileName);
     mri_info = mri_readPAR(mri_fileName);
-    csi_data = mrs_readSDAT(csi_fileName);
 
     if mri_info.FOV(1)<csi_info.size(1) && mri_info.FOV(3)<csi_info.size(2)
         mri_data = zeros(csi_info.size(1),csi_info.size(2),mri_info.FOV(2));
@@ -106,9 +105,8 @@ function plotSpectrum(~, ~, edges, csi_info, csi_data, location)
 
     xp = 1:csi_info.samples;
     xppm = mrs_points2ppm( xp, csi_info.samples, csi_info.BW, csi_info.transmit_frequency)+4.7;
-        
-    spect = mrs_fft(csi_data(:,x,y));
-    plot(xppm,real(spect),'r');
+
+    plot(xppm,real(csi_data(:,x,y)),'r');
     set(gca,'xdir','reverse')
     title(['Spectrum at x=',num2str(x),', y=',num2str(y)]);
 end
