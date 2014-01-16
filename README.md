@@ -42,7 +42,8 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_points2Hz.m**       : converts unit from points to Hz
   * **mrs_points2ppm.m**      : converts unit from points to ppm
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
-  
+  * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
+
 **MRI_lib** contains functions for post-processing, analysing and simulating Magnetic Resonance Imaging data
 * io/
   * **mri_readHDR.m**  : reads .hdr MRI ANALYZE 7.5 header file 
@@ -71,4 +72,4 @@ Data files & header files are required to be added to MATLAB path.
   * **example4.m** : demonstrates how to use MR_libs to do Bloch Equation simulation. 
   * **example5.m** : demonstrates how to use MR_libs to simulate magnetisation profile produced by an RF pulse.
   * **example6.m** : demonstrates how to use MR_libs to estimate T1.
-  
+  * **example7.m** : demonstrates how to use MR_libs to displays a spectrum from a selected voxel.
