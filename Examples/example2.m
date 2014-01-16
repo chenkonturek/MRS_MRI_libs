@@ -1,5 +1,5 @@
 % EXAMPLE2 illustrates how to use MR_libs to post-process MRS data 
-% & locates the spectroscopic voxel in the axial MR images.  
+% & locates the spectroscopic VOI in the axial MR images.  
 %
 % AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
@@ -47,7 +47,7 @@ legend('dynamic 1','dynamic 2');
 title('\bfwater-suppressed spectra after phase correction', 'FontSize', 11);
 
 
-%% creates an mask for locating the spectroscopic voxel in the axial MR images
+%% creates an mask for locating the spectroscopic VOI in the axial MR images
 % requires MRS .SPAR and MRI .PAR files
 svoi_mask = mri_locateSVOI( 'sub2_MRS', 'sub2_MPRAGE' ); 
 

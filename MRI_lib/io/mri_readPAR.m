@@ -62,7 +62,7 @@ function info = mri_readPAR( fileName )
             str_temp=textscan(str_temp{1}{2}, '%s', 'delimiter', ' ');
             info.offCentre = [str2double(str_temp{1}{1}), str2double(str_temp{1}{3}), str2double(str_temp{1}{5})];                   
                     
-        elseif ~isempty(fov_ind) % 
+        elseif ~isempty(fov_ind) % ap,fh,rl
             str_temp = textscan(line, '%s', 'delimiter', ':');
             str_temp=textscan(str_temp{1}{2}, '%s', 'delimiter', ' ');
             info.FOV = [str2double(str_temp{1}{1}), str2double(str_temp{1}{3}), str2double(str_temp{1}{5})];                    
@@ -75,9 +75,9 @@ function info = mri_readPAR( fileName )
     slice_index(:,20) slice_index(:,21) slice_index(:,22) slice_index(:,23) slice_index(:,24) slice_index(:,25) slice_index(:,26) slice_index(:,27) ...
     slice_index(:,28) slice_index(:,29) slice_index(:,30)] = textread (fileName,'%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%*[^\n]','delimiter',' ','headerlines',90,'commentstyle','shell');
 
-    info.vox_x=slice_index(1,29);
-    info.vox_y=slice_index(1,30);
-    info.vox_z=info.FOV(2)/maxSlice;
+    info.vox(1)=slice_index(1,29);
+    info.vox(2)=slice_index(1,30);
+    info.vox(3)=info.FOV(2)/maxSlice;
    
     % get data about the first slice
     lineplus = 1;

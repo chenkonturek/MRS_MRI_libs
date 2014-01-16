@@ -36,8 +36,14 @@ function status = mri_writeIMG( fileName, data )
         m='l';
     end
     
+    if info.BitDepth==16
+        b = 'int16';
+    elseif info.BitDepth==32
+        b = 'float';
+    end
+    
     fid = fopen(fileName,'w',m);
-    fwrite(fid,reshape(data,1,[]),'float');
+    fwrite(fid,reshape(data,1,[]),b);
     status=fclose(fid);
 
 end

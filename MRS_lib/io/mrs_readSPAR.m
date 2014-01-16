@@ -50,6 +50,10 @@ function info = mrs_readSPAR( fileName )
         lr_angulation_ind = strfind(line, 'lr_angulation');
         cc_angulation_ind = strfind(line, 'cc_angulation');
         
+        dim1_ind = strfind(line,'dim2_pnts');
+        dim2_ind = strfind(line,'dim3_pnts');
+        dim3_ind = strfind(line,'nr_of_slices_for_multislice');
+        
                          
         if ~isempty(s_ind) % number of points in each spectrum
             str_temp = textscan(line, '%s', 'delimiter', ' ');  
@@ -113,8 +117,19 @@ function info = mrs_readSPAR( fileName )
                     
         elseif ~isempty(cc_angulation_ind) % angulation (FH)
             str_temp = textscan(line, '%s', 'delimiter', ' ');
-            info.angulation(3) = str2double(str_temp{1}{3});      
-                        
+            info.angulation(3) = str2double(str_temp{1}{3});  
+            
+        elseif ~isempty(dim1_ind) % dimension 1, x 
+            str_temp = textscan(line, '%s', 'delimiter', ' ');
+            info.dim(1) = str2double(str_temp{1}{3});     
+            
+        elseif ~isempty(dim2_ind) % dimension 2, y 
+            str_temp = textscan(line, '%s', 'delimiter', ' ');
+            info.dim(2) = str2double(str_temp{1}{3});  
+            
+        elseif ~isempty(dim3_ind) % dimsion 3, Slice 
+            str_temp = textscan(line, '%s', 'delimiter', ' ');
+            info.dim(3) = str2double(str_temp{1}{3});              
         end
                               
 	end 

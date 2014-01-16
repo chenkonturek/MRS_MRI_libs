@@ -51,9 +51,9 @@ function svoi_mask = mri_locateSVOI( spect_fileName, mri_fileName )
     imydim = mri_info.dim(2);
     imzdim = mri_info.dim(3);
     
-    vx = mri_info.vox_x;
-    vy = mri_info.vox_y;
-    vz = mri_info.vox_z;  
+    vx = mri_info.vox(1);
+    vy = mri_info.vox(2);
+    vz = mri_info.vox(3);  
      
     
     %% Calculate the Mask

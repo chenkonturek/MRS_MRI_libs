@@ -33,8 +33,14 @@ function data = mri_readIMG( fileName )
         m='l';
     end
     
+    if info.BitDepth==16
+        b = 'int16';
+    elseif info.BitDepth==32 
+        b = 'float';
+    end
+    
     fid = fopen(fileName,'r',m);
-	data=fread(fid,'float');
+	data=fread(fid, b);
 	fclose(fid);
         
     data=reshape(data,info.Dimensions(1),info.Dimensions(2),info.Dimensions(3),[]);
