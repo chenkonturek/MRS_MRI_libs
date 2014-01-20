@@ -49,7 +49,14 @@ title('\bfwater-suppressed spectra after phase correction', 'FontSize', 11);
 
 %% creates an mask for locating the spectroscopic VOI in the axial MR images
 % requires MRS .SPAR and MRI .PAR files
-svoi_mask = mri_locateSVOI( 'sub2_MRS', 'sub2_MPRAGE' ); 
+clear 
+clc
+
+spar_info = mrs_readSPAR('sub2_MRS.SPAR');
+par_info = mri_readPAR('sub2_MPRAGE.PAR');
+
+svoi_mask = mri_locateSVOI( spar_info, par_info );
+
 
 % read in MPRAGE .img data 
 mri_data = mri_readIMG('sub2_MPRAGE');

@@ -33,7 +33,8 @@ function  mri_dispSVOI( svoi_mask, mri_data )
     
     figure
     for i=min(ls):max(ls)
-        imagesc(imrotate(mri_view(:,:,i),90));
+        %imagesc(imrotate(mri_view(:,:,i),90));
+        imagesc(rot90(mri_view(:,:,i)));
         colormap gray;
         title(['slice ',num2str(i),' out of ', num2str(z)]);
         pause(0.5);

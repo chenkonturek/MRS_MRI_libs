@@ -1,155 +1,145 @@
-function svoi_mask = mri_locateSVOI( spect_fileName, mri_fileName )
+function mask = mri_locateSVOI( SPAR_info, PAR_info )
 % MRI_LOCATESVOI creates an mask for locating the spectroscopic voxel in axial MR images. 
 % Axial MRI localiser were acquired before single voxel MRS. 
 % 
-% svoi_mask = mri_locateSVOI( spect_fileName, mri_fileName )
+% mask = mri_locateSVOI( spect_fileName, mri_fileName )
 % 
 % ARGS :
-% spect_fileName = filename of single voxel MRS header file  (.SPAR)
-% mri_fileName = filename of Axial MRI localiser header file  (.PAR)
+% SPAR_info = filename of single voxel MRS header file  (.SPAR)
+% PAR_info = filename of Axial MRI localiser header file  (.PAR)
 % 
 % RETURNS:
-% svoi_mask = a mask for locating the spectroscopy voxel in MR images. 
+% mask = a mask for locating the spectroscopy voxel in MR images. 
 %            The mask has the same size as the MR image localiser. 
 %            The voxels correspoinding to spectroscopy voxel is assigned with value 1; 
 %            otherwise, the voxel value is set to be 0. 
 %
 % EXAMPLE: 
-% >> voi_mask = mri_locateSVOI( 'sub1_MRS.SPAR', 'sub1_MPRAGE.PAR' );
+% >> spar_info = mrs_readSPAR('sub1_MRS.SPAR');
+% >> par_info = mri_readPAR('sub1_MPRAGE.PAR');
+% >> voi_mask = mri_locateSVOI(spar_info, par_info);
 % >> mri_data = mri_readIMG('sub1_MPRAGE.hdr');
 % >> mri_dispSVOI( svoi_mask, mri_data );
 %
-% AUTHOR : Dr. Emma Hall, Chen Chen
+% AUTHOR : Chen Chen, Dr. Emma Hall
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
 
-   
-    % read MRS header infomation (.SPAR)
-    [~, spect_fileName, ~]=fileparts(spect_fileName); 
-    spect_info = mrs_readSPAR(spect_fileName); 
-    box_centre = [spect_info.offcentre(2) spect_info.offcentre(1) spect_info.offcentre(3)];% rl ap fh
-    
-    x_size = spect_info.size(2); % rl
-    y_size = spect_info.size(1); % ap
-    z_size = spect_info.size(3); % fh
-    
-    ang_rl = spect_info.angulation(2)*pi/180; % x
-    ang_ap = spect_info.angulation(1)*pi/180; % y
-    ang_fh = spect_info.angulation(3)*pi/180; % z
-    
-    % read MRI header infomation (.PAR)
-    [~, mri_fileName, ~]=fileparts(mri_fileName); 
-    mri_info = mri_readPAR(mri_fileName);
+    svoi_offcentre = [SPAR_info.offcentre(2) SPAR_info.offcentre(1) SPAR_info.offcentre(3)];  % rl ap fh
+    svoi_size = [SPAR_info.size(2) SPAR_info.size(1) SPAR_info.size(3)];    % rl ap fh, mm
+    svoi_ang = [SPAR_info.angulation(2) SPAR_info.angulation(1) SPAR_info.angulation(3)]*pi/180; % rl ap fh
 
-    mri_box_centre = [mri_info.offCentre(3) mri_info.offCentre(1) mri_info.offCentre(2)]; % rl ap fh
-    mri_ang_rl = mri_info.angulations(3)*pi/180; % x
-    mri_ang_ap = mri_info.angulations(1)*pi/180; % y
-    mri_ang_fh = mri_info.angulations(2)*pi/180; % z  
+    mri_offcentre = [PAR_info.offCentre(3) PAR_info.offCentre(1) PAR_info.offCentre(2)];  % rl ap fh
+    mri_ang = [PAR_info.angulations(3) PAR_info.angulations(1) PAR_info.angulations(2)]*pi/180;% rl ap fh
+    mri_dim = PAR_info.dim(1:3);      % rl ap fh
+    mri_vox = PAR_info.vox;        % rl ap fh, mm
+    mri_size = mri_dim.*mri_vox;  % rl ap fh, mm
 
-    imxdim = mri_info.dim(1);
-    imydim = mri_info.dim(2);
-    imzdim = mri_info.dim(3);
-    
-    vx = mri_info.vox(1);
-    vy = mri_info.vox(2);
-    vz = mri_info.vox(3);  
      
-    
-    %% Calculate the Mask
-    % Define Rotation Functions
-    rot_rl = @(ang)[1 0 0;0 cos(ang) -sin(ang);0 sin(ang) cos(ang)]; %eg. x
-    rot_ap = @(ang)[cos(ang) 0 sin(ang);0 1 0;-sin(ang) 0 cos(ang)]; %eq. y
-    rot_fh = @(ang)[cos(ang) -sin(ang) 0;sin(ang) cos(ang) 0;0 0 1]; %eq. z
-    
-    
-    % Position and Rotate MRS Voxel
-    counter=0;
-    for a=[-1, 1]
-        for b=[-1, 1]
-            for c=[-1, 1]
-                counter=counter+1;
-                corner = 0.5*[x_size y_size z_size].*[a b c];
-                location(counter,:)=corner;
+%     svoi_offcentre = [-10 -10 0];  % rl ap fh
+%     svoi_size = [20 20 20];    % rl ap fh, mm
+%     svoi_ang = [90 0 0]*pi/180; % rl ap fh
+% 
+%     mri_offcentre = [-10 -10 0];  % rl ap fh
+%     mri_size = [192 192 48];  % rl ap fh, mm
+%     mri_ang = [90 0 0]*pi/180;       % rl ap fh
+%     mri_dim = [96 96 24];     % rl ap fh
+%     mri_vox = [2 2 2];        % rl ap fh, mm
+
+
+    % rotation function
+    rot_rl = @(ang)[1 0 0;0 cos(ang) -sin(ang);0 sin(ang) cos(ang)];
+    rot_ap = @(ang)[cos(ang) 0 sin(ang);0 1 0;-sin(ang) 0 cos(ang)];
+    rot_fh = @(ang)[cos(ang) -sin(ang) 0;sin(ang) cos(ang) 0;0 0 1];
+
+    % svoi to scanner space
+    c=0;
+    for x=[-1, 1]
+        for y=[-1, 1]
+            for z=[-1, 1]
+                c=c+1;
+                corner = 0.5*svoi_size.*[x y z];
+                svoi_corners(c,:)=corner;
             end
         end
     end
+
+    svoi_corners=(rot_fh(svoi_ang(3))*svoi_corners')';
+    svoi_corners=(rot_ap(svoi_ang(2))*svoi_corners')';
+    svoi_corners=(rot_rl(svoi_ang(1))*svoi_corners')';
+
+    svoi_corners=svoi_corners+repmat(svoi_offcentre,8,1);
+
+    % svoi to MRI space
+    msvoi_corners=svoi_corners-repmat(mri_offcentre,8,1);
+    msvoi_centre =svoi_offcentre-mri_offcentre;
+
+    msvoi_corners=(rot_rl(-mri_ang(1))*msvoi_corners')';
+    msvoi_corners=(rot_ap(-mri_ang(2))*msvoi_corners')';
+    msvoi_corners=(rot_fh(-mri_ang(3))*msvoi_corners')';
     
-    % Rotation
-    nlocation=(rot_fh(ang_fh)*location')';
-    nlocation=(rot_ap(ang_ap)*nlocation')';
-    nlocation=(rot_rl(ang_rl)*nlocation')';
+    msvoi_centre=(rot_rl(-mri_ang(1))*msvoi_centre')';
+    msvoi_centre=(rot_ap(-mri_ang(2))*msvoi_centre')';
+    msvoi_centre=(rot_fh(-mri_ang(3))*msvoi_centre')';
     
-    nlocation=nlocation+repmat(box_centre,8,1);
+    disp('* 8 corners of Spectroscopic voxel in Imaging space: ');
+    disp(msvoi_corners)
+    disp('* Centre of Spectroscopic voxel in Imaging space: ');
+    disp(msvoi_centre)
+
+    % create mask 
+    mask=zeros(mri_dim(1),mri_dim(2),mri_dim(3));
+
+    xs = linspace(-mri_size(1)/2, mri_size(1)/2, mri_dim(1)+1)+mri_vox(1)/2;
+    ys = linspace(-mri_size(2)/2, mri_size(2)/2, mri_dim(2)+1)+mri_vox(2)/2;
+    zs = linspace(-mri_size(3)/2, mri_size(3)/2, mri_dim(3)+1)+mri_vox(3)/2;
     
-    % Want to rotate MRS VOI slab back to flat mri space
-    nlocation=nlocation-repmat(mri_box_centre,8,1);
-    
-    rnlocation=(rot_rl(-mri_ang_rl)*nlocation')';
-    rnlocation=(rot_ap(-mri_ang_ap)*rnlocation')';
-    rnlocation=(rot_fh(-mri_ang_fh)*rnlocation')';
-    
-    rnlocation=rnlocation+repmat(mri_box_centre,8,1);
-    
-    new_box_centre = box_centre - mri_box_centre;
-    new_box_centre=(rot_rl(-mri_ang_rl)*new_box_centre')';
-    new_box_centre=(rot_ap(-mri_ang_ap)*new_box_centre')';
-    new_box_centre=(rot_fh(-mri_ang_fh)*new_box_centre')';
-    new_box_centre = new_box_centre + mri_box_centre;
-    
-    
-    % Create Grid the Size of mri
-    mask=zeros(imxdim,imydim,imzdim,6);
-    
-    mx=linspace(mri_box_centre(1)-vx*(imxdim/2-0.5),mri_box_centre(1)+vx*(imxdim/2-0.5),imxdim);
-    my=linspace(mri_box_centre(2)-vy*(imydim/2-0.5),mri_box_centre(2)+vy*(imydim/2-0.5),imydim);
-    mz=linspace(mri_box_centre(3)-vz*(imzdim/2-0.5),mri_box_centre(3)+vz*(imzdim/2-0.5),imzdim);
-    
-    for plane_counter=1:6
-        %finding equation of planes
-        if plane_counter == 1 % -x plane
-            p1 = rnlocation(1,:);p2 = rnlocation(2,:);p3 = rnlocation(3,:);
-        elseif plane_counter ==4 %+ x plane
-            p1 = rnlocation(5,:);p2 = rnlocation(6,:);p3 = rnlocation(7,:);
-        elseif plane_counter == 2 %-y plane
-            p1 = rnlocation(1,:);p2 = rnlocation(2,:);p3 = rnlocation(5,:);
-        elseif plane_counter ==5 %+y plane
-            p1 = rnlocation(3,:);p2 = rnlocation(4,:);p3 = rnlocation(7,:);
-        elseif plane_counter ==3 %-z plane
-            p1 = rnlocation(1,:);p2 = rnlocation(3,:);p3 = rnlocation(5,:);
-        elseif plane_counter ==6
-            p1 = rnlocation(2,:);p2 = rnlocation(4,:);p3 = rnlocation(6,:);
+    for plane = 1:6 % 6 planes of Spectroscopic VOI
+        if plane == 1 % -x plane
+            p1 = msvoi_corners(1,:);p2 = msvoi_corners(2,:);p3 = msvoi_corners(3,:);
+        elseif plane ==4 %+ x plane
+            p1 = msvoi_corners(5,:);p2 = msvoi_corners(6,:);p3 = msvoi_corners(7,:);
+        elseif plane == 2 %-y plane
+            p1 = msvoi_corners(1,:);p2 = msvoi_corners(2,:);p3 = msvoi_corners(5,:);
+        elseif plane ==5 %+y plane
+            p1 = msvoi_corners(3,:);p2 = msvoi_corners(4,:);p3 = msvoi_corners(7,:);
+        elseif plane ==3 %-z plane
+            p1 = msvoi_corners(1,:);p2 = msvoi_corners(3,:);p3 = msvoi_corners(5,:);
+        elseif plane ==6
+            p1 = msvoi_corners(2,:);p2 = msvoi_corners(4,:);p3 = msvoi_corners(6,:);
         end
         
         A=cat(1,p1,p2,p3);
         b = [1; 1; 1];
-        v=A\b; % inv(A)*B
+        v=A\b;
         
-        t = sum(v.*new_box_centre')-1;
+        cv = sum(v.*msvoi_centre')-1;
         
-        for x=1:imxdim
-            X=mx(x);
-            for y=1:imydim
-                Y=my(y);
-                for z=1:imzdim
-                    Z=mz(z);
-                    if  t < 0 && (v(1)*X+v(2)*Y+v(3)*Z-1) <0
-                        mask(x,y,z,plane_counter)=1;
-                    elseif t > 0 && (v(1)*X+v(2)*Y+v(3)*Z-1) >0
-                        mask(x,y,z,plane_counter)=1;
+        for x = 1:mri_dim(1)
+            Px = xs(x);
+            for y = 1:mri_dim(2)
+                Py = ys(y);
+                for z = 1:mri_dim(3)    
+                    Pz = zs(z);
+                
+                    if  cv < 0 && (v(1)*Px+v(2)*Py+v(3)*Pz-1)<0
+                        mask(x,y,z)= mask(x,y,z)+1;
+                    elseif cv > 0 && (v(1)*Px+v(2)*Py+v(3)*Pz-1)>0
+                        mask(x,y,z)= mask(x,y,z)+1;
                     end
-                end
+                end               
             end
         end
     end
+     % if centre of the MRI voxel is one the same side
+     % of plane as the centre of spectroscopic VOI for all planes
+    mask = mask > 5;
     
-    svoi_mask=zeros(imxdim,imydim,imzdim);
-    for z=1:imzdim
-        temp=sum(mask(:,:,z,:),4);
-        temp=temp>5;
-        temp=fliplr(temp);
-        svoi_mask(:,:,z)=(temp);
+    for z = 1: mri_dim(3)
+         mask(:,:,z)=fliplr(mask(:,:,z));
     end
-    
 end
 
+
+  
