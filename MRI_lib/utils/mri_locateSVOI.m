@@ -2,11 +2,11 @@ function mask = mri_locateSVOI( SPAR_info, PAR_info )
 % MRI_LOCATESVOI creates an mask for locating the spectroscopic voxel in axial MR images. 
 % Axial MRI localiser were acquired before single voxel MRS. 
 % 
-% mask = mri_locateSVOI( spect_fileName, mri_fileName )
+% mask = mri_locateSVOI(  SPAR_info, PAR_info )
 % 
 % ARGS :
-% SPAR_info = filename of single voxel MRS header file  (.SPAR)
-% PAR_info = filename of Axial MRI localiser header file  (.PAR)
+% SPAR_info = spectroscopy header information from .SPAR
+% PAR_info = Axial MRI localiser header information from .PAR
 % 
 % RETURNS:
 % mask = a mask for locating the spectroscopy voxel in MR images. 
@@ -33,20 +33,8 @@ function mask = mri_locateSVOI( SPAR_info, PAR_info )
     mri_offcentre = [PAR_info.offCentre(3) PAR_info.offCentre(1) PAR_info.offCentre(2)];  % rl ap fh
     mri_ang = [PAR_info.angulations(3) PAR_info.angulations(1) PAR_info.angulations(2)]*pi/180;% rl ap fh
     mri_dim = PAR_info.dim(1:3);      % rl ap fh
-    mri_vox = PAR_info.vox;        % rl ap fh, mm
-    mri_size = mri_dim.*mri_vox;  % rl ap fh, mm
-
-     
-%     svoi_offcentre = [-10 -10 0];  % rl ap fh
-%     svoi_size = [20 20 20];    % rl ap fh, mm
-%     svoi_ang = [90 0 0]*pi/180; % rl ap fh
-% 
-%     mri_offcentre = [-10 -10 0];  % rl ap fh
-%     mri_size = [192 192 48];  % rl ap fh, mm
-%     mri_ang = [90 0 0]*pi/180;       % rl ap fh
-%     mri_dim = [96 96 24];     % rl ap fh
-%     mri_vox = [2 2 2];        % rl ap fh, mm
-
+    mri_vox = PAR_info.vox;           % rl ap fh, mm
+    mri_size = mri_dim.*mri_vox;      % rl ap fh, mm
 
     % rotation function
     rot_rl = @(ang)[1 0 0;0 cos(ang) -sin(ang);0 sin(ang) cos(ang)];
