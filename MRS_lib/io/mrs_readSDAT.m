@@ -38,10 +38,10 @@ function data = mrs_readSDAT( fileName )
     data=reshape(data,2,[]);    
     data=data(1,:)+1i*data(2,:);
    
-    if info.dim(1)==1 && info.dim(2)==1
+    if info.CSI==0
         data=reshape(data,info.samples,[]);     
     else
-         data=squeeze(reshape(data,info.samples,info.dim(1),info.dim(2),[]));
+        data=squeeze(reshape(data,info.samples,info.dim(1),info.dim(2),[]));
     end
     
 end

@@ -20,8 +20,6 @@ function [corrected_spectrum, pc_ph]= mrs_zeroPHC(spectrum)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved. 
 
-
-    n = size(spectrum,1);
     
     phs = (-180:0.1:180)/180*pi;
     phs_len = length(phs);

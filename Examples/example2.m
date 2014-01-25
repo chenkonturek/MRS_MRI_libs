@@ -70,5 +70,3 @@ mri_dispSVOI( svoi_mask, mri_data );
 
 
 
-
-

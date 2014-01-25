@@ -26,9 +26,13 @@ function mask = mri_locateSVOI( SPAR_info, PAR_info )
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
 
-    svoi_offcentre = [SPAR_info.offcentre(2) SPAR_info.offcentre(1) SPAR_info.offcentre(3)];  % rl ap fh
-    svoi_size = [SPAR_info.size(2) SPAR_info.size(1) SPAR_info.size(3)];    % rl ap fh, mm
-    svoi_ang = [SPAR_info.angulation(2) SPAR_info.angulation(1) SPAR_info.angulation(3)]*pi/180; % rl ap fh
+    svoi_offcentre = SPAR_info.offcentre;  % rl ap fh
+    if SPAR_info.CSI==0
+        svoi_size = SPAR_info.size;    % rl ap fh, mm
+    else
+        svoi_size = SPAR_info.FOV;    % rl ap fh, mm
+    end
+    svoi_ang = SPAR_info.angulation*pi/180; % rl ap fh
 
     mri_offcentre = [PAR_info.offCentre(3) PAR_info.offCentre(1) PAR_info.offCentre(2)];  % rl ap fh
     mri_ang = [PAR_info.angulations(3) PAR_info.angulations(1) PAR_info.angulations(2)]*pi/180;% rl ap fh
