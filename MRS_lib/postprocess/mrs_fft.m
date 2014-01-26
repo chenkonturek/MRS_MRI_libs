@@ -19,6 +19,13 @@ function  spectra = mrs_fft( fids )
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
 
-    spectra=fftshift(fft(fids));
+    [~, xs ys zs]=size(fids);
+    for x = 1:xs
+        for y=1:ys
+            for z=zs
+                spectra(:,x,y,z)=fftshift(fft(fids(:,x,y,z)));
+            end
+        end
+    end
 end
 

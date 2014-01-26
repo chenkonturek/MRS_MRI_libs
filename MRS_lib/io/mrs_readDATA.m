@@ -1,12 +1,12 @@
-function [data water]= mrs_readDATA( fileName)
-% MRS_READDATA reads Philips MRS raw data file (.data). If water suppression 
-% is enabled, .data file contains spectra without water suppression (water)  
+function [data water]= mrs_readDATA( fileName )
+% MRS_READDATA reads Philips MRS data file (.data) produced by delayed reconstruction. 
+% If water suppression is enabled, .data file contains water-unsuppressed spectra (water)  
 % and water-suppressed spectra (data). 
 % 
 % [data water] = mrs_readDATA(fileName)
 %
 % ARGS :
-% fileName = name of raw data file 
+% fileName = name of data file 
 %
 % RETURNS:
 % data = all water-suppressed FIDs without averaging, if water supression is not enabled;

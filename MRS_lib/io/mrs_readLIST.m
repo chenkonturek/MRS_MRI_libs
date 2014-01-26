@@ -1,6 +1,7 @@
 function info = mrs_readLIST( fileName )
-% MRS_READLIST reads Philips MRS header file (.list) 
-%
+% MRS_READLIST reads Philips MRS header file (.list) produced by delayed
+% reconstruction.
+% 
 % info = mrs_readLIST(fileName)
 %
 % ARGS :

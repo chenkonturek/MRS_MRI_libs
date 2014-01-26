@@ -13,8 +13,10 @@ Data files & header files are required to be added to MATLAB path.
 * io/ 
   * **mrs_readSPAR.m**  : reads .SPAR Philips MRS header file
   * **mrs_readSDAT.m**  : reads .SDAT Philips MRS data file
-  * **mrs_readLIST.m**  : reads .list Philips MRS header file
-  * **mrs_readDATA.m**  : reads .data Philips raw MRS data file
+  * **mrs_readLIST.m**  : reads .list Philips MRS header file produced by delayed reconstruction
+  * **mrs_readDATA.m**  : reads .data Philips MRS data file produced by delayed reconstruction
+  * **mrs_readSIN.m**   : reads .data Philips raw MRS data file
+  * **mrs_readRAW.m**   : reads .data Philips raw MRS data file
   * **mrs_readTXT.m**   : reads .txt MRS data file from jMRUI
   * **mrs_writeSDAT.m** : writes MRS data to Philips .SDAT file
   * **mrs_editSPAR.m**  : edits Philips .SPAR file

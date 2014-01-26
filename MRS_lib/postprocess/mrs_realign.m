@@ -43,14 +43,27 @@ function [aligned_spectra, I_peak] = mrs_realign( spectra, peak_range, BW, LB)
 
     aligned_spectra=zeros(samples,avgs,dyns);
 
-    [~,I_peak]=max(mask.*real(spectra_LB(:,1,1)));
-
-
-    for d=1:dyns
-        for a=1:avgs;
-            [~,Ia]=max(mask.*real(spectra_LB(:,a,d)));
-            aligned_spectra(:,a,d)=circshift(spectra(:,a,d),[-(Ia-I_peak),0]);
+    [amp_max,I_max]=max(mask.*real(spectra_LB(:,1,1)));
+    [amp_min,I_min]=min(mask.*real(spectra_LB(:,1,1)));
+    
+    if abs(amp_min)<abs(amp_max)
+        I_peak=I_max;
+        for d=1:dyns
+            for a=1:avgs;
+                [~,Ia]=max(mask.*real(spectra_LB(:,a,d)));
+                aligned_spectra(:,a,d)=circshift(spectra(:,a,d),[-(Ia-I_peak),0]);
+            end
+        end
+    else
+        I_peak=I_min;
+         for d=1:dyns
+            for a=1:avgs;
+                [~,Ia]=min(mask.*real(spectra_LB(:,a,d)));
+                aligned_spectra(:,a,d)=circshift(spectra(:,a,d),[-(Ia-I_peak),0]);
+            end
         end
     end
+
+    
 end
 
