@@ -45,6 +45,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_points2ppm.m**      : converts unit from points to ppm
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
   * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
+  * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise  
 
 **MRI_lib** contains functions for post-processing, analysing and simulating Magnetic Resonance Imaging data
 * io/
