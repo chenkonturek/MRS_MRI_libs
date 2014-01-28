@@ -46,4 +46,4 @@ function [A_peaks, I_peaks] = mrs_findPeak( spectra, peak_range, ispositive)
     end
 end
 
-   
+ 
