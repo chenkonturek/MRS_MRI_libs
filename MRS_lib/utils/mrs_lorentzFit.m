@@ -1,5 +1,5 @@
 function  [y_fitted, pars_fitted]= mrs_lorentzFit(pars0, data, x)
-% MRS_LORENTZFIT fit data with a lorenztian function by minimising the squared error
+% MRS_LORENTZFIT fits data with a lorenztian function by minimising the squared error
 % 
 % [y_fitted, pars_fitted]= mrs_lorentzFit(pars0,data, x)
 %

@@ -26,7 +26,9 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_apod.m**      : applies line-broadening filter 
   * **mrs_fft.m**       : applies fourier transformation 
   * **mrs_ifft.m**      : applies inverse fourier transformation 
+  * **mrs_rephase.m**   : rephases spectra with specified phase value.     
   * **mrs_zeroPHC.m**   : applies automatic zero-order phase correction to a spectrum
+  * **mrs_firstPHC.m**  : applies automatic first-order phase correction to a spectrum
   * **mrs_realign.m**   : aligns the target peaks in the spectra
   * **mrs_average.m**   : calculates averaged data
 * simulation/  
@@ -38,12 +40,17 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_ISISscheme.m** : demonstrates how Image Selective in vivo Spectroscopy (ISIS) works
   * **mrs_simulateFID.m**: simulates a Free Induction Decay (FID) or Half-Echo. 
 * utils/
-  * **mrs_plotSpectra.m**     : displays spectra 
   * **mrs_selectPeakrange.m** : allows users to manually pick the peak range interactively
   * **mrs_findPeak.m**        : locates the highest positive peak or lowest negative peak
+  * **mrs_fitPeak.m**         : fits a peak in the given range of a spectrum with a lorenztian curve  
+  * **mrs_lorentzFit.m**      : fits data with a lorenztian function by minimising the squared error
+  * **mrs_lorentzFun.m**      : defines the lorentzian function
+
   * **mrs_points2Hz.m**       : converts unit from points to Hz
   * **mrs_points2ppm.m**      : converts unit from points to ppm
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
+
+  * **mrs_plotSpectra.m**     : displays spectra 
   * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
   * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise  
 
