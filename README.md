@@ -45,11 +45,9 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_fitPeak.m**         : fits a peak in the given range of a spectrum with a lorenztian curve  
   * **mrs_lorentzFit.m**      : fits data with a lorenztian function by minimising the squared error
   * **mrs_lorentzFun.m**      : defines the lorentzian function
-
   * **mrs_points2Hz.m**       : converts unit from points to Hz
   * **mrs_points2ppm.m**      : converts unit from points to ppm
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
-
   * **mrs_plotSpectra.m**     : displays spectra 
   * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
   * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise  
