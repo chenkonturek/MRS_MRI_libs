@@ -65,8 +65,8 @@ Data files & header files are required to be added to MATLAB path.
   ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/IR.png)  
 
   * **mri_absIRcurveFit.m**  : fits the data to absolute inversion recovery curve 
-  * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic voxel in the axial MR images
-  * **mri_dispSVOI.m**       : displays the spectroscopic voxel on top of the axial MR images
+  * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic VOI in the axial MR images
+  * **mri_dispSVOI.m**       : displays the spectroscopic VOI on top of the axial MR images
 
 **NMR_lib:** contains functions for NMR simulation 
   * **nmr_bloch.m** : defines full Bloch equations in rotating frame

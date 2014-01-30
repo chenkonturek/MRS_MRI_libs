@@ -1,10 +1,10 @@
 function  mri_dispSVOI( svoi_mask, mri_data )
-% MRI_DISPSVOI displays the spectroscopic voxel on top of axial MR images.
+% MRI_DISPSVOI displays the spectroscopic VOI on top of axial MR images.
 % 
 % mri_dispSVOI( svoi_mask, mri_data )
 % 
 % ARGS :
-% svoi_mask = a mask for locating the spectroscopy voxel in axial MR images. 
+% svoi_mask = a mask for locating the spectroscopy VOI in axial MR images. 
 % mri_data = axial MRI data
 % 
 % RETURNS:

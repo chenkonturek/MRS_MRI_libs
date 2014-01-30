@@ -1,6 +1,6 @@
 function mask = mri_locateSVOI( SPAR_info, PAR_info )
-% MRI_LOCATESVOI creates an mask for locating the spectroscopic voxel in axial MR images. 
-% Axial MRI localiser were acquired before single voxel MRS. 
+% MRI_LOCATESVOI creates an mask for locating the spectroscopic VOI in axial MR images. 
+% Axial MRI localiser were acquired before single voxel MRS.  
 % 
 % mask = mri_locateSVOI(  SPAR_info, PAR_info )
 % 
@@ -9,9 +9,9 @@ function mask = mri_locateSVOI( SPAR_info, PAR_info )
 % PAR_info = Axial MRI localiser header information from .PAR
 % 
 % RETURNS:
-% mask = a mask for locating the spectroscopy voxel in MR images. 
+% mask = a mask for locating the spectroscopy VOI in MR images. 
 %            The mask has the same size as the MR image localiser. 
-%            The voxels correspoinding to spectroscopy voxel is assigned with value 1; 
+%            The voxels correspoinding to spectroscopy VOI is assigned with value 1; 
 %            otherwise, the voxel value is set to be 0. 
 %
 % EXAMPLE: 
