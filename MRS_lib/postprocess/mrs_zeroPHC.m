@@ -8,7 +8,7 @@ function [corrected_spectrum, pc_ph]= mrs_zeroPHC(spectrum)
 %
 % RETURNS:
 % corrected_spectrum = a spectrum after automatic zero-order phase correction 
-% pc_ph = the phase corrected
+% pc_ph = phase correction vector 
 %
 % EXAMPLE: 
 % >> [spectrum_pc, ph]= mrs_zeroPHC(spectrum)

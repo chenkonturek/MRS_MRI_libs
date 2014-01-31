@@ -69,5 +69,6 @@ function info = mrs_readSIN( fileName )
             h=h+1;
         end
     end
+    
 end
 

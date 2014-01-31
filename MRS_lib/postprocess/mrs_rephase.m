@@ -5,7 +5,7 @@ function spectra_ph = mrs_rephase( spectra, ph )
 %
 % ARGS :
 % spectra = spectra before rephasing    (dim=[samples,avgs,dyns])
-% ph = phase, (range : [-pi, pi])
+% ph = phase correction vector, (range : [-pi, pi])
 %
 % RETURNS:
 % spectra_ph = spectra after rephasing  (dim=[samples,avgs,dyns])

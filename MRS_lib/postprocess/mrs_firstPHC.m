@@ -1,4 +1,4 @@
-function [ spectrum_ph, phc0, phc1 ]= mrs_firstPHC ( spectrum )
+function [ spectrum_ph, phc0, phc1, ph ]= mrs_firstPHC ( spectrum )
 % MRS_FIRSTPHC applies automatic first-order phase correction of a spectrum.     
 % The optimal zero-order and first-order phase corrections for a NMR spectrum  
 % are determined by minimizing entropy. The objective function is constructed 
@@ -11,8 +11,9 @@ function [ spectrum_ph, phc0, phc1 ]= mrs_firstPHC ( spectrum )
 %
 % RETURNS:
 % spectrum_ph = a spectrum after automatic first-order phase correction 
-% phc0 = zero order phase correction  (range : [-pi, pi])
-% phc1 = first order phase correction (range : [-pi, pi])
+% phc0 = zero order phase correction parameter  (range : [-pi, pi])
+% phc1 = first order phase correction parameter 
+% ph = linear phase correction vector (range : [-pi, pi])
 %
 % EXAMPLE: 
 % >> [spectrum_ph, phc0, phc1]= mrs_firstPHC ( spectrum )
