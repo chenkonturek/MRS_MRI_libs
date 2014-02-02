@@ -18,7 +18,13 @@ function fids = mrs_ifft( spectra )
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
-
-    fids= ifft(ifftshift(spectra));
+	[~, xs ys zs]=size(spectra);
+    for x = 1:xs
+        for y=1:ys
+            for z=zs
+                fids(:,x,y,z) = ifft(ifftshift(spectra(:,x,y,z)));
+            end
+        end
+    end
 end
 
