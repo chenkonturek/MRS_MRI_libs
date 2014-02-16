@@ -53,13 +53,21 @@ function  [peak_fitted,pars_fitted] = fitPeak(data, x, no_disp)
     [peak_fitted, pars_fitted] = mrs_lorentzFit(par_initials, data, x);
     
     if no_disp==0
-        f=figure(4);
-        clf(f)
+%        f=figure(4);
+%         clf(f)
+%         hold on
+        figure(4)
+        subplot(2,1,1)
+        plot(x,data','k');
         hold on
-        plot(x,data','r');
         plot(x,peak_fitted);
         plot(x,pars_fitted(1).*ones(length(x),1),'c')
         legend('real','fitted','baseline','Location','NorthEastOutside');
+        hold off
+        subplot(2,1,2)
+        plot(x,data-peak_fitted,'r');
+        legend('residual','Location','NorthEastOutside');
         pause(0.5)
     end
 end  
+
