@@ -8,13 +8,16 @@ function info = mrs_readTABLE( fileName )
 % fileName = name of LCModel ouput .table file 
 %
 % RETURNS:
-% info = metabolite concentration information 
+% info = information about quantified metabolite concentration, standard
+% deviation, and relative concentration with respective to Pcr+Cr.
 % 
-% NOTE: info.metabolite_name=[ Concentration, SD(%), Relative Concentration]
-%
 % EXAMPLE: 
-% >> info = mrs_readTABLE('sub1_1_1.table');
-% >> disp(info)
+% >> info = mrs_readTABLE('sub6_sl1_1-1.table');
+% >> info.name % name of the metabolites quantified 
+% >> info.concentration % absolute concentration of the metabolites quantified
+% >> info.SDpct % SD% of the metabolites quantified
+% >> info.relative_conc % relative concentration of the metabolites quantified
+%
 %
 % AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
@@ -30,193 +33,53 @@ function info = mrs_readTABLE( fileName )
     header_info=textscan(fid,'%s','delimiter','\n');
     fclose(fid);
     
-    num_lines=size(header_info{1});
-    
-    info.Asp=[];
-    info.NAA=[];
-	info.GABA=[];
-	info.Glc=[];
-	info.Gln=[];
-	info.Glu=[];
-    info.Gly=[];
-	info.GSH=[];
-	info.Lac=[]; 
-    info.mI_Gly=[];
-    info.Glu_Gln=[];
-            
-	for i=1:num_lines % for each line 
-        line=header_info{1}{i};
+    no_lines=size(header_info{1});
+    metabolites_num=0;
+    for i=1:no_lines
+        line=header_info{1}{i};    
         
-        has_Asp=strfind(line, 'Asp');
-        has_NAA=strfind(line, 'NAA ');
-        has_GABA=strfind(line, 'GABA');
-        has_Glc=strfind(line, 'Glc');
-        has_Gln=strfind(line, ' Gln');
-        has_Glu=strfind(line, 'Glu ');
-        has_Gly=strfind(line, ' Gly');
-        has_GSH=strfind(line, 'GSH');
-        has_Lac=strfind(line, 'Lac ');
-        has_mIGly=strfind(line, 'mI+Gly');
-        has_GluGln=strfind(line, 'Glu+Gln');
+        if ~isempty(strfind(line, '$$CONC'))
+            str_temp = textscan(line, '%s', 'delimiter', ' ');
+            metabolites_num=str2double(str_temp{1}{2})-1;            
+        end
         
-        % Asp
-        if ~isempty(has_Asp)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Asp')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Asp=[info.Asp, val{1}];
-                end                
-            end
-        end  
-        
-        % NAA
-        if ~isempty(has_NAA)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'NAA')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.NAA=[info.NAA, val{1}];
-                end                
-            end
-        end  
-        
-        % GABA
-        if ~isempty(has_GABA)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'GABA')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.GABA=[info.GABA, val{1}];
-                end                
+        if ~isempty(strfind(line, 'Conc.'))
+            break;
+        end
+    end
+    n=0;
+    for m=i+(1:metabolites_num)
+        n=n+1;
+        line=header_info{1}{m};
+        str_temp = textscan(line, '%s', 'delimiter', ' ');
+        r=0;
+        temp={};
+        for c=1:length(str_temp{1})
+            if ~isempty(str_temp{1}{c})
+                r=r+1;
+                temp{r}=str_temp{1}{c};
             end
         end
-        % Glc
-        if ~isempty(has_Glc)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Glc')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Glc=[info.Glc, val{1}];
-                end                
+        if length(temp)==4 
+            info.name(n)=temp(4);
+            info.concentration(n)=str2double(temp{1});
+            sd=temp{2};
+            info.SDpct(n)=str2double(sd(1:end-1));
+            info.relative_conc(n)=str2double(temp{3});            
+        else
+            if ~isempty(strfind(line, '+'))
+                l=textscan(temp{3}, '%s', 'delimiter', '+');
+            elseif ~isempty(strfind(line, '-'))
+                l=textscan(temp{3}, '%s', 'delimiter', '-');
             end
-        end 
-        % Gln                      
-        if ~isempty(has_Gln)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Gln')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Gln=[info.Gln, val{1}];
-                end                
-            end
-        end 
-        % Glu
-        if ~isempty(has_Glu)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Glu')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Glu=[info.Glu, val{1}];
-                end                
-            end
-        end 
-        % Gly
-        if ~isempty(has_Gly)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Gly')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Gly=[info.Gly, val{1}];
-                end                
-            end
-        end 
-        % GSH
-        if ~isempty(has_GSH)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'GSH')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.GSH=[info.GSH, val{1}];
-                end                
-            end
-        end         
-        % Lac
-        if ~isempty(has_Lac)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Lac')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Lac=[info.Lac, val{1}];
-                end                
-            end
-        end  
-        % mI+Gly
-        if ~isempty(has_mIGly)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'mI+Gly')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.mI_Gly=[info.mI_Gly, val{1}];
-                end                
-            end
-        end  
-        % Glu+Gln
-        if ~isempty(has_GluGln)
-            line_chars = textscan(line, '%s', 'delimiter', ' ');  
-            for c=1:length(line_chars{1})
-                if strcmp(line_chars{1}{c},'Glu+Gln')
-                    break;
-                end
-                
-                if ~isempty(line_chars{1}{c})
-                    val=textscan(line_chars{1}{c}, '%f', 'delimiter', '');
-                    info.Glu_Gln=[info.Glu_Gln, val{1}];
-                end                
-            end
-        end             
-        
-	end 
-
-end
+            info.name(n)=l{1}(2);
+            info.concentration(n)=str2double(temp{1});
+            sd=temp{2};
+            info.SDpct(n)=str2double(sd(1:end-1));
+            info.relative_conc(n)=str2double(l{1}{1}); 
+        end
+    end
+    
+ end
+      
 
