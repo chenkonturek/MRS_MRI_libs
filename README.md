@@ -19,8 +19,8 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_readRAW.m**   : reads .data Philips raw MRS data file
   * **mrs_readLcmodelRAW.m** : reads LCModel input .RAW file which contains time domain data of each metabolite spectrum
   * **mrs_readLcmodelBASIS.m**   : reads the LCModel input .basis file which contains the basis set of model metabolite spectra 
-  * **mrs_readLcmodelTABLE.m**   : reads the metabolite absolute and relative concentration and their SDs from the LCModel output file (.table) 
-  * **mrs_readLcmodelCOORD.m**   : reads the LCmodel output file .coord, which contains the coordinates of all curves on the one-page output
+  * **mrs_readLcmodelTABLE.m**   : reads the metabolite absolute and relative concentration and their SDs from the LCModel output .table file 
+  * **mrs_readLcmodelCOORD.m**   : reads the LCmodel output .coord file, which contains the coordinates of all curves on the one-page output
   * **mrs_readJmruiTXT.m**   : reads .txt MRS data file from jMRUI
   * **mrs_writeSDAT.m** : writes MRS data to Philips .SDAT file
   * **mrs_editSPAR.m**  : edits Philips .SPAR file
