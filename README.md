@@ -17,7 +17,11 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_readDATA.m**  : reads .data Philips MRS data file produced by delayed reconstruction
   * **mrs_readSIN.m**   : reads .data Philips raw MRS data file
   * **mrs_readRAW.m**   : reads .data Philips raw MRS data file
-  * **mrs_readTXT.m**   : reads .txt MRS data file from jMRUI
+  * **mrs_readLcmodelRAW.m** : reads LCModel input .RAW file which contains time domain data of each metabolite spectrum
+  * **mrs_readLcmodelBASIS.m**   : reads the LCModel input .basis file which contains the basis set of model metabolite spectra 
+  * **mrs_readLcmodelTABLE.m**   : reads the metabolite absolute and relative concentration and their SDs from the LCModel output file (.table) 
+  * **mrs_readLcmodelCOORD.m**   : reads the LCmodel output file .coord, which contains the coordinates of all curves on the one-page output
+  * **mrs_readJmruiTXT.m**   : reads .txt MRS data file from jMRUI
   * **mrs_writeSDAT.m** : writes MRS data to Philips .SDAT file
   * **mrs_editSPAR.m**  : edits Philips .SPAR file
 * postprocess/
@@ -50,7 +54,8 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
   * **mrs_plotSpectra.m**     : displays spectra 
   * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
-  * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise  
+  * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise
+  * **mrs_calTemp.m**         : calculates the temperature based on chemical shift difference of the water resonance and the temperature-independent reference resonance
 
 **MRI_lib** contains functions for post-processing, analysing and simulating Magnetic Resonance Imaging data
 * io/
@@ -81,3 +86,10 @@ Data files & header files are required to be added to MATLAB path.
   * **example5.m** : demonstrates how to use MR_libs to simulate magnetisation profile produced by an RF pulse.
   * **example6.m** : demonstrates how to use MR_libs to estimate T1.
   * **example7.m** : demonstrates how to use MR_libs to displays a spectrum from a selected voxel.
+
+### Acknowledgements
+
+I would like to thank Professor Penny Gowland and Dr. Susan Francis for their supervision. 
+I would also like to express my enormous thanks to Dr. Mary Stephensons and Dr. Emma Halls for their help and contributions.      
+
+

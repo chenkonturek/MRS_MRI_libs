@@ -1,8 +1,8 @@
-function info = mrs_readTABLE( fileName )
-% MRS_READTABLE reads the important metabolites concentration from the 
+function info = mrs_readLcmodelTABLE( fileName )
+% MRS_READLCMODELTABLE reads the important metabolites concentration from the 
 % LCModel output file (.table)
 %
-% info = mrs_readTABLE( fileName )
+% info = mrs_readLcmodelTABLE( fileName )
 %
 % ARGS :
 % fileName = name of LCModel ouput .table file 
@@ -12,7 +12,7 @@ function info = mrs_readTABLE( fileName )
 % deviation, and relative concentration with respective to Pcr+Cr.
 % 
 % EXAMPLE: 
-% >> info = mrs_readTABLE('sub6_sl1_1-1.table');
+% >> info = mrs_readLcmodelTABLE('sub6_sl1_1-1.table');
 % >> info.name % name of the metabolites quantified 
 % >> info.concentration % absolute concentration of the metabolites quantified
 % >> info.SDpct % SD% of the metabolites quantified

@@ -48,7 +48,7 @@ function [ spectrum_ph, phc0, phc1, ph ]= mrs_firstPHC ( spectrum )
 
 end
 function f = mrs_entropy(x,spectrum)
-% Entropy is de?ned as the normalized derivative of the NMR spectral data
+% Entropy is defined as the normalized derivative of the NMR spectral data
 % ARGS :
 % x = phc0 and phc1
 % spectrum = a spectrum before automatic first-order phase correction 
