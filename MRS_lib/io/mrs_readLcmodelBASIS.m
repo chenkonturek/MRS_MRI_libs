@@ -10,7 +10,8 @@ function [basis_spectra, info] = mrs_readLcmodelBASIS( fileName )
 % RETURNS:
 % basis_spectra = a matrix contains basis sets of all metabolite model spectra 
 % info = info.sample (points in each spectrum); info.BW (spectral bandwidth);
-%        info.metabolites (name list of all model metabolites)
+%        info.metabolites (name list of all model metabolites), info.ishift
+%        (the frequency shift of spectra in points)
 % 
 % EXAMPLE: 
 % [basis_spectra, info] = mrs_readLcmodelBASIS('steam_te14_tm16_298mhz.basis');
@@ -40,12 +41,14 @@ function [basis_spectra, info] = mrs_readLcmodelBASIS( fileName )
 	no_lines=size(f{1});
     c1=0;
     c2=0;
+    c3=0;
     m=0;
     l=[];
     for i=1:no_lines
         line=f{1}{i};  
         BADELT_ind = strfind(line, 'BADELT =');
         NDATAB_ind = strfind(line, 'NDATAB =');
+        ISHIFT_ind = strfind(line, 'ISHIFT =');
         metabo_ind = strfind(line, 'METABO =');
          
         if c1==0
@@ -61,6 +64,12 @@ function [basis_spectra, info] = mrs_readLcmodelBASIS( fileName )
                     info.sample= str2double(str_temp{1}{2});
                     c2=c2+1;
             end
+        end
+        
+        if ~isempty(ISHIFT_ind)
+            c3=c3+1;
+            str_temp = textscan(line, '%s', 'delimiter', '=');
+            info.ishift(c3)= str2double(str_temp{1}{2});            
         end
         
         if ~isempty(metabo_ind)
