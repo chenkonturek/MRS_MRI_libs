@@ -9,10 +9,8 @@ function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm, marker)
 % BW (optional) = spectral bandwidth, Hz
 % transmit_freq (optional) = synthesizer frequency, Hz/T
 % ref_ppm (optional) = real chemical shift (ppm) of the reference frequency(0ppm)
+% marker(optional) = choice of marker for plotting
 % 
-% RETURNS:
-%
-%
 % EXAMPLE: 
 % >> info = mrs_readSPAR('sub1.SPAR'); 
 % >> mrs_plotSpectra( spectra, 'ppm', info.BW, info.transmit_frequency)
