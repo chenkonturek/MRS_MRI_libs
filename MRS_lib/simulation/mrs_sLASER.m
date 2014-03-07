@@ -1,6 +1,7 @@
 function S = mrs_sLASER (S0, T1, T2, TR, TE)
-% MRS_SLASER simulates the signal acquired using semiLASER sequence (two
-% pairs of slice selective adiabatic refocusing pulses).    
+% MRS_SLASER simulates the signal acquired using semi-localised by adiabatic
+% selective refocusing (sLASER)pulses sequence (two pairs of slice selective 
+% adiabatic refocusing pulses).    
 % 
 % S = mrs_sLASER (S0, T1, T2, TR, TE)
 %

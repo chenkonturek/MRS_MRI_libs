@@ -43,7 +43,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_STEAM.m**      : simulates signal acquired using Stimulated Echo Acquisition Mode (STEAM) 
   
   ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/pulse_seq.jpg)  
-  * **mrs_sLASER.m**     : simulates the signal acquired using semiLASER sequence (two pairs of slice selective adiabatic refocusing pulses)
+  * **mrs_sLASER.m**     : simulates the signal acquired using semi-localised by adiabatic selective refocusing(sLASER) sequence 
   * **mrs_ISISscheme.m** : demonstrates how Image Selective in vivo Spectroscopy (ISIS) works
   * **mrs_simulateFID.m**: simulates a Free Induction Decay (FID) or Half-Echo. 
 * utils/
