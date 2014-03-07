@@ -1,4 +1,4 @@
-function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm)
+function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm, marker)
 % MRS_PLOTSPECTRA displays spectra  
 % 
 % mrs_plotSpectra(spectra, unit, BW, transmit_freq)
@@ -29,7 +29,7 @@ function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm)
         switch unit
             case 'ppm'
                 x_ticks = mrs_points2ppm(x_ticks, samples, BW, transmit_freq);
-       	        if nargin ==5
+       	        if nargin >=5
                     x_ticks=ref_ppm+x_ticks;
                 end
             case 'Hz'
@@ -41,7 +41,11 @@ function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm)
         if dyns> 1
             figure
         end
-        plot(x_ticks,real(spectra(:,:,d)))
+        if nargin <6
+            plot(x_ticks,real(spectra(:,:,d)))
+        else
+            plot(x_ticks,real(spectra(:,:,d)),marker)
+        end
         set(gca,'XDir','reverse');
         
         if dyns>1

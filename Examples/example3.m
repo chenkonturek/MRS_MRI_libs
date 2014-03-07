@@ -46,9 +46,9 @@ phi_NAA = 0; % phase, rad
 phi_Cr = 0; 
 phi_Cho = 0; 
 
-T2_star_NAA = nmr_calT2star(T2_NAA, delta_w/1000 ); % T2*,  ms
-T2_star_Cr = nmr_calT2star(T2_Cr, delta_w/1000 ); 
-T2_star_Cho = nmr_calT2star(T2_Cho, delta_w/1000 ); 
+T2_star_NAA = nmr_calT2star(T2_NAA, delta_w/pi/2/1000 ); % T2*,  ms
+T2_star_Cr = nmr_calT2star(T2_Cr, delta_w/pi/2/1000 ); 
+T2_star_Cho = nmr_calT2star(T2_Cho, delta_w/pi/2/1000 ); 
 
 %% simulate half-echo signal from STEAM sequence 
 TR=2000;    % repetition time, ms

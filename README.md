@@ -30,17 +30,20 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_apod.m**      : applies line-broadening filter 
   * **mrs_fft.m**       : applies fourier transformation 
   * **mrs_ifft.m**      : applies inverse fourier transformation 
-  * **mrs_rephase.m**   : rephases spectra with specified phase value.     
+  * **mrs_rephase.m**   : rephases spectra with specified phase value  
   * **mrs_zeroPHC.m**   : applies automatic zero-order phase correction to a spectrum
+  * **mrs_manualzeroPHC.m**   : allows users to manually apply zero-order phase correction of a spectrum
   * **mrs_firstPHC.m**  : applies automatic first-order phase correction to a spectrum
   * **mrs_realign.m**   : aligns the target peaks in the spectra
   * **mrs_average.m**   : calculates averaged data
+  * **mrs_lowpass.m**   : filters out high frequency components above specified frequency
+  * **mrs_highpass.m**  : filters out low frequency components below specified frequency     
 * simulation/  
   * **mrs_PRESS.m**      : simulates signal acquired using Position Resolved Spectroscopy (PRESS)
   * **mrs_STEAM.m**      : simulates signal acquired using Stimulated Echo Acquisition Mode (STEAM) 
   
   ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/pulse_seq.jpg)  
-
+  * **mrs_sLASER.m**     : simulates the signal acquired using semiLASER sequence (two pairs of slice selective adiabatic refocusing pulses)
   * **mrs_ISISscheme.m** : demonstrates how Image Selective in vivo Spectroscopy (ISIS) works
   * **mrs_simulateFID.m**: simulates a Free Induction Decay (FID) or Half-Echo. 
 * utils/
