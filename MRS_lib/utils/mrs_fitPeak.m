@@ -13,7 +13,10 @@ function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, pea
 % A_peak = value of target peak
 % I_peak = index of the target peak in the spectrum (in points)
 % peak_fitted = the fitted peak
-% pars_fitted = fitted values of parameters  ([y0 x0 fwhm A])
+% pars_fitted = fitted values of parameters  ([y0 x0 fwhm H]), where y0 is
+% the baseline value, x0 is the index of the target peak, fwhm is the full 
+% width at half maximum, and H is the height of peak (different from the y-value 
+% of the peak).
 %
 % EXAMPLE: 
 % >> [Amp, I, peak_fitted, pars_fitted] = mrs_fitPeak(spectrum, [2000 2500], 1);

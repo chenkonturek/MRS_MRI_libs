@@ -7,7 +7,7 @@ function [spect_phased phi]= mrs_manualzeroPHC(spect, xrange)
 %
 % ARGS :
 % spect = a spectrum before mannual zero-order phase correction
-% xrange = x ranges (in points) you want to display when doing phase correction 
+% xrange (optional) = x ranges (in points) you want to display when doing phase correction 
 %
 % RETURNS:
 % spect_phased = a spectrum after mannual zero-order phase correction 
@@ -22,7 +22,13 @@ function [spect_phased phi]= mrs_manualzeroPHC(spect, xrange)
 
    spect_phased=[];
    phi=[];
-   xs=xrange(1):xrange(2);
+   
+   if nargin>1
+       xs=xrange(1):xrange(2);
+   else
+       xs=1:size(spect,1);
+   end
+   
    
    g=figure('Position', [360 400 560 560]);
    plot(xs,real(spect(xs)));
