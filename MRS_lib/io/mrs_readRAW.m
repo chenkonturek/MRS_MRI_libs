@@ -87,9 +87,9 @@ function [data_spects water_spects] = mrs_downsample(blob, info)
                     water_spects(:,c,a,d) = mrs_fft(resample(double(blob.Data.x(1,:,c,a,d)'),info.no_points(1),info.no_acq_points) + 1i*resample(double(blob.Data.x(2,:,c,a,d)'),info.no_points(1),info.no_acq_points));
                 end
             end
-            for a=info.no_averages(2)+1:no_acq_per_dyn
-                data_spects(:,c,a-info.no_averages(2),d) = mrs_fft(resample(double(blob.Data.x(1,:,c,a,d)'),info.no_points(1),info.no_acq_points) + 1i*resample(double(blob.Data.x(2,:,c,a,d)'),info.no_points(1),info.no_acq_points));
-            end
+             for a=info.no_averages(2)+1:no_acq_per_dyn
+                 data_spects(:,c,a-info.no_averages(2),d) = mrs_fft(resample(double(blob.Data.x(1,:,c,a,d)'),info.no_points(1),info.no_acq_points) + 1i*resample(double(blob.Data.x(2,:,c,a,d)'),info.no_points(1),info.no_acq_points));
+             end
             disp(['***** finished for channel=',num2str(c)]);
         end
         disp(['***** finished for dynamic =',num2str(d),' *****']);
