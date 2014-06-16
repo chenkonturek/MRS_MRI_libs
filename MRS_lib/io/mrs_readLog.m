@@ -13,7 +13,7 @@ function info = mrs_readLog( fileName)
 % >> info = mrs_readSPAR('sub1.log');
 % >> disp(info)
 %
-% AUTHOR : Chen Chen
+% AUTHOR : Chen Chen, Dr Emma Hall
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
