@@ -10,7 +10,7 @@ function  corr_img =  mrs_retroCorr( img, mod_img,CP, RP )
 % slices_t = a list of points where each slice was located in log file 
 %
 %
-% AUTHOR : Chen Chen, Dr Emma Hall
+% AUTHOR : Dr Emma Hall, Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2013, University of Nottingham. All rights reserved.
