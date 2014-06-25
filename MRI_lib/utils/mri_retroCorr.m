@@ -1,7 +1,7 @@
-function  corr_img =  mrs_retroCorr( img, mod_img,CP, RP )
-% MRS_RETROCORR retrospective correction of physiological motion effects    
+function  corr_img =  mri_retroCorr( img, mod_img,CP, RP )
+% MRI_RETROCORR retrospective correction of physiological motion effects    
 % 
-% slices_t = mrs_locateSlices( info )
+% slices_t = mri_locateSlices( info )
 %
 % ARGS :
 % info = physiological log file information 

@@ -1,11 +1,11 @@
-function [resp_phase]=mrs_calRESPphase(resp,win_step,win)
-% MRS_CALRESTPHASE calculates the phase of the respiratory cycle by using
+function [resp_phase]=mri_calRESPphase(resp,win_step,win)
+% MRI_CALRESTPHASE calculates the phase of the respiratory cycle by using
 % the method detail in Glover et al (2000) and employing a peak/trough
 % finding algorithm to determine the sign of the phase.
 % This function is used in the RETROICOR program for the correction of
 % image data for physiological noise.
 % 
-% [resp_phase]=mrs_calRESPphase(resp,win_step,win)
+% [resp_phase]=mri_calRESPphase(resp,win_step,win)
 %
 % ARGS :
 % resp = psyiological respiration log data (info.resp) 

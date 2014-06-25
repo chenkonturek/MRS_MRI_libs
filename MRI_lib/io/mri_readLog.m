@@ -1,7 +1,7 @@
-function info = mrs_readLog( fileName)
-% MRS_READLOG reads physiological log file (.log) 
+function info = mri_readLog( fileName)
+% MRI_READLOG reads physiological log file (.log) 
 %
-% info = mrs_readLog(fileName)
+% info = mri_readLog(fileName)
 %
 % ARGS :
 % fileName = name of log file 
@@ -10,7 +10,7 @@ function info = mrs_readLog( fileName)
 % info = log file information 
 %
 % EXAMPLE: 
-% >> info = mrs_readSPAR('sub1.log');
+% >> info = mri_readSPAR('sub1.log');
 % >> disp(info)
 %
 % AUTHOR : Chen Chen, Dr Emma Hall
