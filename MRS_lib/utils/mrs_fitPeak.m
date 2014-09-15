@@ -1,4 +1,4 @@
-function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, peak_range, no_disp)    
+function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, peak_range, no_disp, type)    
 % MRS_FINDFITTEDPEAK fits a peak in the given range of a spectrum with a lorenztian 
 % function by minimising the squared error
 % 
@@ -38,9 +38,10 @@ function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, pea
         
     if nargin <3
         no_disp=0;
+        type='l';
     end
     
-    [f,pars_fitted] = fitPeak( real(spectrum(x))', x, no_disp);
+    [f,pars_fitted] = fitPeak( real(spectrum(x))', x, no_disp, type);
     
 	[A_peak,index]=max(f);
 	I_peak=x(index);
@@ -48,13 +49,17 @@ function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, pea
     peak_fitted(x)=f;
 end
 
-function  [peak_fitted,pars_fitted] = fitPeak(data, x, no_disp)
+function  [peak_fitted,pars_fitted] = fitPeak(data, x, no_disp, type)
 
     [A_ini,index]=max(data);
     par_initials=[(data(1)+data(end))/2, x(index), 2.5, A_ini]; 
         
-    [peak_fitted, pars_fitted] = mrs_lorentzFit(par_initials, data, x);
-    
+    switch type
+        case 'l'
+            [peak_fitted, pars_fitted] = mrs_lorentzFit(par_initials, data, x);
+        case 'g' 
+            [peak_fitted, pars_fitted] = mrs_gaussianFit(par_initials, data, x);
+    end
     if no_disp==0
 %        f=figure(4);
 %         clf(f)

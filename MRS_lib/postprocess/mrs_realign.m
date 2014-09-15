@@ -1,4 +1,4 @@
-function [aligned_spectra, I_peak] = mrs_realign( spectra, peak_range, BW, LB)
+function [aligned_spectra, I_peak] = mrs_realign( spectra, peak_range, positive, BW, LB)
 % MRS_REALIGN aligns the highest peaks within a given peak range in the spectra.
 % For noisy peaks, apodization is applied before peak alignment. 
 % 
@@ -30,7 +30,7 @@ function [aligned_spectra, I_peak] = mrs_realign( spectra, peak_range, BW, LB)
         peak_range = [1 samples]; 
     end
 
-    if nargin>2 && LB ~=0
+    if nargin>3 && LB ~=0
         % apodization
         spectra_LB = mrs_fft(mrs_apod(mrs_ifft(spectra), BW, LB));
     else
@@ -46,7 +46,7 @@ function [aligned_spectra, I_peak] = mrs_realign( spectra, peak_range, BW, LB)
     [amp_max,I_max]=max(mask.*real(spectra_LB(:,1,1)));
     [amp_min,I_min]=min(mask.*real(spectra_LB(:,1,1)));
     
-    if abs(amp_min)<abs(amp_max)
+    if positive
         I_peak=I_max;
         for d=1:dyns
             for a=1:avgs;
