@@ -14,6 +14,7 @@ function [A_peaks, I_peaks] = mrs_findPeak( spectra, peak_range, ispositive)
 % RETURNS:
 % A_peak = amplitude of the target peak
 % I_peak = index of the target peak
+% ispositive = is the target peak positive 
 %
 % EXAMPLE: 
 % >> [A, I] = mrs_findPeak(spectrum, [2000 2500], 1);

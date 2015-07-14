@@ -1,18 +1,21 @@
-function [mask, msvoi_centre, msvoi_corners]= mri_locateSVOI( SPAR_info, PAR_info )
-% MRI_LOCATESVOI creates an mask for locating the spectroscopic VOI in axial MR images. 
-% Axial MRI localiser were acquired before single voxel MRS.  
+function [mask, msvoi_centre, msvoi_corners]= mri_locateSVOI( SPAR_info, PAR_info, isBe)
+% MRI_LOCATESVOI creates a mask for locating the spectroscopic VOI in MR images. 
+% MRI localiser were acquired before single voxel MRS.  
 % 
-% mask = mri_locateSVOI(  SPAR_info, PAR_info )
+% mask = mri_locateSVOI(SPAR_info, PAR_info, isBe)
 % 
 % ARGS :
 % SPAR_info = spectroscopy header information from .SPAR
 % PAR_info = Axial MRI localiser header information from .PAR
+% isBe = 1 if ByteOrder is 'ieee-Be', 0 if ByteOrder is 'ieee-Le'
 % 
 % RETURNS:
 % mask = a mask for locating the spectroscopy VOI in MR images. 
 %            The mask has the same size as the MR image localiser. 
 %            The voxels correspoinding to spectroscopy VOI is assigned with value 1; 
 %            otherwise, the voxel value is set to be 0. 
+% msvoi_centre = coordinate of the centre of the spectrosopic voxel in the image space 
+% msvoi_corners = coordinates of the corners of the spectrosopic voxel in the image space 
 %
 % EXAMPLE: 
 % >> spar_info = mrs_readSPAR('sub1_MRS.SPAR');
@@ -21,11 +24,11 @@ function [mask, msvoi_centre, msvoi_corners]= mri_locateSVOI( SPAR_info, PAR_inf
 % >> mri_data = mri_readIMG('sub1_MPRAGE.hdr');
 % >> mri_dispSVOI( svoi_mask, mri_data );
 %
-% AUTHOR : Chen Chen, Dr. Emma Hall
+% AUTHOR : Dr. Chen Chen, Dr. Emma Hall
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
-% Copyright (c) 2013, University of Nottingham. All rights reserved.
-
+% Copyright (c) 2015, University of Nottingham. All rights reserved.
+    
     svoi_offcentre = SPAR_info.offcentre;  % rl ap fh
     if SPAR_info.CSI==0
         svoi_size = SPAR_info.size;    % rl ap fh, mm
@@ -81,56 +84,11 @@ function [mask, msvoi_centre, msvoi_corners]= mri_locateSVOI( SPAR_info, PAR_inf
     disp(msvoi_centre)
 
     % create mask 
-    mask=zeros(mri_dim(1),mri_dim(2),mri_dim(3));
-
-    xs = linspace(-mri_size(1)/2, mri_size(1)/2, mri_dim(1)+1)+mri_vox(1)/2;
-    ys = linspace(-mri_size(2)/2, mri_size(2)/2, mri_dim(2)+1)+mri_vox(2)/2;
-    zs = linspace(-mri_size(3)/2, mri_size(3)/2, mri_dim(3)+1)+mri_vox(3)/2;
-    
-    for plane = 1:6 % 6 planes of Spectroscopic VOI
-        if plane == 1 % -x plane
-            p1 = msvoi_corners(1,:);p2 = msvoi_corners(2,:);p3 = msvoi_corners(3,:);
-        elseif plane ==4 %+ x plane
-            p1 = msvoi_corners(5,:);p2 = msvoi_corners(6,:);p3 = msvoi_corners(7,:);
-        elseif plane == 2 %-y plane
-            p1 = msvoi_corners(1,:);p2 = msvoi_corners(2,:);p3 = msvoi_corners(5,:);
-        elseif plane ==5 %+y plane
-            p1 = msvoi_corners(3,:);p2 = msvoi_corners(4,:);p3 = msvoi_corners(7,:);
-        elseif plane ==3 %-z plane
-            p1 = msvoi_corners(1,:);p2 = msvoi_corners(3,:);p3 = msvoi_corners(5,:);
-        elseif plane ==6
-            p1 = msvoi_corners(2,:);p2 = msvoi_corners(4,:);p3 = msvoi_corners(6,:);
-        end
-        
-        A=cat(1,p1,p2,p3);
-        b = [1; 1; 1];
-        v=A\b;
-        
-        cv = sum(v.*msvoi_centre')-1;
-        
-        for x = 1:mri_dim(1)
-            Px = xs(x);
-            for y = 1:mri_dim(2)
-                Py = ys(y);
-                for z = 1:mri_dim(3)    
-                    Pz = zs(z);
-                
-                    if  cv < 0 && (v(1)*Px+v(2)*Py+v(3)*Pz-1)<0
-                        mask(x,y,z)= mask(x,y,z)+1;
-                    elseif cv > 0 && (v(1)*Px+v(2)*Py+v(3)*Pz-1)>0
-                        mask(x,y,z)= mask(x,y,z)+1;
-                    end
-                end               
-            end
-        end
+    if nargin == 2
+        isBe = 1;
     end
-     % if centre of the MRI voxel is one the same side
-     % of plane as the centre of spectroscopic VOI for all planes
-    mask = mask > 5;
+    mask = mri_createMask(mri_dim, mri_size, mri_vox, msvoi_corners, msvoi_centre, isBe);
     
-    for z = 1: mri_dim(3)
-         mask(:,:,z)=fliplr(mask(:,:,z));
-    end
 end
 
 

@@ -8,6 +8,7 @@ function [spect_phased phi]= mrs_manualzeroPHC(spect, xrange, spect_disp)
 % ARGS :
 % spect = a spectrum before mannual zero-order phase correction
 % xrange (optional) = x ranges (in points) you want to display when doing phase correction 
+% spect_disp = a fxied spectrum displayed for comparison purpose
 %
 % RETURNS:
 % spect_phased = a spectrum after mannual zero-order phase correction 

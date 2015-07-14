@@ -1,7 +1,33 @@
 function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI( fixedFilename, movingFilename, sparFilename, geomtform)
+% MRI_TRANSFORMSVOI calculates location in scanner space of the spectroscopic voxel in the second set of images (fixed), 
+% which has the same position as in the first set of images (moving). 
+% 
+% [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI( fixedFilename, movingFilename, sparFilename, geomtform)
+% 
+% ARGS :
+% fixedFilename = .img/.hdr filename (without extension) of the images registered to 
+% movingFilename = .img/.hdr filename (without extension) of the images to be transformed
+% sparFilename = .spar filename of spectroscopy header file 
+% geomtform = 4x4 3D transformation matrix for image registration 
+% 
+% RETURNS:
+% svoi_offcentre_est = off centre parameters of the spectroscopic voxel in scanner space   
+% svoi_ang_est = angulation parameters of the spectroscopic voxel in scanner space
+% msvoi_corners = coordinates of corners of the spectroscopic voxel in scanner space  
+%
+%
+% AUTHOR : Dr Chen Chen
+% PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
+%
+% Copyright (c) 2015, University of Nottingham. All rights reserved.
+
+    [~, sparFilename, ~]=fileparts(sparFilename); 
+    [~, movingFilename, ~]=fileparts(movingFilename); 
+    [~, fixedFilename, ~]=fileparts(fixedFilename); 
     
     SPAR_info = mrs_readSPAR(sparFilename);
     PAR_info = mri_readPAR(movingFilename);    
+    HDR_info = mri_readHDR(movingFilename);
     
     svoi_offcentre = SPAR_info.offcentre;  % rl ap fh
     if SPAR_info.CSI==0
@@ -58,7 +84,7 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     disp(msvoi_centre)
     
     %% create svoi mask in moving_MRI space 
-    mask_moving = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre);
+    mask_moving = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre, all(HDR_info.ByteOrder=='ieee-Be'));
     copyfile([movingFilename,'.hdr'],'svoi_mask_moving.hdr');
     mri_writeIMG('svoi_mask_moving.img', mask_moving);
 
@@ -75,7 +101,7 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     disp(msvoi_centre)
     
     %% create svoi mask in fixed_MRI space 
-    mask_fixed = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre);
+    mask_fixed = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre, all(HDR_info.ByteOrder=='ieee-Be'));
     copyfile([fixedFilename,'.hdr'],'svoi_mask_fixed.hdr');
     mri_writeIMG('svoi_mask_fixed.img', mask_fixed);
     
@@ -118,18 +144,20 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     svoi_ang_est = [svoi_ang_est(2) svoi_ang_est(1) svoi_ang_est(3)];
     
     disp('*********************************')
+    disp('           Results               ')
+    disp('*********************************')
     svoi_offcentre_est = [msvoi_centre(2), msvoi_centre(1), msvoi_centre(3)];  
     disp('new offcentre (AP, LR, FH): ');
     disp(svoi_offcentre_est);
    
     disp('new ang (AP, LR, FH): ');
     disp(svoi_ang_est);
-    
+    disp('*********************************')
     %% write into a text file 
     
     
     %% check 
-    %    mask=mri_locateSVOI(mrs_readSPAR('new'), PAR_fixed_info);
+    %    mask=mri_locateSVOI(mrs_readSPAR('new'), PAR_fixed_info, all(HDR_info.ByteOrder=='ieee-Be'));
     %    copyfile([fixedFilename,'.hdr'],'svoi_mask_check.hdr');
     %    mri_writeIMG('svoi_mask_check.img', mask);
     

@@ -9,6 +9,8 @@ function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, pea
 % peak_range = peak range for the target peak (in points)
 % no_disp(optional)= if 0(default), display peak, fitted peak and baseline after fitting
 %                    if 1, disable display function. 
+% type = 'l' represents Lorentzian lineshape,'g' represents Gaussian lineshape
+% 
 % RETURNS:
 % A_peak = value of target peak
 % I_peak = index of the target peak in the spectrum (in points)

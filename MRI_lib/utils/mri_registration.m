@@ -1,7 +1,28 @@
 function geomtform = mri_registration( fixedFilename, movingFilename )
+% MRI_REGISTRATION calculates the transformation matrix for registrating two 3D MR images.
+% 
+% geomtform = mri_registration( fixedFilename, movingFilename )
+% 
+% ARGS :
+% fixedFilename = .img/.hdr filename (without extension) of the images registered to 
+% movingFilename = .img/.hdr filename (without extension) of the images to be transformed
+% 
+% RETURNS:
+% geomtform = 4x4 3D transformation matrix for image registration 
+%
+% EXAMPLE: 
+% >> geomtform = mri_registration('post', 'pre')
+%
+% AUTHOR : Dr Chen Chen
+% PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
+%
+% Copyright (c) 2015, University of Nottingham. All rights reserved.
 
     disp('********* Registration in process... *********')
     
+    [~, fixedFilename, ~]=fileparts(fixedFilename); 
+    [~, movingFilename, ~]=fileparts(movingFilename); 
+     
     fixedHeader  = mri_readHDR(fixedFilename);
     movingHeader = mri_readHDR(movingFilename);
 
@@ -24,12 +45,12 @@ function geomtform = mri_registration( fixedFilename, movingFilename )
     Rmoving.PixelExtentInWorldX;
     Rmoving.ImageExtentInWorldX;
 
-    optimizer.InitialRadius = 0.004;
+    optimizer.InitialRadius = 0.008;
     movingRegisteredVolume = imregister(movingVolume,Rmoving, fixedVolume,Rfixed, 'rigid', optimizer, metric);
 
 
-    %figure, title('Axial slice of registered volume.');
-    %imshowpair(movingRegisteredVolume(:,:,centerFixed(3)), fixedVolume(:,:,centerFixed(3)));
+    figure, title('Axial slice of registered volume.');
+    imshowpair(movingRegisteredVolume(:,:,centerFixed(3)), fixedVolume(:,:,centerFixed(3)));
     %helperVolumeRegistration(fixedVolume,movingRegisteredVolume);
     
     geomtform = imregtform(movingVolume, Rmoving, fixedVolume, Rfixed, 'rigid', optimizer, metric);

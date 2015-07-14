@@ -1,5 +1,24 @@
+function mask = mri_createMask(mri_dim, mri_size, mri_vox, msvoi_corners, msvoi_centre,isBe)
+% MRI_CREATEMASK creates a mask for locating the spectroscopic VOI in MR images.   
+% 
+% mask = mri_createMask(mri_dim, mri_size, mri_vox, msvoi_corners, msvoi_centre,isBe)
+% 
+% ARGS :
+% mri_dim = MRI image dimensions (e.g. [256 256 180])
+% mri_size = MRI image size (mm)
+% mri_vox = MRI voxel size (mm)
+% msvoi_corners = coordinates of the corners of the spectrosopic voxel in the image space 
+% msvoi_centre = coordinate of the centre of the spectrosopic voxel in the image space 
+% isBe = 1 if ByteOrder is 'ieee-Be', 0 if ByteOrder is 'ieee-Le'
+% 
+% RETURNS:
+% mask = a mask for locating the spectroscopy VOI in MR images. 
+%
+% AUTHOR : Dr. Chen Chen, Dr. Emma Hall
+% PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
+%
+% Copyright (c) 2015, University of Nottingham. All rights reserved.
 
-function mask=mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre)
     mask=zeros(mri_dim(1),mri_dim(2),mri_dim(3));
 
     xs = linspace(-mri_size(1)/2, mri_size(1)/2, mri_dim(1)+1)+mri_vox(1)/2;
@@ -47,8 +66,10 @@ function mask=mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_cent
      % of plane as the centre of spectroscopic VOI for all planes
     mask = mask > 5;
     
-    for z = 1: mri_dim(3)
-         mask(:,:,z)=fliplr(mask(:,:,z));
+    if isBe
+        for z = 1: mri_dim(3)
+             mask(:,:,z)=fliplr(mask(:,:,z));
+        end
     end
 end
 
