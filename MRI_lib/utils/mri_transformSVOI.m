@@ -84,7 +84,7 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     disp(msvoi_centre)
     
     %% create svoi mask in moving_MRI space 
-    mask_moving = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre, all(HDR_info.ByteOrder=='ieee-Be'));
+    mask_moving = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre, all(HDR_info.ByteOrder=='ieee-be'));
     copyfile([movingFilename,'.hdr'],'svoi_mask_moving.hdr');
     mri_writeIMG('svoi_mask_moving.img', mask_moving);
 
@@ -101,7 +101,7 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     disp(msvoi_centre)
     
     %% create svoi mask in fixed_MRI space 
-    mask_fixed = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre, all(HDR_info.ByteOrder=='ieee-Be'));
+    mask_fixed = mri_createMask(mri_dim,mri_size,mri_vox, msvoi_corners, msvoi_centre, all(HDR_info.ByteOrder=='ieee-be'));
     copyfile([fixedFilename,'.hdr'],'svoi_mask_fixed.hdr');
     mri_writeIMG('svoi_mask_fixed.img', mask_fixed);
     
@@ -157,7 +157,7 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     
     
     %% check 
-    %    mask=mri_locateSVOI(mrs_readSPAR('new'), PAR_fixed_info, all(HDR_info.ByteOrder=='ieee-Be'));
+    %    mask=mri_locateSVOI(mrs_readSPAR('new'), PAR_fixed_info, all(HDR_info.ByteOrder=='ieee-be'));
     %    copyfile([fixedFilename,'.hdr'],'svoi_mask_check.hdr');
     %    mri_writeIMG('svoi_mask_check.img', mask);
     
