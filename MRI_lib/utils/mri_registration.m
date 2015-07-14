@@ -45,7 +45,7 @@ function geomtform = mri_registration( fixedFilename, movingFilename )
     Rmoving.PixelExtentInWorldX;
     Rmoving.ImageExtentInWorldX;
 
-    optimizer.InitialRadius = 0.008;
+    optimizer.InitialRadius = 0.004;
     movingRegisteredVolume = imregister(movingVolume,Rmoving, fixedVolume,Rfixed, 'rigid', optimizer, metric);
 
 
