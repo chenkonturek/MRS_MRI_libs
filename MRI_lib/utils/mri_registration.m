@@ -31,11 +31,11 @@ function geomtform= mri_registration( fixedFilename, movingFilename, type)
     movingVolume = mri_readIMG(movingFilename);
     
     for z = 1:size(fixedVolume,3)
-        fixedVolume(:,:,z)=fliplr(fixedVolume(:,:,z));
+        fixedVolume(:,:,z)=imrotate(fixedVolume(:,:,z),90);
     end
     
     for z = 1:size(movingVolume,3)
-        movingVolume(:,:,z)=fliplr(movingVolume(:,:,z));
+        movingVolume(:,:,z)=imrotate(movingVolume(:,:,z),90);
     end
 
     %helperVolumeRegistration(fixedVolume,movingVolume);
@@ -79,7 +79,7 @@ function geomtform= mri_registration( fixedFilename, movingFilename, type)
     %imshowpair(movingRegisteredVolume(:,:,centerFixed(3)), fixedVolume(:,:,centerFixed(3)));
 
     for z = 1:size(fixedVolume,3)
-        movingRegisteredVolume(:,:,z)=fliplr(movingRegisteredVolume(:,:,z));
+        movingRegisteredVolume(:,:,z)=imrotate(movingRegisteredVolume(:,:,z),-90);
     end
     
     copyfile([movingFilename,'.hdr'],[movingFilename,'_new.hdr']);

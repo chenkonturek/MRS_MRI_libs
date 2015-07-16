@@ -89,10 +89,10 @@ function [ svoi_offcentre_est, svoi_ang_est, msvoi_corners] = mri_transformSVOI(
     mri_writeIMG('svoi_mask_moving.img', mask_moving);
 
     %% svoi to fixed_MRI space      
-    [msvoi_centre(2),msvoi_centre(1),msvoi_centre(3)] = transformPointsForward(geomtform,msvoi_centre(2),msvoi_centre(1),msvoi_centre(3));
+    [msvoi_centre(1),msvoi_centre(2),msvoi_centre(3)] = transformPointsForward(geomtform,msvoi_centre(1),msvoi_centre(2),msvoi_centre(3));
     
     for i = 1:8
-        [msvoi_corners(i,2),msvoi_corners(i,1),msvoi_corners(i,3)] = transformPointsForward(geomtform,msvoi_corners(i,2),msvoi_corners(i,1),msvoi_corners(i,3));
+        [msvoi_corners(i,1),msvoi_corners(i,2),msvoi_corners(i,3)] = transformPointsForward(geomtform,msvoi_corners(i,1),msvoi_corners(i,2),msvoi_corners(i,3));
     end
    
     
