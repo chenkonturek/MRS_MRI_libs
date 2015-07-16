@@ -9,7 +9,7 @@ function geomtform= mri_registration( fixedFilename, movingFilename, type)
 % type = transformation type: 'translation','rigid','similarity','affine'
 % 
 % RETURNS:
-% geomtform = 4x4 3D transformation matrix for image registration  (AP, RL, FH)
+% geomtform = 4x4 3D transformation matrix for image registration  (RL,AP,FH)
 %
 % EXAMPLE: 
 % >> geomtform = mri_registration('post', 'pre')
