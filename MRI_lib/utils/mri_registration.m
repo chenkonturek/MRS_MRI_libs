@@ -1,4 +1,4 @@
-function geomtform = mri_registration( fixedFilename, movingFilename )
+function geomtform= mri_registration( fixedFilename, movingFilename, type)
 % MRI_REGISTRATION calculates the transformation matrix for registrating two 3D MR images.
 % 
 % geomtform = mri_registration( fixedFilename, movingFilename )
@@ -6,9 +6,10 @@ function geomtform = mri_registration( fixedFilename, movingFilename )
 % ARGS :
 % fixedFilename = .img/.hdr filename (without extension) of the images registered to 
 % movingFilename = .img/.hdr filename (without extension) of the images to be transformed
+% type = transformation type: 'translation','rigid','similarity','affine'
 % 
 % RETURNS:
-% geomtform = 4x4 3D transformation matrix for image registration 
+% geomtform = 4x4 3D transformation matrix for image registration  (AP, RL, FH)
 %
 % EXAMPLE: 
 % >> geomtform = mri_registration('post', 'pre')
@@ -28,6 +29,14 @@ function geomtform = mri_registration( fixedFilename, movingFilename )
 
     fixedVolume = mri_readIMG(fixedFilename);
     movingVolume = mri_readIMG(movingFilename);
+    
+    for z = 1:size(fixedVolume,3)
+        fixedVolume(:,:,z)=fliplr(fixedVolume(:,:,z));
+    end
+    
+    for z = 1:size(movingVolume,3)
+        movingVolume(:,:,z)=fliplr(movingVolume(:,:,z));
+    end
 
     %helperVolumeRegistration(fixedVolume,movingVolume);
 
@@ -46,14 +55,14 @@ function geomtform = mri_registration( fixedFilename, movingFilename )
     Rmoving.ImageExtentInWorldX;
 
     optimizer.InitialRadius = 0.004;
-    movingRegisteredVolume = imregister(movingVolume,Rmoving, fixedVolume,Rfixed, 'rigid', optimizer, metric);
+    movingRegisteredVolume = imregister(movingVolume,Rmoving, fixedVolume,Rfixed, type, optimizer, metric);
 
 
     figure, title('Axial slice of registered volume.');
     imshowpair(movingRegisteredVolume(:,:,centerFixed(3)), fixedVolume(:,:,centerFixed(3)));
     %helperVolumeRegistration(fixedVolume,movingRegisteredVolume);
     
-    geomtform = imregtform(movingVolume, Rmoving, fixedVolume, Rfixed, 'rigid', optimizer, metric);
+    geomtform = imregtform(movingVolume, Rmoving, fixedVolume, Rfixed, type, optimizer, metric);
 
     geomtform.T
 %     centerXWorld = mean(Rmoving.XWorldLimits);
@@ -69,8 +78,11 @@ function geomtform = mri_registration( fixedFilename, movingFilename )
     %figure, title('Axial slice of registered volume.');
     %imshowpair(movingRegisteredVolume(:,:,centerFixed(3)), fixedVolume(:,:,centerFixed(3)));
 
+    for z = 1:size(fixedVolume,3)
+        movingRegisteredVolume(:,:,z)=fliplr(movingRegisteredVolume(:,:,z));
+    end
+    
     copyfile([movingFilename,'.hdr'],[movingFilename,'_new.hdr']);
     mri_writeIMG([movingFilename,'_new.img'], movingRegisteredVolume);
-
 
 end
