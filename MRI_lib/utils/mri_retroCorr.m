@@ -1,14 +1,24 @@
-function  corr_img =  mri_retroCorr( img, mod_img,CP, RP )
+function  corr_img =  mri_retroCorr( img, mod_img, CP, RP )
 % MRI_RETROCORR retrospective correction of physiological motion effects    
 % 
-% slices_t = mri_locateSlices( info )
+% corr_img =  mri_retroCorr( img, mod_img, CP, RP )
 %
 % ARGS :
-% info = physiological log file information 
+% img = phase images before correction 
+% mod_img = modulus images 
+% CP = the phase of the pulse cycle
+% RP = the phase of the respiratory cycle
 %
 % RETURNS:
-% slices_t = a list of points where each slice was located in log file 
+% corr_img = corrected phase images 
 %
+% EXAMPLE:
+% >>log_file='SCANPHYSLOG20140506111233';
+% >>info = mri_readLog(log_file);
+% >>slices_t = mri_locateSlices( info );
+% CP=[];
+% RP=resp_phase(slices_t) ;
+% corr_img =  mri_retroCorr( phase_img,modulus_img, CP, RP(20*4+1:end));
 %
 % AUTHOR : Dr Emma Hall, Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)

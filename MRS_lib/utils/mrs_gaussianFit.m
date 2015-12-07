@@ -1,11 +1,11 @@
 function  [y_fitted, pars_fitted]= mrs_gaussianFit(pars0, data, x)
-% MRS_LORENTZFIT fits data with a lorenztian function by minimising the squared error
+% MRS_GAUSSIANFIT fits data with a Gaussian function by minimising the squared error
 % 
-% [y_fitted, pars_fitted]= mrs_lorentzFit(pars0,data, x)
+% [y_fitted, pars_fitted]= mrs_gaussianFit(pars0, data, x)
 %
 % ARGS :
 % pars0 = initial values of parameters to be estimated ([y0 x0 fwhm A])
-% data = data to be fitted with a lorentzian function
+% data = data to be fitted with a Gaussian function
 % x = input vectors
 % 
 % RETURNS:

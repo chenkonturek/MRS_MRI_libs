@@ -15,7 +15,23 @@ function [resp_phase]=mri_calRESPphase(resp,win_step,win)
 % RETURNS:
 % resp_phase = calcuated phase of the respiratory cycle
 %
-% AUTHOR : Dr Emma Hall
+% EXAMPLE:
+% >>log_file='SCANPHYSLOG20140506111233';
+% >>info = mri_readLog(log_file);
+% >>win_step=5;
+% >>win=10;
+% >>resp_phase = mri_calRESPphase(info.resp,win_step,win);
+% >>slices_t = mri_locateSlices( info );
+% >>figure;
+% >>set(gcf,'Color',[1 1 1]);plotyy(info.t,info.resp,info.t,resp_phase);
+% >>legend('Resp Trace','Resp Phase');
+% >>hold on
+% >>for i=1:20:length(slices_t)
+% >>    line([info.t(slices_t(i)) info.t(slices_t(i))],[-1 1]*10^4,'color','r');
+% >>end
+% >>title('Resp Trace and Calculated Phase');xlabel('Time /s');
+%
+% AUTHOR : Dr Emma Hall, Chen Chen 
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
 %
 % Copyright (c) 2009, University of Nottingham. All rights reserved.

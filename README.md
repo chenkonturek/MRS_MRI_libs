@@ -52,18 +52,24 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_fitPeak.m**         : fits a peak in the given range of a spectrum with a lorenztian curve  
   * **mrs_lorentzFit.m**      : fits data with a lorenztian function by minimising the squared error
   * **mrs_lorentzFun.m**      : defines the lorentzian function
+  * **mrs_gaussianFit.m**     : fits data with a Gaussian function by minimising the squared error
+  * **mrs_gaussianFun.m**     : defines the Gaussian function
   * **mrs_points2Hz.m**       : converts unit from points to Hz
   * **mrs_points2ppm.m**      : converts unit from points to ppm
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
   * **mrs_plotSpectra.m**     : displays spectra 
+  * **mrs_plotBASISspectrum.m** : displays model spectra from a basis set 
   * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
-  * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise
+  * **mrs_rot90.m**           : rotates the chemical shift images 90 degree clockwise
   * **mrs_calTemp.m**         : calculates the temperature based on chemical shift difference of the water resonance and the temperature-independent reference resonance
+  * **mrs_T1corr.m**          : applies T1 relaxation correction  
+  * **mrs_T2corr.m**          : applies T2 relaxation correction  
 
 **MRI_lib** contains functions for post-processing, analysing and simulating Magnetic Resonance Imaging data
 * io/
   * **mri_readHDR.m**  : reads .hdr MRI ANALYZE 7.5 header file 
   * **mri_readIMG.m**  : reads .img MRI ANALYZE 7.5 data file 
+  * **mri_readLog.m**  : reads .log physiological log file from Philips MR scanner  
   * **mri_writeIMG.m** : writes data to .img file 
   * **mri_readPAR.m**  : reads .PAR Philips MRI header file
   * **mri_readREC.m**  : reads .REC Philips MRI data file
@@ -73,8 +79,15 @@ Data files & header files are required to be added to MATLAB path.
   ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/IR.png)  
 
   * **mri_absIRcurveFit.m**  : fits the data to absolute inversion recovery curve 
-  * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic VOI in the axial MR images
+  * **mri_locateSVOI.m**     : creates a mask for localising the spectroscopic VOI in the MR images
+  * **mri_createMask.m**     : creates a mask for spectroscopic VOI, used by mri_locateSVOI function 
   * **mri_dispSVOI.m**       : displays the spectroscopic VOI on top of the axial MR images
+  * **mri_registration.m**   : calculates the transformation matrix for registrating two 3D MR images
+  * **mri_transformSVOI.m**  : calculates position of MRS voxel in post-scan based on pre-scan location (scanner space) 
+  * **mri_calRESPphase.m**   : calculates the phase of the respiratory cycle
+  * **mri_locateSlices.m**   : locate where/when the slices was acquired in the physiological log 
+  * **mri_retroCorr.m**      : applies retrospective correction of physiological motion effects    
+  * **mri_estAng.m**         : estimates the angulation in scanner space of a spectrosopy voxel, when the coordinates of 8 corners, and voxel centre are known in scanner space.    
 
 **NMR_lib:** contains functions for NMR simulation 
   * **nmr_bloch.m** : defines full Bloch equations in rotating frame

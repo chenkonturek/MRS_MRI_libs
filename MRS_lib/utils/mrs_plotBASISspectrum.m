@@ -1,5 +1,5 @@
 function  mrs_plotBASISspectrum( spectrum, ishift, unit, BW, transmit_freq, ref_ppm, marker)
-% MRS_PLOTBASISSPECTRUM displays spectra  
+% MRS_PLOTBASISSPECTRUM displays model spectra from a basisset  
 % 
 % mrs_plotBASISspectrum( spectrum, unit, BW, ishift, transmit_freq, ref_ppm, marker)
 % 

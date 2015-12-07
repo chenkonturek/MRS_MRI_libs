@@ -1,5 +1,5 @@
-function  slices_t = mrs_locateSlices( info )
-% MRS_locateSLICE locate where the slices was acquired in the physiological log    
+function  slices_t = mri_locateSlices( info )
+% MRI_locateSLICES locate where the slices was acquired in the physiological log    
 % 
 % slices_t = mrs_locateSlices( info )
 %
@@ -9,6 +9,10 @@ function  slices_t = mrs_locateSlices( info )
 % RETURNS:
 % slices_t = a list of points where each slice was located in log file 
 %
+% EXAMPLE: 
+% >>log_file='SCANPHYSLOG20140506111233';
+% >>info = mri_readLog(log_file);
+% >>slices_t = mri_locateSlices( info );
 %
 % AUTHOR : Chen Chen, Dr Emma Hall
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
