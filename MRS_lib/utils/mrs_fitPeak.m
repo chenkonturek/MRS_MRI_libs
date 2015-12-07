@@ -21,7 +21,7 @@ function [A_peak, I_peak, peak_fitted, pars_fitted] = mrs_fitPeak( spectrum, pea
 % of the peak).
 %
 % EXAMPLE: 
-% >> [Amp, I, peak_fitted, pars_fitted] = mrs_fitPeak(spectrum, [2000 2500], 1);
+% >> [Amp, I, peak_fitted, pars_fitted] = mrs_fitPeak(spectrum, [2000 2500], 1, 'l');
 % >> disp(Amp);
 % >> disp(I);
 % >> disp(['baseline amp = ',num2str(pars_fitted(1))]);

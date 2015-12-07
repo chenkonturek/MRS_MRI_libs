@@ -1,4 +1,4 @@
-function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm, marker)
+function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref, marker)
 % MRS_PLOTSPECTRA displays spectra  
 % 
 % mrs_plotSpectra(spectra, unit, BW, transmit_freq)
@@ -8,7 +8,7 @@ function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm, marker)
 % unit (optional) = unit of x-axis for display
 % BW (optional) = spectral bandwidth, Hz
 % transmit_freq (optional) = synthesizer frequency, Hz/T
-% ref_ppm (optional) = real chemical shift (ppm) of the reference frequency(0ppm)
+% ref (optional) = real chemical shift of the reference frequency
 % marker(optional) = choice of marker for plotting
 % 
 % EXAMPLE: 
@@ -28,10 +28,13 @@ function  mrs_plotSpectra( spectra, unit, BW, transmit_freq, ref_ppm, marker)
             case 'ppm'
                 x_ticks = mrs_points2ppm(x_ticks, samples, BW, transmit_freq);
        	        if nargin >=5
-                    x_ticks=ref_ppm+x_ticks;
+                    x_ticks=ref+x_ticks;
                 end
             case 'Hz'
                 x_ticks = mrs_points2Hz(x_ticks, samples, BW);
+                if nargin >=5
+                    x_ticks=ref+x_ticks;
+                end
         end
     end
 
