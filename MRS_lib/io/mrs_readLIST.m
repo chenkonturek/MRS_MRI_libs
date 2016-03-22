@@ -41,6 +41,7 @@ function info = mrs_readLIST( fileName )
 	info.noise_avgs=0; 
  	is_data_index=0;   % not reach the data vector index part          
     
+    info.withAllChannels = 0; 
 	for i=1:no_lines % for each line 
         line=header_info{1}{i};   
 
@@ -75,9 +76,21 @@ function info = mrs_readLIST( fileName )
                     
         else % if reaches the data vector index part
             noi_ind=strfind(line,'NOI');
-                   
+            std_ind=strfind(line,'STD');     
+            
             if ~isempty(noi_ind) 
                 info.noise_avgs=info.noise_avgs+1;% no. of noise spectra             
+            end
+            
+            if info.withAllChannels ==0
+                if ~isempty(std_ind) 
+                   str_temp = textscan(line, '%s', 'delimiter', ' ');
+                   R=str_temp{1}; 
+                   R=R(~cellfun('isempty',R)); 
+                   if str2double(R{7}) > 0 % if has data from more than 1 channel 
+                       info.withAllChannels =1;
+                   end
+                end
             end
         end
                 
