@@ -13,10 +13,10 @@ Data files & header files are required to be added to MATLAB path.
 * io/ 
   * **mrs_readSPAR.m**  : reads .SPAR Philips MRS header file
   * **mrs_readSDAT.m**  : reads .SDAT Philips MRS data file
-  * **mrs_readLIST.m**  : reads .list Philips MRS header file produced by delayed reconstruction
+  * **mrs_readLIST.m**  : reads .list Philips MRS header file produced by delayed reconstruction  
   * **mrs_readDATA.m**  : reads .data Philips MRS data file produced by delayed reconstruction
-  * **mrs_readSIN.m**   : reads .data Philips raw MRS data file
-  * **mrs_readRAW.m**   : reads .data Philips raw MRS data file
+  * **mrs_readSIN.m**   : reads .sin Philips MRS header file for raw data 
+  * **mrs_readRAW.m**   : reads .raw Philips raw MRS data file (contains signls from all channels)
   * **mrs_readLcmodelRAW.m** : reads LCModel input .RAW file which contains time domain data of each metabolite spectrum
   * **mrs_readLcmodelBASIS.m**   : reads the LCModel input .basis file which contains the basis set of model metabolite spectra 
   * **mrs_readLcmodelTABLE.m**   : reads the metabolite absolute and relative concentration and their SDs from the LCModel output .table file 
@@ -42,8 +42,10 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_PRESS.m**      : simulates signal acquired using Position Resolved Spectroscopy (PRESS)
   * **mrs_STEAM.m**      : simulates signal acquired using Stimulated Echo Acquisition Mode (STEAM) 
   
-  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/pulse_seq.jpg)  
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/press_steam.jpg)  
   * **mrs_sLASER.m**     : simulates the signal acquired using semi-localised by adiabatic selective refocusing(sLASER) sequence 
+  
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/sLASER.PNG)
   * **mrs_ISISscheme.m** : demonstrates how Image Selective in vivo Spectroscopy (ISIS) works
   * **mrs_simulateFID.m**: simulates a Free Induction Decay (FID) or Half-Echo. 
 * utils/
@@ -64,7 +66,11 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_calTemp.m**         : calculates the temperature based on chemical shift difference of the water resonance and the temperature-independent reference resonance
   * **mrs_T1corr.m**          : applies T1 relaxation correction  
   * **mrs_T2corr.m**          : applies T2 relaxation correction  
-
+* voxel_planner/
+  * **create_stdMaskvoxel.m&.fig** :  Allows you to plan MRS voxel size & location with a guide of MR structural images of a standard brain (MNI152_T1_1mm_brain.nii.gz) and functional region masks (HarvardOxford-cort-maxprob-thr0-1mm.nii.gz).   
+  
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/MRS_voxel_planner.PNG)
+  
 **MRI_lib** contains functions for post-processing, analysing and simulating Magnetic Resonance Imaging data
 * io/
   * **mri_readHDR.m**  : reads .hdr MRI ANALYZE 7.5 header file 
