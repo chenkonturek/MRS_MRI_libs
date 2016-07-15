@@ -20,6 +20,14 @@ function varargout = create_stdMaskvoxel(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 %
+% Usage: You can overlay a chosen functional region mask (based on HarvardOxford-cort-maxprob-thr0-1mm.nii.gz)over the standard
+% T1-weighted brain image (MNI152_T1_1mm.nii.gz) to plan your spectroscopy voxel (e.g. choose proper voxel size,location etc.) 
+% and save the desired spectroscopy voxel mask. 
+% Note: You can cusomise the chemical shift displacement of the voxel by change the values of the below parameters in the code:    
+%   BW=4730; % RF pulse BW 
+%   B0=7; % Tesla 
+%   gyro=42.6; % Gyromagnetic ratio (assume to be 1H) 
+%
 % AUTHOR : Dr. Chen Chen 
 % PLACE  : Sir Peter Mansfield Imaging Centre (SPMIC)
 %
@@ -27,7 +35,7 @@ function varargout = create_stdMaskvoxel(varargin)
 %
 % Edit the above text to modify the response to help create_stdMaskvoxel
 
-% Last Modified by GUIDE v2.5 18-Jan-2016 10:04:36
+% Last Modified by GUIDE v2.5 15-Apr-2016 15:48:09
 % Begin initialization code - DO NOT EDIT
 
 gui_Singleton = 1;
@@ -100,6 +108,7 @@ function i_LR_Callback(hObject, eventdata, handles)
      
         %overlay.fROI.name(hlb_ID)
         overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID)); 
+        overlay_img = shift_fROI(hlb_ID,overlay_img); 
      end
      slice_num=round((size(mri.img,1)-1)*val);
      axes(handles.LR)
@@ -154,6 +163,7 @@ function i_AP_Callback(hObject, eventdata, handles)
          hlb_ID=get(hlb,'Value');
          %overlay.fROI.name(hlb_ID)
          overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID)); 
+         overlay_img = shift_fROI(hlb_ID,overlay_img); 
      end
      slice_num=round((size(mri.img,2)-1)*val);
      axes(handles.AP)
@@ -204,6 +214,7 @@ function i_FH_Callback(hObject, eventdata, handles)
          hlb_ID=get(hlb,'Value');
          %overlay.fROI.name(hlb_ID)
          overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID)); 
+         overlay_img = shift_fROI(hlb_ID,overlay_img); 
      end
      slice_num=round((size(mri.img,3)-1)*val);
      axes(handles.FH)
@@ -450,6 +461,8 @@ function openfile_Callback(hObject, eventdata, handles)
         txt=findobj('Tag',tags_dd{s});
         set(txt,'Value', 0, 'String', '0'); 
     end
+    hvt=findobj('Tag','pu_metabolite');
+    set(hvt,'Value',1);
     
     % read in data  
     [filename,filepath]=uigetfile({'*.*','.gz'},'Select Standard Brain Atalas');
@@ -609,7 +622,8 @@ function lb_fROI_Callback(hObject, eventdata, handles)
     overlay = get(ho,'UserData'); 
     
     hlb_ID=get(hObject,'Value');
-    overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID)); 
+    overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID));     
+    overlay_img = shift_fROI(hlb_ID,overlay_img);
     
     % LR window 
      hs=findobj('Tag','i_LR');
@@ -684,7 +698,11 @@ function ds_LR_Callback(hObject, eventdata, handles)
     % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -723,7 +741,11 @@ function ds_AP_Callback(hObject, eventdata, handles)
     % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -760,7 +782,10 @@ function ds_FH_Callback(hObject, eventdata, handles)
     % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -797,7 +822,10 @@ function dc_LR_Callback(hObject, eventdata, handles)
     % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -834,7 +862,9 @@ function dc_AP_Callback(hObject, eventdata, handles)
      % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -870,7 +900,9 @@ function dc_FH_Callback(hObject, eventdata, handles)
      % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -908,7 +940,9 @@ function da_LR_Callback(hObject, eventdata, handles)
      % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -944,7 +978,9 @@ function da_AP_Callback(hObject, eventdata, handles)
     % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-   [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+   [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -980,7 +1016,9 @@ function da_FH_Callback(hObject, eventdata, handles)
     % update voxel mask 
     h=findobj('Tag','openfile');
     mri = get(h,'UserData');
-    [mask, msvoi_centre, msvoi_corners] = update_mask(mri);
+    hvt=findobj('Tag','pu_metabolite');
+    voxel_type = get(hvt,'Value');
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
     mri.mask = mask;
     mri.svoi_centre = msvoi_centre;
     mri.svoi_corners = msvoi_corners;
@@ -1005,8 +1043,8 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function [mask, msvoi_centre, msvoi_corners] = update_mask(mri)
-    
+function [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type)
+
     h1=findobj('Tag','ds_LR');
     s_LR = get(h1,'String');
     h2=findobj('Tag','ds_AP');
@@ -1028,14 +1066,32 @@ function [mask, msvoi_centre, msvoi_corners] = update_mask(mri)
     h3=findobj('Tag','da_FH');
     a_FH = get(h3,'String');
     
+    % calculate chemical shifts in mm
+    msvoi_size=[str2num(s_LR) str2num(s_AP) str2num(s_FH)];
+    
+    % parameters can be customised 
+    BW=4730; % RF pulse BW 
+    B0=7; % Tesla 
+    gyro=42.6; % Gyromagnetic ratio (assume to be 1H)
+    
+    switch voxel_type
+        case 1 % H2O, 4.7ppm
+            shift = [0 0 0];
+        case 2  % Fat/Lac, 1.3 ppm
+            shift =[3.4 -3.4 3.4]*gyro*B0/BW.*msvoi_size;
+        case 3 % 3 ppm
+            shift =[1.7 -1.7 1.7]*gyro*B0/BW.*msvoi_size;
+        otherwise
+    end 
+    
     % rotation function
     rot_rl = @(ang)[1 0 0;0 cos(ang) -sin(ang);0 sin(ang) cos(ang)];
     rot_ap = @(ang)[cos(ang) 0 sin(ang);0 1 0;-sin(ang) 0 cos(ang)];
     rot_fh = @(ang)[cos(ang) -sin(ang) 0;sin(ang) cos(ang) 0;0 0 1];
-
-    msvoi_size=[str2num(s_LR) str2num(s_AP) str2num(s_FH)];
-    msvoi_centre=[str2num(c_LR) str2num(c_AP) str2num(c_FH)];
-    msvoi_angulation = [str2num(a_LR) str2num(a_AP) str2num(a_FH)]/180*pi;
+    
+    msvoi_centre=[str2num(c_LR) str2num(c_AP) str2num(c_FH)]+ shift;
+    msvoi_angulation = [str2num(a_LR) str2num(a_AP) str2num(a_FH)]/180*pi; 
+    
     c=0;
     for x=[-1, 1]
         for y=[-1, 1]
@@ -1061,6 +1117,7 @@ function update_disp_all(handles,mri,overlay)
          hlb=findobj('Tag','lb_fROI');
          hlb_ID=get(hlb,'Value');
          overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID)); 
+         overlay_img = shift_fROI(hlb_ID,overlay_img);
     end
     
     % LR window 
@@ -1127,7 +1184,7 @@ function save_svoi_Callback(hObject, eventdata, handles)
     mri = get(h,'UserData');
     mask=load_nii(mri.filename);
     mask.img=mri.mask;
-    
+         
     %the centre of image is at back bottom left corner (for FSL display)
     msvoi_location=[mri.svoi_centre; mri.svoi_corners]+repmat(mri.size/2,9,1);
     msvoi_location(:,2)=repmat(mri.size(2),9,1)-msvoi_location(:,2);
@@ -1137,7 +1194,99 @@ function save_svoi_Callback(hObject, eventdata, handles)
     save_nii(mask,[PathName,FileName]);
     [~,name,~] = fileparts(FileName); 
     dlmwrite([PathName,name,'.txt'],msvoi_location,'delimiter','\t');
+    
 
+% --- Executes on button press in pb_overlap.
+function pb_overlap_Callback(hObject, eventdata, handles)
+% hObject    handle to pb_overlap (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+       
+        h=findobj('Tag','openfile');
+        mri = get(h,'UserData');
+
+        tot_voxels=sum(sum(sum(mri.mask)));
+        %disp(tot_voxels);
+        
+        ho=findobj('Tag','overlay');
+        overlay = get(ho,'UserData');
+        hlb=findobj('Tag','lb_fROI');
+        hlb_ID=get(hlb,'Value');
+        overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID));
+        overlay_img = shift_fROI(hlb_ID,overlay_img);  
+        
+        overlap_img=overlay_img.*mri.mask;
+        overlap_voxels=sum(sum(sum(overlap_img)));
+        %disp(overlap_voxels);
+        
+        hol=findobj('Tag','overlap');
+        set(hol,'String', num2str(overlap_voxels/tot_voxels*100)); 
+         
+         
+function overlay_img_shifted = shift_fROI(hlb_ID,overlay_img)  
+    overlay_img_shifted=overlay_img;
+
+    for i=1:size(overlay_img_shifted,1)
+         overlay_img_shifted(i,:,:) = circshift(squeeze(overlay_img(i,:,:)),7); 
+         overlay_img_shifted(i,:,:) = circshift(squeeze(overlay_img_shifted(i,:,:))',2)'; 
+    end
+
+
+% --------------------------------------------------------------------
+function savefROI_Callback(hObject, eventdata, handles)
+% hObject    handle to savefROI (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+    h=findobj('Tag','openfile');
+    mri = get(h,'UserData');
+    fROI_mask=load_nii(mri.filename);
+    
+    ho=findobj('Tag','overlay');
+    overlay = get(ho,'UserData');
+    hlb=findobj('Tag','lb_fROI'); 
+    hlb_ID=get(hlb,'Value');
+    overlay_img=int16(overlay.img==overlay.fROI.val(hlb_ID));
+    fROI_mask.img = shift_fROI(hlb_ID,overlay_img);  
+    
+    [FileName,PathName] = uiputfile('.nii.gz');
+    save_nii(fROI_mask,[PathName,FileName]);
     
     
+% --- Executes on selection change in pu_metabolite.
+function pu_metabolite_Callback(hObject, eventdata, handles)
+% hObject    handle to pu_metabolite (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns pu_metabolite contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from pu_metabolite
+    % update voxel mask 
+    h=findobj('Tag','openfile');
+    mri = get(h,'UserData');
     
+    voxel_type=get(hObject,'Value');
+    [mask, msvoi_centre, msvoi_corners] = update_mask(mri,voxel_type);
+    mri.mask = mask;
+    mri.svoi_centre = msvoi_centre;
+    mri.svoi_corners = msvoi_corners;
+    set(h,'UserData',mri);
+    
+    % update display windows
+    ho=findobj('Tag','overlay');
+    overlay = get(ho,'UserData');
+    
+    update_disp_all(handles,mri,overlay);
+
+
+% --- Executes during object creation, after setting all properties.
+function pu_metabolite_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pu_metabolite (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

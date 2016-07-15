@@ -8,13 +8,16 @@ function [spect_phased phi]= mrs_manualzeroPHC(spect, xrange, spect_disp)
 % ARGS :
 % spect = a spectrum before mannual zero-order phase correction
 % xrange (optional) = x ranges (in points) you want to display when doing phase correction 
-% spect_disp = a fxied spectrum displayed for comparison purpose
+% spect_disp = a fixed chosen spectrum displayed for comparison purpose
 %
 % RETURNS:
 % spect_phased = a spectrum after mannual zero-order phase correction 
 % phi = phase correction value (in rad) 
 %
-%
+% EXAMPLE: 
+% >> for i=1:10
+% >> [spect_phased(:,i) phi] = mrs_manualzeroPHC(spect(:,i), [500,2500], spect_mean);
+% >> end 
 %
 % AUTHOR : Chen Chen
 % PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
