@@ -67,7 +67,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_T1corr.m**          : applies T1 relaxation correction  
   * **mrs_T2corr.m**          : applies T2 relaxation correction  
 * voxel_planner/
-  * **create_stdMaskvoxel.m&.fig** :  Allows you to plan MRS voxel size & location with a guide of MR structural images of a standard brain (MNI152_T1_1mm_brain.nii.gz) and functional region masks (HarvardOxford-cort-maxprob-thr0-1mm.nii.gz).   
+  * **create_stdMaskvoxel.m&.fig** :  Allows you to plan MRS voxel size & location with a guide of MR structural images of a standard brain (MNI152_T1_1mm_brain.nii.gz) and functional region masks (HarvardOxford-cort-maxprob-thr0-1mm.nii.gz). You can evaluate the goodness of MRS voxel position by pressing 'Calculate overlap (%)' button, which shows you the percentage of overlap of the MRS voxel with the chosen functional region of interest (fROI). You can save the desired MRS voxel as a mask.    
   
   ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/MRS_voxel_planner.PNG)
   

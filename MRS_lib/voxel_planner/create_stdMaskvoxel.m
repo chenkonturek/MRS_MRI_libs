@@ -22,7 +22,9 @@ function varargout = create_stdMaskvoxel(varargin)
 %
 % Usage: You can overlay a chosen functional region mask (based on HarvardOxford-cort-maxprob-thr0-1mm.nii.gz)over the standard
 % T1-weighted brain image (MNI152_T1_1mm.nii.gz) to plan your spectroscopy voxel (e.g. choose proper voxel size,location etc.) 
-% and save the desired spectroscopy voxel mask. 
+% and save the desired spectroscopy voxel mask.  You can evaluate the goodness of MRS voxel position by pressing 'Calculate overlap (%)'
+% button, which shows you the percentage of overlap of the MRS voxel with the chosen functional region of interest (fROI). 
+% 
 % Note: You can cusomise the chemical shift displacement of the voxel by change the values of the below parameters in the code:    
 %   BW=4730; % RF pulse BW 
 %   B0=7; % Tesla 
