@@ -43,20 +43,21 @@ function [data water]= mrs_readDATA( fileName )
     start_point=info.noise_avgs*info.samples(1)+1;    
     data_all=squeeze(data_in(1,start_point:end)+1i*data_in(2,start_point:end));
     
-    if info.withAllChannels ==1 % if contains data from each channel 
-        data_all=reshape(data_all,info.samples(1),info.noise_avgs,sum(info.averages), info.dynamics(1));
-    else 
-        data_all=reshape(data_all,info.samples(1),sum(info.averages), info.dynamics(1));
-    end 
-    
+    if info.withAllChannels
+        data_all=reshape(data_all,info.samples(1), info.noise_avgs, sum(info.averages), info.dynamics(1));
+        % note: noise_avgs == noise from each channel == number of channels
+    else
+        data_all=reshape(data_all,info.samples(1), sum(info.averages), info.dynamics(1));
+    end
+   
     % get data and water FIDs    
     if length(info.averages)==2 
-        if info.withAllChannels ==1
+        if info.withAllChannels
             water=data_all(:,:,1:info.averages(2),:); 
             data=data_all(:,:,(info.averages(2)+1):sum(info.averages),:);  
         else
             water=data_all(:,1:info.averages(2),:); 
-            data=data_all(:,(info.averages(2)+1):sum(info.averages),:);  
+            data=data_all(:,(info.averages(2)+1):sum(info.averages),:); 
         end
     else
         % if there is no water FIDs
@@ -64,5 +65,4 @@ function [data water]= mrs_readDATA( fileName )
         water=[]; 
     end
 end
-
 

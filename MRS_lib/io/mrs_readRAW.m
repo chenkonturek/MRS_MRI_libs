@@ -1,17 +1,16 @@
-function [data_recon, water_recon] = mrs_readRAW(fileName) 
-% MRS_READRAW reads Philips raw data (.RAW) and combines signals from different channels
-% based on the S/N^2 weighting (Emma H., NeuroImage 84 p35-42, 2014).  
-% If water suppression is enabled, .raw file contains water-unsuppressed spectra (water)  
-% and water-suppressed spectra (data) from all channels of recieve coil.
-%    
-% [data_recon water_recon] = mrs_readRAW(fileName)
+function [data_recon, water_recon] = mrs_readRAW_MEGA(fileName) 
+% MRS_READRAW_MEGA reads Philips raw data (.RAW) with Utretch's MEGA-sLASER sequence. 
+% If water suppression is enabled, .data file contains water-unsuppressed spectra (water)  
+% and water-suppressed spectra (data). 
+% 
+% [data_recon water_recon] = mrs_readRAW_MEGA(fileName)
 %
 % ARGS :
 % fileName = name of raw data file 
 %
 % RETURNS:
-% data_recon =  reconstructed water-suppressed FIDs (dim=[sample, avgerage,dynamics])
-% water_recon =  reconstructed water-unsuppressed FIDs (dim=[sample, avgerage,dynamics])     
+% data =  water-suppressed FIDs without averaging 
+% water =  water-unsuppressed FIDs without averaging     
 %
 % EXAMPLE: 
 % >> [data_recon water_recon] = mrs_readRAW_MEGA('sub4.RAW');
@@ -50,7 +49,7 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
     %keyboard
     %% reshaping data in a less memory intesive way
     disp('Reshaping data')
-    datatemp = int16(zeros(1,2*info.no_acq_points*info.no_channels*no_acq_per_dyn*info.no_dynamics));
+    datatemp = zeros(1,2*info.no_acq_points*info.no_channels*no_acq_per_dyn*info.no_dynamics);
     chunk = length(datatemp)/no_acq_per_dyn/info.no_channels;
     for dti = 0:(no_acq_per_dyn*info.no_channels)-1
         ind = chunk*dti+1;
@@ -99,18 +98,18 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
         end
     end
 
-    %% Weighted combination of data from different channels 
+    %% Weighted combination of 32-channel data  
     weights=sum(real(water_pc(:,:,1,1)));
-    noise=var(real(data_pc(3800:4096,:,1,1)));  
+    noise=var(real(data_pc(round(0.92*info.no_points(1)):info.no_points(1),:,1,1)));  
     
     weights=weights./noise;
     weights=weights./sqrt(sum(weights.^2));  
 
-    g2=repmat(weights,[4096 1 info.no_averages(1) info.no_dynamics]);
+    g2=repmat(weights,[info.no_points(1) 1 info.no_averages(1) info.no_dynamics]);
     data_recon=g2.*data_pc;  
 
 
-    g2=repmat(weights,[4096 1 info.no_averages(2) info.no_dynamics]);
+    g2=repmat(weights,[info.no_points(1) 1 info.no_averages(2) info.no_dynamics]);
     water_recon=g2.*water_pc;  
 
     %% Average over the channels
