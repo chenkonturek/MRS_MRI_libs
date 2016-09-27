@@ -1,5 +1,5 @@
 function FID = mrs_readLcmodelRAW( fileName )
-% MRS_READLCMODELRAW reads the LCModel input .RAW file which contains  
+% MRS_READLCMODELRAW reads the LCModel output .RAW file which contains  
 % time domain data of each metabolite spectrum. 
 % 
 % FID = mrs_readLcmodelRAW( fileName )
