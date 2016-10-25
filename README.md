@@ -44,8 +44,6 @@ Data files & header files are required to be added to MATLAB path.
 * simulation/  
   * **mrs_PRESS.m**      : simulates signal acquired using Position Resolved Spectroscopy (PRESS)
   * **mrs_STEAM.m**      : simulates signal acquired using Stimulated Echo Acquisition Mode (STEAM) 
-  
-  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/pulse_seq.jpg)  
   * **mrs_sLASER.m**     : simulates the signal acquired using semi-localised by adiabatic selective refocusing(sLASER) sequence 
   * **mrs_ISISscheme.m** : demonstrates how Image Selective in vivo Spectroscopy (ISIS) works
   * **mrs_simulateFID.m**: simulates a Free Induction Decay (FID) or Half-Echo. 
@@ -53,15 +51,24 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_selectPeakrange.m** : allows users to manually pick the peak range interactively
   * **mrs_findPeak.m**        : locates the highest positive peak or lowest negative peak
   * **mrs_fitPeak.m**         : fits a peak in the given range of a spectrum with a lorenztian curve  
-  * **mrs_lorentzFit.m**      : fits data with a lorenztian function by minimising the squared error
-  * **mrs_lorentzFun.m**      : defines the lorentzian function
+  * **mrs_lorentzFit.m**      : fits data with a Lorenztian function by minimising the squared error
+  * **mrs_lorentzFun.m**      : defines the Lorentzian function
+  * **mrs_gaussianFit.m**     : fits data with a Gaussian function by minimising the squared error  
+  * **mrs_gaussianFun.m**     : defines Gaussian function function   
   * **mrs_points2Hz.m**       : converts unit from points to Hz
   * **mrs_points2ppm.m**      : converts unit from points to ppm
   * **mrs_ppm2Hz.m**          : converts unit from ppm to Hz
   * **mrs_plotSpectra.m**     : displays spectra 
+  * **mrs_plotBASISspectra.m**: displays spectra in LCmodel .basis file  
   * **mrs_viewCSI.m**         : displays a spectrum from a selected voxel      
   * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise
+  * **mrs_T1corr.m**          : applies T1 correction 
+  * **mrs_T2corr.m**          : applies T2 correction 
   * **mrs_calTemp.m**         : calculates the temperature based on chemical shift difference of the water resonance and the temperature-independent reference resonance
+* voxel_planner/
+  * **create_stdMaskvoxel.m&.fig** : allows you to plan MRS voxel size & location with a guid of MR structural images of a standard brain (MNI152_T1_1mm_brain.nii.gz) and functional region masks (HarvardOxford-cort-maxprob-thr0-1mm.nii.gz) 
+  
+  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/MRS_voxel_planner.PNG)  
 
 **MRI_lib** contains functions for post-processing, analysing and simulating Magnetic Resonance Imaging data
 * io/
@@ -72,9 +79,6 @@ Data files & header files are required to be added to MATLAB path.
   * **mri_readREC.m**  : reads .REC Philips MRI data file
 * utils/
   * **mri_IRcurve.m**        : calculates the inversion recovery (IR) curve
-
-  ![Alt text](https://raw.github.com/chenkonturek/MR_libs/master/Images/IR.png)  
-
   * **mri_absIRcurveFit.m**  : fits the data to absolute inversion recovery curve 
   * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic VOI in the axial MR images
   * **mri_dispSVOI.m**       : displays the spectroscopic VOI on top of the axial MR images
