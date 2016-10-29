@@ -17,6 +17,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_readDATA.m**  : reads .data Philips MRS data file produced by delayed reconstruction
   * **mrs_readSIN.m**   : reads .sin Philips raw MRS header file
   * **mrs_readRAW.m**   : reads .raw Philips raw MRS data file
+  * **mrs_readRDA.m**   : reads .RDA Siemens MRS file (header information and data)
   * **mrs_readLcmodelBASIS.m**   : reads the LCModel input .basis file, which contains the basis set of model metabolite spectra 
   * **mrs_readLcmodelBasisRAW.m** : reads th LCModel input .RAW file, which contains time domain data of one metabolite spectrum 
   * **mrs_readLcmodelTABLE.m**   : reads the metabolite absolute and relative concentration and their SDs from the LCModel output .table file 
@@ -95,8 +96,8 @@ Data files & header files are required to be added to MATLAB path.
   * **example4.m** : demonstrates how to use MR_libs to do Bloch Equation simulation. 
   * **example5.m** : demonstrates how to use MR_libs to simulate magnetisation profile produced by an RF pulse.
   * **example6.m** : demonstrates how to use MR_libs to estimate T1.
-  * **example7.m** : demonstrates how to use MR_libs to displays a spectrum from a selected voxel.
-  * **example8.m** : demonstrates how to use MR_libs to create .RAW for macromolecule data, and create .in file for making a LCmodel basisset.
+  * **example7.m** : demonstrates how to use MR_libs to displays a spectrum from a selected voxel (CSI data).
+  * **example8.m** : demonstrates how to use MR_libs to create .RAW for a LCModel model spectrum, and create .in file for making a LCmodel basisset.
 
 ### Acknowledgements
 
