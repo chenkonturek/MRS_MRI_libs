@@ -1,22 +1,21 @@
 function [data_recon, water_recon] = mrs_readRAW(fileName) 
 % MRS_READRAW reads Philips raw data (.RAW). 
-% If water suppression is enabled, .data file contains water-unsuppressed spectra (water)  
-% and water-suppressed spectra (data). 
+% Reconstruct raw data from multiple-channel with optimal combination scheme   
 % 
-% [data_recon water_recon] = mrs_readRAW_MEGA(fileName)
+% [data_recon water_recon] = mrs_readRAW(fileName)
 %
 % ARGS :
 % fileName = name of raw data file 
 %
 % RETURNS:
-% data =  water-suppressed FIDs without averaging 
-% water =  water-unsuppressed FIDs without averaging     
+% data_recon =  reconstructed water-suppressed spectra [samples, averages, dynamics]
+% water_recon =  reconstructed water-unsuppressed spectra [samples, averages, dynamics]     
 %
 % EXAMPLE: 
-% >> [data_recon water_recon] = mrs_readRAW_MEGA('sub4.RAW');
+% >> [data_recon water_recon] = mrs_readRAW('sub4.RAW');
 %
 % AUTHOR : Chen Chen, Emma Hall
-% PLACE  : Sir Peter Mansfield Magnetic Resonance Centre (SPMMRC)
+% PLACE  : Sir Peter Mansfield Imaging Centre (SPMIC)
 %
 % Copyright (c) 2016, University of Nottingham. All rights reserved.
 
@@ -40,6 +39,7 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
     plot(data(g-10:g+10));hold on;plot(11,data(g),'r*');
     f=input('What value should g be shifted by?');
     g=g+f;
+
     close all;plot(data(g-10:g+10));hold on;plot(11,data(g),'r*');
     close all;
     g=g-1;
@@ -98,18 +98,18 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
         end
     end
 
-    %% Weighted combination of 32-channel data  
+    %% Weighted combination of multiple-channel data  
     weights=sum(real(water_pc(:,:,1,1)));
-    noise=var(real(data_pc(3800:4096,:,1,1)));  
+    noise=var(real(data_pc((size(data_pc,1)-round(0.047*size(data_pc,1))):size(data_pc,1),:,1,1)));  
     
     weights=weights./noise;
     weights=weights./sqrt(sum(weights.^2));  
 
-    g2=repmat(weights,[4096 1 info.no_averages(1) info.no_dynamics]);
+    g2=repmat(weights,[size(data_pc,1) 1 info.no_averages(1) info.no_dynamics]);
     data_recon=g2.*data_pc;  
 
 
-    g2=repmat(weights,[4096 1 info.no_averages(2) info.no_dynamics]);
+    g2=repmat(weights,[size(data_pc,1) 1 info.no_averages(2) info.no_dynamics]);
     water_recon=g2.*water_pc;  
 
     %% Average over the channels
