@@ -108,7 +108,10 @@ function [data_recon, water_recon, info] = mrs_readGEpfile( fileName )
     data_recon=squeeze(mean(data_recon,4));
     water_recon=squeeze(mean(water_recon,4));
 
-    
+    for d=1:info.dynamics
+        data_recon(:,:,d)=fliplr(data_recon(:,:,d)')';
+        water_recon(:,:,d)=fliplr(water_recon(:,:,d)')';
+    end
     
     
     

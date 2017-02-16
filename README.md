@@ -18,6 +18,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_readSIN.m**   : reads .sin Philips raw MRS header file
   * **mrs_readRAW.m**   : reads .raw Philips raw MRS data file
   * **mrs_readRDA.m**   : reads .RDA Siemens MRS file (header information and data)
+  * **mrs_readGEpfile.m** : reads Pxxxx.7 GE MRS raw data file (header information and data)
   * **mrs_readLcmodelBASIS.m**   : reads the LCModel input .basis file, which contains the basis set of model metabolite spectra 
   * **mrs_readLcmodelBasisRAW.m** : reads th LCModel input .RAW file, which contains time domain data of one metabolite spectrum 
   * **mrs_readLcmodelTABLE.m**   : reads the metabolite absolute and relative concentration and their SDs from the LCModel output .table file 
