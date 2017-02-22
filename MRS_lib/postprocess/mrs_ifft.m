@@ -21,7 +21,7 @@ function fids = mrs_ifft( spectra )
 	[~, xs ys zs]=size(spectra);
     for x = 1:xs
         for y=1:ys
-            for z=zs
+            for z=1:zs
                 fids(:,x,y,z) = ifft(ifftshift(spectra(:,x,y,z)));
             end
         end

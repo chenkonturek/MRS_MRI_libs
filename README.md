@@ -82,8 +82,9 @@ Data files & header files are required to be added to MATLAB path.
 * utils/
   * **mri_IRcurve.m**        : calculates the inversion recovery (IR) curve
   * **mri_absIRcurveFit.m**  : fits the data to absolute inversion recovery curve 
-  * **mri_locateSVOI.m**     : creates a mask for locating the spectroscopic VOI in the axial MR images
-  * **mri_dispSVOI.m**       : displays the spectroscopic VOI on top of the axial MR images
+  * **mri_createSVOI.m**     : creates a mask for locating the spectroscopic VOI in MR images based on given information of MR images and MRS voxel.
+  * **mri_locateMask.m**     : creates a mask for locating the spectroscopic VOI in MR images based on Philips .PAR and .SPAR header files.
+  * **mri_dispSVOI.m**       : displays the spectroscopic VOI on top of MR images
 
 **NMR_lib:** contains functions for NMR simulation 
   * **nmr_bloch.m** : defines full Bloch equations in rotating frame
