@@ -43,7 +43,7 @@ function [data_recon, water_recon, info] = mrs_readGEpfile( fileName )
     
     info.samples=hdr_info.user1;
     info.BW=hdr_info.spectral_width;
-    info.transmit_frequency=hdr_info.ps_mps_freq;
+    info.transmit_frequency=hdr_info.ps_mps_freq/10;
     
     info.dynamics = hdr_info.nechoes; 
     info.pc = hdr_info.navs;
@@ -127,6 +127,10 @@ function [data_recon, water_recon, info] = mrs_readGEpfile( fileName )
     data_recon=squeeze(mean(data_recon,4));
     water_recon=squeeze(mean(water_recon,4));
 
+    % conjugate data 
+    data_recon=fft(conj(ifft(data_recon)));
+    water_recon=fft(conj(ifft(water_recon)));
+    
 end
     
 function a = readGEinfo(file_id)
