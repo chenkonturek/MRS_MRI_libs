@@ -26,6 +26,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_readLcmodelRAW.m** : reads LCModel output .RAW file which contains time domain data of each metabolite spectrum
   * **mrs_readJmruiTXT.m**   : reads .txt MRS data file from jMRUI
   * **mrs_writeSDAT.m** : writes MRS data to Philips .SDAT file
+  * **mrs_writeSPAR.m** : writes MRS header information to Philips .SPAR file
   * **mrs_editSPAR.m**  : edits Philips .SPAR file
   * **mrs_writeLcmodelIN.m** : writes .in file for creating a LCmodel baisis set 
   * **mrs_writeLcmodelBasisRAW.m** : writes .RAW file, which contains time domain data of one metabolite spectrum    
@@ -66,6 +67,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise
   * **mrs_T1corr.m**          : applies T1 correction 
   * **mrs_T2corr.m**          : applies T2 correction 
+  * **mrs_calFWHM.m**         : calculates the full-width at maximum height of the peak of interest  
   * **mrs_calTemp.m**         : calculates the temperature based on chemical shift difference of the water resonance and the temperature-independent reference resonance
 * voxel_planner/
   * **create_stdMaskvoxel.m&.fig** : allows you to plan MRS voxel size & location with a guid of MR structural images of a standard brain (MNI152_T1_1mm_brain.nii.gz) and functional region masks (HarvardOxford-cort-maxprob-thr0-1mm.nii.gz) 
