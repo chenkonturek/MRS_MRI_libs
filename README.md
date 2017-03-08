@@ -67,7 +67,7 @@ Data files & header files are required to be added to MATLAB path.
   * **mrs_rot90.m**           : rotates the spectra images 90 degree clockwise
   * **mrs_T1corr.m**          : applies T1 correction 
   * **mrs_T2corr.m**          : applies T2 correction 
-  * **mrs_calFWHM.m**         : calculates the full-width at maximum height of the peak of interest  
+  * **mrs_calFWHM.m**         : calculates the full width at haflf maximum height of the peak of interest  
   * **mrs_calTemp.m**         : calculates the temperature based on chemical shift difference of the water resonance and the temperature-independent reference resonance
 * voxel_planner/
   * **create_stdMaskvoxel.m&.fig** : allows you to plan MRS voxel size & location with a guid of MR structural images of a standard brain (MNI152_T1_1mm_brain.nii.gz) and functional region masks (HarvardOxford-cort-maxprob-thr0-1mm.nii.gz) 
