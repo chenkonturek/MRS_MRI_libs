@@ -30,6 +30,7 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
     end
    
     %% Read in data and find starting point of recording
+    disp('******* Data reconstruction ******* ')
     fid=fopen(fileName,'r','l');  %data is little endian
 
     fseek(fid,1000,'bof');
@@ -37,7 +38,7 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
     g=find(abs(data)>15,1,'first');
 
     plot(data(g-10:g+10));hold on;plot(11,data(g),'r*');
-    f=input('What value should g be shifted by?');
+    f=0;%input('What value should g be shifted by?');
     g=g+f;
 
     close all;plot(data(g-10:g+10));hold on;plot(11,data(g),'r*');
@@ -46,9 +47,8 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
     %clear firstpoints
     B = uint8(info.no_acq_points/info.no_points(1));
     A = isinteger(B);
-    %keyboard
+
     %% reshaping data in a less memory intesive way
-    disp('Reshaping data')
     datatemp = int16(zeros(1,2*info.no_acq_points*info.no_channels*no_acq_per_dyn*info.no_dynamics));
     chunk = length(datatemp)/no_acq_per_dyn/info.no_channels;
     for dti = 0:(no_acq_per_dyn*info.no_channels)-1
@@ -66,12 +66,15 @@ function [data_recon, water_recon] = mrs_readRAW(fileName)
     data = data(:,:,:,info.no_averages(2)+1:no_acq_per_dyn,:);
     data = complex(data(1,:,:,:,:),data(2,:,:,:,:));
 
-    disp('Processing Data, please wait ....')
+    disp('In Progress, please wait ....')
 
     %% Downsample to required bandwidth
     water = reshape(water,info.no_acq_points/info.no_points(1),info.no_points(1),info.no_channels,info.no_averages(2),info.no_dynamics);
     data = reshape(data,info.no_acq_points/info.no_points(1),info.no_points(1),info.no_channels,info.no_averages(1),info.no_dynamics);
 
+    water=double(water);
+    data=double(data);
+    
     water_spects=mrs_fft(squeeze(mean(water,1)));
     data_spects=mrs_fft(squeeze(mean(data,1))); 
 
